@@ -3,6 +3,18 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --footer-bg: #050505;
+  --footer-bg-secondary: #0b0b10;
+  --footer-purple: #8b3dff;
+  --footer-purple-light: #a855f7;
+  --footer-blue: #4f8bff;
+  --footer-white: #ffffff;
+  --footer-paragraph: #c6c6d1;
+  --footer-muted: #9a9aaa;
+  --footer-link: #b8b8c3;
+  --footer-border: rgba(255, 255, 255, 0.08);
+  --footer-glass: rgba(255, 255, 255, 0.04);
 }
 
 @theme inline {
@@ -10,6 +22,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-inter: var(--font-inter);
 }
 
 @media (prefers-color-scheme: dark) {
