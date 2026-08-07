@@ -6,16 +6,17 @@ export default function FloatingButtons() {
   return (
     <>
       {/* Right Side Rotated Vertical Action Tabs */}
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50 flex flex-col space-y-2 items-end">
+      <div className="fixed right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col space-x-3 items-center">
+      
         <a
           href="#consultation"
-          className="bg-[#7C3AED] text-white text-[11px] font-semibold tracking-wider px-4 py-2 rounded-l-md shadow-[0_0_20px_rgba(124,58,237,0.5)] hover:bg-[#6D28D9] transition-all transform hover:-translate-x-1 uppercase [writing-mode:vertical-rl] rotate-180 flex items-center justify-center h-44"
+          className="bg-gradient-to-b from-[#2563EB] to-[#9333EA] text-white text-[11px] font-[family:var(--font-intel-one-mono)] font-extrabold tracking-[0.15em] w-[38px] py-1 rounded-lg shadow-[0_4px_20px_rgba(124,58,237,0.3)] hover:shadow-[0_4px_25px_rgba(37,99,235,0.5)] hover:-translate-x-1 hover:scale-105 transition-all duration-300 uppercase [writing-mode:vertical-rl] px-3 flex items-center justify-center h-auto text-center cursor-pointer"
         >
           BOOK A CONSULTATION
         </a>
         <a
           href="#whatsapp"
-          className="bg-[#10B981] text-white text-[11px] font-semibold tracking-wider px-3 py-2 rounded-l-md shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:bg-[#059669] transition-all transform hover:-translate-x-1 uppercase [writing-mode:vertical-rl] rotate-180 flex items-center justify-center h-28"
+          className="bg-[#22C55E] text-white text-[11px] font-[family:var(--font-intel-one-mono)] font-extrabold tracking-[0.15em] w-[38px] py-1 px-3 rounded-lg shadow-[0_4px_20px_rgba(34,197,94,0.3)] hover:shadow-[0_4px_25px_rgba(34,197,94,0.5)] hover:-translate-x-1 hover:scale-105 transition-all duration-300 uppercase [writing-mode:vertical-rl] flex items-center justify-center h-auto text-center cursor-pointer"
         >
           WHATSAPP
         </a>

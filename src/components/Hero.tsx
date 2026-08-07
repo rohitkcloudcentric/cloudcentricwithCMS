@@ -100,11 +100,10 @@ export default function Hero() {
           <HeroCard activeIdx={activeIdx} setActiveIdx={setActiveIdx} />
         </div>
 
-        {/* Center Floating AI Chat Bar */}
-        {/* <div className="lg:col-span-8 flex justify-center w-full pb-2">
-          <AIChatBar />
-        </div> */}
       </div>
+
+      {/* Floating AI Chat Bar */}
+      <AIChatBar />
     </section>
   );
 }

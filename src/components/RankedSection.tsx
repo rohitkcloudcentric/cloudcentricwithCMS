@@ -15,7 +15,7 @@ export default function RankedSection() {
   ];
 
   return (
-    <section className="w-full bg-[#050505] py-14 px-4 border-t border-b border-white/[0.06] overflow-hidden">
+    <section className="w-full bg-[#050505] py-14 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col items-center justify-center space-y-10 text-center">
         {/* Section Heading */}
         <h2

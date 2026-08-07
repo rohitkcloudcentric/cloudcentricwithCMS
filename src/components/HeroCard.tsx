@@ -149,7 +149,8 @@ export default function HeroCard({ activeIdx, setActiveIdx }: HeroCardProps) {
           />
         ))}
       </div>
-
     </div>
+
+    
   );
 }
