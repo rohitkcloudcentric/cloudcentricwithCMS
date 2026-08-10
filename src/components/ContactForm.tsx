@@ -2,9 +2,13 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { Upload, ArrowUpRight } from "lucide-react";
 
-export default function ContactForm() {
+export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boolean }) {
+  const router = useRouter();
+  const isContactPage = isContactUsPage ?? (router?.pathname === "/contact-us" || router?.asPath === "/contact-us");
+
   const [submitted, setSubmitted] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
 
@@ -15,7 +19,13 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="relative lg:col-span-7 rounded-[20px] bg-[rgba(14,14,20,0.72)] backdrop-blur-[40px] border border-white/[0.1] p-6 sm:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.65)] overflow-visible">
+    <div
+      className={`relative lg:col-span-7 rounded-[20px] border border-white/[0.1] p-6 sm:p-8 overflow-visible ${
+        isContactPage
+          ? "bg-transparent shadow-none backdrop-blur-none"
+          : "bg-[rgba(14,14,20,0.72)] backdrop-blur-[40px] shadow-[0_20px_60px_rgba(0,0,0,0.65)]"
+      }`}
+    >
       {/* Floating Bottom Left Metallic Flower Image image-2.png - Behind Glass Effect */}
       <div className="absolute -bottom-10 -left-10 w-44 h-44 z-0 pointer-events-none opacity-90 drop-shadow-[0_20px_35px_rgba(0,0,0,0.9)]">
         <Image

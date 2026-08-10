@@ -167,9 +167,9 @@ export default function Navbar() {
             </div>
 
             <Link
-              href="/#contact"
+              href="/contact-us"
               className={`relative text-sm transition-colors py-1 group ${
-                pathname === "/#contact"
+                pathname === "/contact-us"
                   ? "bg-gradient-to-r from-[#2563EB] via-[#7C3AED] to-[#A855F7] bg-clip-text text-transparent font-bold"
                   : "text-white/80 hover:text-white font-medium"
               }`}

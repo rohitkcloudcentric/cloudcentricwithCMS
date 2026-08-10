@@ -44,7 +44,8 @@ export default function WhatWeDoHero() {
           alt="Decorative Shape 2"
           width={339}
           height={315}
-          className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(124,58,237,0.3)]"
+          className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(124,58,237,0.3)] animate-[spin_15s_linear_infinite]"
+          style={{ animation: "spin 15s linear infinite" }}
         />
       </div>
 
@@ -80,7 +81,7 @@ export default function WhatWeDoHero() {
           {/* Button 1: Explore Our Services */}
           <Link
             href="#services"
-            className="px-7 py-3 rounded-full bg-[#0A0A0E]/80 border border-white/20 text-white text-xs sm:text-sm font-semibold tracking-wide hover:border-white/40 hover:bg-[#111116] transition-all duration-300 shadow-lg active:scale-95"
+            className="px-7 py-3 rounded-full bg-[#0A0A0E]/80 border border-white/20 text-white text-xs sm:text-sm font-normal tracking-wide hover:border-white/40 hover:bg-[#111116] transition-all duration-300 shadow-lg active:scale-95"
             style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
           >
             Explore Our Services
@@ -89,7 +90,7 @@ export default function WhatWeDoHero() {
           {/* Button 2: Talk to an Expert */}
           <Link
             href="#contact"
-            className="px-7 py-3 rounded-full bg-gradient-to-r from-[#2563EB] via-[#7C3AED] to-[#A855F7] text-white text-xs sm:text-sm font-semibold tracking-wide hover:opacity-95 transition-all duration-300 shadow-[0_0_25px_rgba(124,58,237,0.5)] active:scale-95"
+            className="px-7 py-3 rounded-full bg-gradient-to-r from-[#2563EB] via-[#7C3AED] to-[#A855F7] text-white text-xs sm:text-sm font-normal tracking-wide hover:opacity-95 transition-all duration-300 shadow-[0_0_25px_rgba(124,58,237,0.5)] active:scale-95"
             style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
           >
             Talk to an Expert

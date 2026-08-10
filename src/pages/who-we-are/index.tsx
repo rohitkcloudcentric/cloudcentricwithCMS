@@ -47,11 +47,11 @@ export default function WhoWeAre() {
           {/* Trusted Clients Section */}
           <TrustedClients />
 
-          {/* Ranked Section */}
-          <RankedSection />
-
           {/* Who We Are CTA Section */}
           <WhoWeAreCTA />
+
+          {/* Ranked Section */}
+          <RankedSection />
 
           {/* Footer */}
           <Footer />
