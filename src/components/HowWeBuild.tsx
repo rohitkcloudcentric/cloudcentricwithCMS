@@ -64,10 +64,10 @@ function LeftPanel({ icon, iconAlt, title, subtitle }: LeftPanelProps) {
         <Image src={icon} alt={iconAlt} width={44} height={44} className="w-full h-full object-cover" />
       </div>
       <div className="flex flex-col gap-1">
-        <p className="text-sm font-bold tracking-wider uppercase text-white leading-snug" style={{ fontFamily: MONO }}>
+        <p className="text-sm font-bold tracking-wider uppercase text-white leading-snug font-intel">
           {title}
         </p>
-        <p className="text-sm text-white/45 leading-snug" style={{ fontFamily: MONO }}>
+        <p className="text-sm text-white/45 leading-snug font-intel">
           {subtitle}
         </p>
       </div>
@@ -89,8 +89,7 @@ export default function HowWeBuild() {
           <div className="flex items-center gap-2 mb-4">
             <span className="w-2 h-2 rounded-full" style={{ background: "linear-gradient(90deg, #2F89FF, #B021F0)" }} />
             <span
-              className="text-xs tracking-widest uppercase"
-              style={{ fontFamily: MONO, color: "#A78BFA" }}
+              className="text-xs tracking-widest uppercase font-intel text-[#A78BFA]"
             >
               How We Build
             </span>
@@ -102,14 +101,12 @@ export default function HowWeBuild() {
           {/* Heading + Description row */}
           <div className="flex flex-col md:flex-row md:items-start gap-6 md:gap-16">
             <h2
-              className="text-3xl md:text-4xl font-normal text-white leading-snug shrink-0 md:w-[45%]"
-              style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+              className="text-3xl md:text-4xl font-normal text-white leading-snug shrink-0 md:w-[45%] font-duru"
             >
               Building the Future with AI<br />& Modern Engineering
             </h2>
             <p
-              className="text-md text-white/50 leading-relaxed md:pt-1"
-              style={{ fontFamily: MONO }}
+              className="text-md text-white/50 leading-relaxed md:pt-1 font-intel"
             >
               We combine AI, Salesforce, cloud platforms, and modern
               development frameworks to build secure, scalable, and

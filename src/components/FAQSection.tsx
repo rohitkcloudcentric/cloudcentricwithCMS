@@ -66,8 +66,7 @@ function AccordionItem({
         id={`faq-btn-${item.id}`}
       >
         <span
-          className="text-sm sm:text-base text-white font-normal leading-snug group-hover:text-white transition-colors"
-          style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+          className="text-sm sm:text-base text-white font-normal leading-snug group-hover:text-white transition-colors font-duru"
         >
           {item.question}
         </span>
@@ -93,8 +92,7 @@ function AccordionItem({
       >
         <div className="overflow-hidden">
           <p
-            className="pb-5 text-sm text-white leading-relaxed"
-            style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+            className="pb-5 text-sm text-white leading-relaxed font-intel"
           >
             {item.answer}
           </p>
@@ -124,25 +122,18 @@ export default function FAQSection() {
         <div className="flex flex-col space-y-5 lg:sticky lg:top-28">
           {/* Subtitle */}
           <p
-            className="text-xs font-normal uppercase tracking-widest text-white"
-            style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+            className="text-xs font-normal uppercase tracking-widest text-white font-intel"
           >
             Frequently Asked Questions
           </p>
 
           {/* Heading */}
           <h2
-            className="text-3xl sm:text-4xl font-normal leading-tight text-white"
-            style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+            className="text-3xl sm:text-4xl font-normal leading-tight text-white font-duru"
           >
             Questions Before You Partner <br className="hidden sm:inline" /> With Us?{" "} <br />
             <span
-              style={{
-                backgroundImage: "linear-gradient(90deg, #2563EB 0%, #A855F7 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
+              className="bg-gradient-to-r from-[#2563EB] to-[#A855F7] bg-clip-text text-transparent"
             >
               We&apos;ve Got the Answers.
             </span>
@@ -150,8 +141,7 @@ export default function FAQSection() {
 
           {/* Description */}
           <p
-            className="text-md text-white leading-relaxed max-full"
-            style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+            className="text-md text-white leading-relaxed max-full font-intel"
           >
             Learn more about how we work, the industries we serve, and what you
             can expect when partnering with CloudCentric for AI, Salesforce, and

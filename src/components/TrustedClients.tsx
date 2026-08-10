@@ -10,14 +10,12 @@ export default function TrustedClients() {
         {/* Top Header: Badge & Title aligned right */}
         <div className="flex flex-col items-start text-left self-end space-y-3 pr-2 max-w-2xl">
           <div
-            className="inline-flex items-center px-4 py-1.5 rounded-full border border-[#8673F6]/40 bg-[#8673F6]/10 text-[#A855F7] text-xs tracking-widest uppercase font-mono"
-            style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+            className="inline-flex items-center px-4 py-1.5 rounded-full border border-[#8673F6]/40 bg-[#8673F6]/10 text-[#A855F7] text-xs tracking-widest uppercase font-intel"
           >
             TRUSTED &amp; RECOGNIZED
           </div>
           <h2
-            className="text-3xl sm:text-4xl md:text-5xl font-normal text-white leading-tight tracking-tight text-left"
-            style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+            className="text-3xl sm:text-4xl md:text-5xl font-normal text-white leading-tight tracking-tight text-left font-duru"
           >
             Trusted by Clients. <br />
             Recognized by the Industry.
@@ -61,28 +59,24 @@ export default function TrustedClients() {
 
               <div>
                 <h3
-                  className="text-2xl font-normal text-white tracking-wide mb-6"
-                  style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+                  className="text-2xl font-normal text-white tracking-wide mb-6 font-duru"
                 >
                   CSAT
                 </h3>
                 <p
-                  className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-3"
-                  style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                  className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-3 font-intel"
                 >
                   4.9★ Customer Satisfaction
                 </p>
                 <p
-                  className="text-xs text-white/70 leading-relaxed font-normal"
-                  style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                  className="text-xs text-white/70 leading-relaxed font-normal font-intel"
                 >
                   Consistently delivering quality solutions with exceptional client experiences.
                 </p>
               </div>
 
               <div
-                className="text-xs font-normal text-white/80"
-                style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                className="text-xs font-normal text-white/80 font-intel"
               >
                 4.9/5 Customer Satisfaction
               </div>
@@ -108,22 +102,19 @@ export default function TrustedClients() {
 
               <div>
                 <h3
-                  className="text-2xl font-normal text-white tracking-wide leading-snug mb-6 pr-8"
-                  style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+                  className="text-2xl font-normal text-white tracking-wide leading-snug mb-6 pr-8 font-duru"
                 >
                   Great Place to Work® Certified
                 </h3>
                 <p
-                  className="text-xs text-white/70 leading-relaxed font-normal"
-                  style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                  className="text-xs text-white/70 leading-relaxed font-normal font-intel"
                 >
                   An innovation-driven culture that empowers people to build extraordinary technology.
                 </p>
               </div>
 
               <div
-                className="text-xs font-normal text-white/80 leading-relaxed"
-                style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                className="text-xs font-normal text-white/80 leading-relaxed font-intel"
               >
                 Certified Great Place to Work® <br />
                 Innovation-Driven Culture
@@ -150,28 +141,24 @@ export default function TrustedClients() {
 
               <div>
                 <h3
-                  className="text-2xl font-normal text-white tracking-wide mb-6"
-                  style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+                  className="text-2xl font-normal text-white tracking-wide mb-6 font-duru"
                 >
                   Clutch
                 </h3>
                 <p
-                  className="text-xs font-bold text-white/90 uppercase tracking-wide mb-3"
-                  style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                  className="text-xs font-bold text-white/90 uppercase tracking-wide mb-3 font-intel"
                 >
                   Top Rated Technology Partner
                 </p>
                 <p
-                  className="text-xs text-white/70 leading-relaxed font-normal"
-                  style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                  className="text-xs text-white/70 leading-relaxed font-normal font-intel"
                 >
                   Recognized for delivering secure, scalable, and business-focused digital solutions.
                 </p>
               </div>
 
               <div
-                className="space-y-3 text-xs font-normal text-white/90"
-                style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                className="space-y-3 text-xs font-normal text-white/90 font-intel"
               >
                 <div>
                   <p className="text-white/60 text-[11px]">Average Review Rating</p>

@@ -80,8 +80,7 @@ export default function OurValues() {
 
             {/* Supporting Paragraph */}
             <p 
-              className="text-xs sm:text-sm text-[#BDBDC8] leading-relaxed max-w-sm"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              className="text-xs sm:text-sm text-[#BDBDC8] leading-relaxed max-w-sm font-intel"
             >
               Our success is built on trust, innovation, and long-term partnerships. Every project we deliver is guided by values that help businesses innovate with confidence.
             </p>
@@ -91,7 +90,7 @@ export default function OurValues() {
               href="/approach"
               className="inline-flex items-center space-x-2 px-6 py-3.5 bg-white rounded-full text-sm font-bold shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:bg-slate-50 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] group mt-4"
             >
-              <span className="bg-gradient-to-r from-[#4F8BFF] via-[#7C3AED] to-[#A855F7] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#4F8BFF] via-[#7C3AED] to-[#A855F7] bg-clip-text text-transparent font-intel">
                 Explore Our Approach
               </span>
               <ArrowRight className="w-4 h-4 text-[#A855F7] transition-transform duration-300 group-hover:translate-x-1" />
@@ -101,10 +100,8 @@ export default function OurValues() {
           {/* Right Column: 2x2 Feature Grid with custom borders */}
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 w-full">
             {valuesList.map((item, idx) => {
-              const IconComp = item.icon;
               
               // Define border classes for the 2x2 layout on desktop
-              // Desktop: Card 0 (top-left), Card 1 (top-right), Card 2 (bottom-left), Card 3 (bottom-right)
               let borderClasses = "";
               if (idx === 0) {
                 borderClasses = "sm:pl-6 sm:pb-8 sm:border-l border-white/[0.08] pb-8 ";
@@ -125,23 +122,21 @@ export default function OurValues() {
                   <div className="w-10 h-10 rounded-xl bg-white/[0.02] border border-white/[0.12] text-white flex items-center justify-center group-hover:bg-[#7C3AED]/10 group-hover:border-[#7C3AED]/40 transition-colors">
                     <img 
                       src={item.icon} 
-                      alt={item.title} 
+                      alt={`${item.title} Icon`} 
                       className="w-5 h-5 object-contain brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity" 
                     />
                   </div>
 
                   {/* Title */}
                   <h3 
-                    className="text-xl font-normal text-white font-sans tracking-tight"
-                    style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+                    className="text-xl font-normal text-white tracking-tight font-duru"
                   >
                     {item.title}
                   </h3>
 
                   {/* Description */}
                   <p 
-                    className="text-sm sm:text-base text-[#9A9AAA] leading-relaxed"
-                    style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                    className="text-sm sm:text-base text-[#9A9AAA] leading-relaxed font-intel"
                   >
                     {item.desc}
                   </p>

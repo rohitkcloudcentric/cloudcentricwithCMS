@@ -47,10 +47,9 @@ export default function WhoWeAreCTA() {
 
           {/* Description */}
           <p 
-            className="text-xs sm:text-base text-white/90 leading-relaxed max-w-2xl tracking-wide"
-            style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+            className="text-xs sm:text-base text-white/90 leading-relaxed max-w-2xl tracking-wide font-intel"
           >
-            Whether you're exploring AI, modernizing Salesforce, or building enterprise software, our experts are ready to help you transform ideas into scalable digital solutions.
+            Whether you&apos;re exploring AI, modernizing Salesforce, or building enterprise software, our experts are ready to help you transform ideas into scalable digital solutions.
           </p>
 
           {/* Action Buttons */}

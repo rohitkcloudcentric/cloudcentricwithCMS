@@ -12,8 +12,7 @@ export default function WhoWeAreHero() {
         {/* Left Column: Heading */}
         <div className="md:col-span-7">
           <h1 
-            className="text-3xl sm:text-[44px] md:text-[50px] lg:text-[54px] font-normal leading-[1.12] text-white tracking-tight"
-            style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+            className="text-3xl sm:text-[44px] md:text-[50px] lg:text-[54px] font-normal leading-[1.12] text-white tracking-tight font-duru"
           >
             Engineering Intelligent <br className="hidden sm:inline" />
             Businesses Through AI & <br className="hidden sm:inline" />
@@ -24,8 +23,7 @@ export default function WhoWeAreHero() {
         {/* Right Column: Description */}
         <div className="md:col-span-5 md:pt-4">
           <p 
-            className="text-sm sm:text-base text-[#BDBDC8] leading-relaxed max-w-[500px]"
-            style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+            className="text-sm sm:text-base text-[#BDBDC8] leading-relaxed max-w-[500px] font-intel"
           >
             For over a decade, CloudCentric has helped businesses embrace digital transformation through AI, Salesforce, enterprise software, and cloud technologies. We create secure, scalable, and future-ready solutions that solve real business challenges and accelerate growth.
           </p>
@@ -50,8 +48,7 @@ export default function WhoWeAreHero() {
           {/* Card Left: Label & Title */}
           <div className="flex-1 space-y-2">
             <span 
-              className="text-[10px] sm:text-sm font-black tracking-[0.15em] text-[#000000] uppercase block"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              className="text-[10px] sm:text-sm font-black tracking-[0.15em] text-[#000000] uppercase block font-intel"
             >
               ABOUT CLOUDCENTRIC
             </span>
@@ -66,8 +63,7 @@ export default function WhoWeAreHero() {
           {/* Card Right: Description & Action Link */}
           <div className="flex-1 flex flex-col justify-between h-full md:pt-6">
             <p 
-              className="text-xs sm:text-sm text-[#475569] leading-relaxed font-normal"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              className="text-xs sm:text-sm text-[#475569] leading-relaxed font-normal font-intel"
             >
               CloudCentric is an AI-first technology company empowering organizations with intelligent automation, Salesforce expertise, enterprise software, and innovative digital products. We partner with businesses to transform ideas into scalable, high-impact solutions.
             </p>

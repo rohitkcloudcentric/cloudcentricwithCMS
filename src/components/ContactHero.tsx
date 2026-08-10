@@ -286,36 +286,36 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="flex flex-col space-y-2">
             <label
-              className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              htmlFor="contact-name"
+              className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
             >
               NAME <span className="text-[#A855F7]">*</span>
             </label>
             <input
+              id="contact-name"
               type="text"
               required
               placeholder="Your name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full h-[56px] bg-transparent border-b border-white/12 text-white placeholder-[#8B8B95] outline-none focus:border-[#A855F7] transition-all text-sm"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              className="w-full h-[56px] bg-transparent border-b border-white/12 text-white placeholder-[#8B8B95] outline-none focus:border-[#A855F7] transition-all text-sm font-intel"
             />
           </div>
           <div className="flex flex-col space-y-2">
             <label
-              className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              htmlFor="contact-email"
+              className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
             >
               EMAIL <span className="text-[#A855F7]">*</span>
             </label>
             <input
+              id="contact-email"
               type="email"
               required
               placeholder="example@gmail.com"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full h-[56px] bg-transparent border-b border-white/12 text-white placeholder-[#8B8B95] outline-none focus:border-[#A855F7] transition-all text-sm"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              className="w-full h-[56px] bg-transparent border-b border-white/12 text-white placeholder-[#8B8B95] outline-none focus:border-[#A855F7] transition-all text-sm font-intel"
             />
           </div>
         </div>
@@ -324,38 +324,38 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="flex flex-col space-y-2">
             <label
-              className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              htmlFor="contact-phone"
+              className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
             >
               PHONE NUMBER <span className="text-[#A855F7]">*</span>
             </label>
             <div className="flex items-center space-x-3 border-b border-white/12 focus-within:border-[#A855F7] transition-all h-[56px]">
-              <span className="text-sm shrink-0">🇺🇸</span>
+              <span className="text-sm shrink-0" aria-hidden="true">🇺🇸</span>
               <input
+                id="contact-phone"
                 type="tel"
                 required
                 placeholder="+1 201-555-0123"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full bg-transparent text-white placeholder-[#8B8B95] outline-none text-sm"
-                style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                className="w-full bg-transparent text-white placeholder-[#8B8B95] outline-none text-sm font-intel"
               />
             </div>
           </div>
           <div className="flex flex-col space-y-2">
             <label
-              className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              htmlFor="contact-telegram"
+              className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
             >
               TELEGRAM
             </label>
             <input
+              id="contact-telegram"
               type="text"
               placeholder="@username"
               value={formData.telegram}
               onChange={(e) => setFormData({ ...formData, telegram: e.target.value })}
-              className="w-full h-[56px] bg-transparent border-b border-white/12 text-white placeholder-[#8B8B95] outline-none focus:border-[#A855F7] transition-all text-sm"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              className="w-full h-[56px] bg-transparent border-b border-white/12 text-white placeholder-[#8B8B95] outline-none focus:border-[#A855F7] transition-all text-sm font-intel"
             />
           </div>
         </div>
@@ -363,19 +363,19 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
         {/* Row 3: Describe Your Idea */}
         <div className="flex flex-col space-y-2">
           <label
-            className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase"
-            style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+            htmlFor="contact-description"
+            className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
           >
             DESCRIBE YOUR IDEA <span className="text-[#A855F7]">*</span>
           </label>
           <textarea
+            id="contact-description"
             required
             rows={3}
             placeholder="How can we help you?"
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            className="w-full min-h-[130px] bg-transparent border border-white/12 rounded-xl p-4 text-white placeholder-[#8B8B95] outline-none focus:border-[#A855F7] transition-all text-sm resize-none"
-            style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+            className="w-full min-h-[130px] bg-transparent border border-white/12 rounded-xl p-4 text-white placeholder-[#8B8B95] outline-none focus:border-[#A855F7] transition-all text-sm resize-none font-intel"
           />
         </div>
 
@@ -383,17 +383,17 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="flex flex-col space-y-2">
             <label
-              className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              htmlFor="contact-budget"
+              className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
             >
               WHAT IS YOUR BUDGET? <span className="text-[#A855F7]">*</span>
             </label>
             <select
+              id="contact-budget"
               required
               value={formData.budget}
               onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-              className="w-full h-[56px] bg-[#0E0E12]/90 border border-white/12 rounded-xl px-4 text-white/80 outline-none focus:border-[#A855F7] transition-all text-sm appearance-none cursor-pointer"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              className="w-full h-[56px] bg-[#0E0E12]/90 border border-white/12 rounded-xl px-4 text-white/80 outline-none focus:border-[#A855F7] transition-all text-sm appearance-none cursor-pointer font-intel"
             >
               <option value="" disabled>Choose an option here</option>
               <option value="10k-25k">$10k – $25k</option>
@@ -404,16 +404,16 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
           </div>
           <div className="flex flex-col space-y-2">
             <label
-              className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              htmlFor="contact-referral"
+              className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
             >
               HOW DID YOU HEAR ABOUT US?
             </label>
             <select
+              id="contact-referral"
               value={formData.referralSource}
               onChange={(e) => setFormData({ ...formData, referralSource: e.target.value })}
-              className="w-full h-[56px] bg-[#0E0E12]/90 border border-white/12 rounded-xl px-4 text-white/80 outline-none focus:border-[#A855F7] transition-all text-sm appearance-none cursor-pointer"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              className="w-full h-[56px] bg-[#0E0E12]/90 border border-white/12 rounded-xl px-4 text-white/80 outline-none focus:border-[#A855F7] transition-all text-sm appearance-none cursor-pointer font-intel"
             >
               <option value="" disabled>Choose an option here</option>
               <option value="google">Search Engine (Google)</option>

@@ -12,10 +12,49 @@ import FloatingButtons from "@/components/FloatingButtons";
 import Footer from "@/components/Footer";
 
 export default function Home() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "CloudCentric",
+    "url": "https://cloudcentric.com",
+    "logo": "https://cloudcentric.com/logo.png",
+    "description": "Where Artificial Intelligence meets business innovation. We build scalable AI solutions, Salesforce platforms, enterprise software, and digital cloud experiences.",
+    "sameAs": [
+      "https://linkedin.com",
+      "https://facebook.com",
+      "https://twitter.com",
+      "https://instagram.com"
+    ]
+  };
+
   return (
     <>
       <Head>
         <title>CloudCentric - Where Artificial Intelligence Meets Business Innovation</title>
+        <meta
+          name="description"
+          content="CloudCentric helps modern businesses adopt AI, automate workflows, optimize customer experiences, and build scalable digital ecosystems."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href="https://cloudcentric.com" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="CloudCentric - Where Artificial Intelligence Meets Business Innovation" />
+        <meta property="og:description" content="We help modern businesses adopt AI, automate workflows, optimize customer experiences, and build scalable digital ecosystems." />
+        <meta property="og:url" content="https://cloudcentric.com" />
+        <meta property="og:site_name" content="CloudCentric" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="CloudCentric - Where Artificial Intelligence Meets Business Innovation" />
+        <meta name="twitter:description" content="We help modern businesses adopt AI, automate workflows, optimize customer experiences, and build scalable digital ecosystems." />
+
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </Head>
       <main className="min-h-screen bg-[#050505] text-white flex flex-col overflow-x-clip selection:bg-[#7C3AED] selection:text-white relative">
         {/* Background Radial Glow Layer */}

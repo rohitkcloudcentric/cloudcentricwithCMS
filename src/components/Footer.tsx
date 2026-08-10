@@ -18,10 +18,9 @@ export default function Footer() {
             
             {/* Outline / Stroked 10+ Years Text in white with Duru Sans font */}
             <div
-              className="text-3xl sm:text-4xl font-normal text-transparent tracking-tight py-1"
+              className="text-3xl sm:text-4xl font-normal text-transparent tracking-tight py-1 font-duru"
               style={{
                 WebkitTextStroke: "1px #FFFFFF",
-                fontFamily: "var(--font-duru-sans), sans-serif",
               }}
             >
               10+ Years of <br /> Innovation
@@ -41,11 +40,12 @@ export default function Footer() {
                   <a
                     key={social.name}
                     href="#"
+                    aria-label={`CloudCentric on ${social.name}`}
                     className="w-9 h-9 rounded-full bg-white text-black hover:bg-[#8B3DFF] hover:text-white flex items-center justify-center transition-all duration-200 shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:scale-110"
                   >
                     <img
                       src={social.src}
-                      alt={social.name}
+                      alt={`${social.name} Icon`}
                       className="w-[18px] h-auto"
                     />
                   </a>
@@ -57,8 +57,7 @@ export default function Footer() {
           {/* Right Column: Company Description & 4 Columns */}
           <div className="lg:col-span-7 flex flex-col space-y-8">
             <p
-              className="text-sm md:text-base text-[#BDBDC8] leading-relaxed"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              className="text-sm md:text-base text-[#BDBDC8] leading-relaxed font-intel"
             >
               CloudCentric Infotech is an AI-first technology company helping businesses accelerate growth through intelligent automation, Salesforce solutions, enterprise software, cloud technologies, and innovative SaaS products. We build secure, scalable, and future-ready digital experiences for organizations worldwide.
             </p>
@@ -66,18 +65,16 @@ export default function Footer() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-xs">
               {/* Company */}
               <div className="flex flex-col space-y-2.5">
-                <h5
-                  className="font-bold text-white text-sm tracking-wide"
-                  style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+                <h3
+                  className="font-bold text-white text-sm tracking-wide font-duru"
                 >
                   Company
-                </h5>
+                </h3>
                 {["About Us", "Our Team", "Careers", "Our Clients", "Contact Us"].map((item) => (
                   <a
                     key={item}
                     href="#"
-                    className="text-[#BDBDC8] hover:text-[#8B3DFF] transition-colors text-sm"
-                    style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                    className="text-[#BDBDC8] hover:text-[#8B3DFF] transition-colors text-sm font-intel"
                   >
                     {item}
                   </a>
@@ -86,18 +83,16 @@ export default function Footer() {
 
               {/* AI & Salesforce */}
               <div className="flex flex-col space-y-2.5">
-                <h5
-                  className="font-bold text-white text-sm tracking-wide"
-                  style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+                <h3
+                  className="font-bold text-white text-sm tracking-wide font-duru"
                 >
                   AI &amp; Salesforce
-                </h5>
+                </h3>
                 {["AI Solutions", "Salesforce & Agentforce", "Custom Development", "Cloud Solutions", "Implementation & Support"].map((item) => (
                   <a
                     key={item}
                     href="#"
-                    className="text-[#BDBDC8] hover:text-[#8B3DFF] transition-colors text-sm"
-                    style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                    className="text-[#BDBDC8] hover:text-[#8B3DFF] transition-colors text-sm font-intel"
                   >
                     {item}
                   </a>
@@ -106,18 +101,16 @@ export default function Footer() {
 
               {/* Products */}
               <div className="flex flex-col space-y-2.5">
-                <h5
-                  className="font-bold text-white text-sm tracking-wide"
-                  style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+                <h3
+                  className="font-bold text-white text-sm tracking-wide font-duru"
                 >
                   Products
-                </h5>
+                </h3>
                 {["FieldBlaze", "FlyBlaze", "Messagify", "HoopMeln", "CSIN"].map((item) => (
                   <a
                     key={item}
                     href="#"
-                    className="text-[#BDBDC8] hover:text-[#8B3DFF] transition-colors text-sm"
-                    style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                    className="text-[#BDBDC8] hover:text-[#8B3DFF] transition-colors text-sm font-intel"
                   >
                     {item}
                   </a>
@@ -126,18 +119,16 @@ export default function Footer() {
 
               {/* Resources */}
               <div className="flex flex-col space-y-2.5">
-                <h5
-                  className="font-bold text-white text-sm tracking-wide"
-                  style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+                <h3
+                  className="font-bold text-white text-sm tracking-wide font-duru"
                 >
                   Resources
-                </h5>
+                </h3>
                 {["Blog and Insights", "Case Studies", "Success Stories", "News & Insights"].map((item) => (
                   <a
                     key={item}
                     href="#"
-                    className="text-[#BDBDC8] hover:text-[#8B3DFF] transition-colors text-sm"
-                    style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                    className="text-[#BDBDC8] hover:text-[#8B3DFF] transition-colors text-sm font-intel"
                   >
                     {item}
                   </a>
@@ -151,7 +142,7 @@ export default function Footer() {
         <div className="border-t border-white/[0.08] pt-6 flex flex-col sm:flex-row items-center justify-between text-sm font-normal text-white gap-2">
           <span>© 2026 CloudCentric Infotech Pvt. Ltd. All Rights Reserved.</span>
           <div className="flex items-center space-x-4">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+            <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <span>|</span>
             <a href="#" className="hover:text-white transition-colors">Terms of Services</a>
             <span>|</span>

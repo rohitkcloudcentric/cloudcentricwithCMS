@@ -19,8 +19,7 @@ export default function RankedSection() {
       <div className="max-w-7xl mx-auto flex flex-col items-center justify-center space-y-10 text-center">
         {/* Section Heading */}
         <h2
-          className="text-2xl sm:text-3xl md:text-5xl font-normal text-white tracking-wide"
-          style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+          className="text-2xl sm:text-3xl md:text-5xl font-normal text-white tracking-wide font-duru"
         >
           #1 Ranked AI Development Firm
         </h2>

@@ -12,10 +12,40 @@ import RankedSection from "@/components/RankedSection";
 import WhoWeAreCTA from "@/components/CTA";
 
 export default function WhoWeAre() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "Who We Are - CloudCentric",
+    "url": "https://cloudcentric.com/who-we-are",
+    "description": "Learn about CloudCentric's foundation, values, and global mission to drive intelligent business transformation through AI and enterprise software."
+  };
+
   return (
     <>
       <Head>
         <title>Who We Are - CloudCentric</title>
+        <meta
+          name="description"
+          content="Learn about CloudCentric's foundation, values, and global mission to drive intelligent business transformation through AI and enterprise software."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href="https://cloudcentric.com/who-we-are" />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Who We Are - CloudCentric" />
+        <meta property="og:description" content="Learn about CloudCentric's foundation, values, and global mission." />
+        <meta property="og:url" content="https://cloudcentric.com/who-we-are" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Who We Are - CloudCentric" />
+        <meta name="twitter:description" content="Learn about CloudCentric's foundation, values, and global mission." />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </Head>
       <main className="min-h-screen bg-[#050505] text-white flex flex-col justify-between overflow-x-clip relative">
         {/* Background Image & Glow for the Hero Area */}

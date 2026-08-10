@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #050505;
+  --foreground: #ffffff;
+
+  --color-bg-dark: #050505;
+  --color-bg-card: #0e0e12;
+  --color-purple-primary: #7c3aed;
+  --color-purple-accent: #a855f7;
+  --color-blue-accent: #2563eb;
+  --color-blue-light: #4f8bff;
+  --color-text-muted: #a1a1aa;
+  --color-text-body: #b6b6c2;
 
   --footer-bg: #050505;
   --footer-bg-secondary: #0b0b10;
@@ -25,15 +34,46 @@
   --font-inter: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
 }
+
+/* Custom Font Utilities */
+.font-intel {
+  font-family: var(--font-intel-one-mono), monospace;
+}
+
+.font-duru {
+  font-family: var(--font-duru-sans), sans-serif;
+}
+
+.font-manrope {
+  font-family: var(--font-manrope), sans-serif;
+}
+
+/* Focus Ring Accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-purple-accent);
+  outline-offset: 2px;
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 20s linear infinite;
+}
+

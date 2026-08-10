@@ -83,31 +83,28 @@ export const CapabilityCard: React.FC<CapabilityCardProps> = ({ capability }) =>
       <div className="flex flex-col space-y-2 flex-grow">
         {/* Title */}
         <h3
-          className="text-lg sm:text-xl font-normal text-white tracking-wide transition-colors duration-300 group-hover:text-white"
-          style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+          className="text-lg sm:text-xl font-normal text-white tracking-wide transition-colors duration-300 group-hover:text-white font-duru"
         >
           {capability.title}
         </h3>
 
         {/* Technology Tags */}
         <p
-          className="text-[13px] font-normal text-[#A855F7] tracking-wide"
-          style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+          className="text-[13px] font-normal text-[#A855F7] tracking-wide font-intel"
         >
           {capability.technologies}
         </p>
 
         {/* Description */}
         <p
-          className="text-[14px] font-extralight leading-[1.8] text-[#A1A1AA] pt-1 max-w-xl"
-          style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+          className="text-[14px] font-extralight leading-[1.8] text-[#A1A1AA] pt-1 max-w-xl font-intel"
         >
           {capability.description}
         </p>
       </div>
 
       {/* Hover Arrow Action Button */}
-      <div className="absolute right-0 bottom-0 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0 hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-white text-black shadow-lg">
+      <div className="absolute right-0 bottom-0 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0 hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-white text-black shadow-lg" aria-hidden="true">
         <svg
           width="16"
           height="16"
@@ -139,14 +136,12 @@ export default function CoreCapabilities() {
         {/* Section Header */}
         <header className="flex flex-col space-y-4">
           <p
-            className="text-[12px] font-medium uppercase tracking-[2px] text-[#9CA3AF]"
-            style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+            className="text-[12px] font-medium uppercase tracking-[2px] text-[#9CA3AF] font-intel"
           >
             / CORE CAPABILITIES
           </p>
           <h2
-            className="text-[30px] sm:text-[40px] lg:text-[50px] font-medium leading-[1.1] text-white max-w-4xl"
-            style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+            className="text-[30px] sm:text-[40px] lg:text-[50px] font-medium leading-[1.1] text-white max-w-4xl font-duru"
           >
             Everything You Need to Build,
             <br />

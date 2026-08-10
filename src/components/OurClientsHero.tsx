@@ -219,8 +219,7 @@ function Lightbox({ clients, activeIndex, onClose, onNavigate }: LightboxProps) 
 
         {/* Counter */}
         <p
-          className="text-white/40 text-xs"
-          style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+          className="text-white/40 text-xs font-intel"
         >
           {activeIndex + 1} / {clients.length}
         </p>
@@ -316,14 +315,12 @@ export default function OurClientsHero() {
           {/* ── Heading ── */}
           <div className="text-center space-y-4 max-w-4xl">
             <h1
-              className="text-3xl sm:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-tight"
-              style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+              className="text-3xl sm:text-4xl lg:text-5xl font-normal text-white leading-tight tracking-tight font-duru"
             >
               Trusted by Businesses Worldwide
             </h1>
             <p
-              className="text-sm sm:text-sm text-white leading-relaxed tracking-wide max-w-4xl mx-auto"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              className="text-sm sm:text-sm text-white leading-relaxed tracking-wide max-w-4xl mx-auto font-intel"
             >
               From ambitious startups to established enterprises, organizations across industries trust
               CloudCentric to deliver AI, Salesforce, enterprise software, and digital transformation
@@ -346,7 +343,7 @@ export default function OurClientsHero() {
                   aria-selected={isActive}
                   onClick={() => setActiveCategory(cat)}
                   className={`
-                    px-3.5 py-1.5 rounded-[5px] text-sm font-medium tracking-wide transition-all duration-200
+                    px-3.5 py-1.5 rounded-[5px] text-sm font-medium tracking-wide transition-all duration-200 font-manrope
                     ${isActive
                       ? "text-white shadow-[0_0_12px_rgba(59,130,246,0.4)]"
                       : "bg-[#1816214D] text-white border border-white/10 hover:border-white/25 hover:text-white"
@@ -356,9 +353,8 @@ export default function OurClientsHero() {
                     isActive
                       ? {
                           background: "linear-gradient(90deg, #2563EB 0%, #7C3AED 100%)",
-                          fontFamily: "var(--font-manrope), sans-serif",
                         }
-                      : { fontFamily: "var(--font-manrope), sans-serif" }
+                      : undefined
                   }
                 >
                   {cat}

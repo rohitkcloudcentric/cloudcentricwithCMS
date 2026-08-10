@@ -27,10 +27,10 @@ export default function WhatWeDoHero() {
       </div>
 
       {/* ── Decorative Absolute Shape 1 (Top Right Metallic Coil / Ornament) ── */}
-      <div className="absolute top-12 sm:top-16 right-4 sm:right-10 w-24 sm:w-36 h-auto pointer-events-none z-10 opacity-80 animate-pulse duration-3000">
+      <div className="absolute top-12 sm:top-16 right-4 sm:right-10 w-24 sm:w-36 h-auto pointer-events-none z-10 opacity-80 animate-pulse duration-3000" aria-hidden="true">
         <Image
           src="/images/what we-do/shape-1.svg"
-          alt="Decorative Shape 1"
+          alt=""
           width={142}
           height={153}
           className="w-full h-auto object-contain"
@@ -38,10 +38,10 @@ export default function WhatWeDoHero() {
       </div>
 
       {/* ── Decorative Absolute Shape 2 (Bottom Right Metallic 3D Sphere/Cage) ── */}
-      <div className="absolute bottom-4 sm:bottom-10 right-4 sm:right-16 w-56 sm:w-80 md:w-[260px] h-auto pointer-events-none z-10 opacity-90 transition-transform duration-700 hover:scale-105">
+      <div className="absolute bottom-4 sm:bottom-10 right-4 sm:right-16 w-56 sm:w-80 md:w-[260px] h-auto pointer-events-none z-10 opacity-90 transition-transform duration-700 hover:scale-105" aria-hidden="true">
         <Image
           src="/images/what we-do/shape-2.svg"
-          alt="Decorative Shape 2"
+          alt=""
           width={339}
           height={315}
           className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(124,58,237,0.3)] animate-[spin_15s_linear_infinite]"
@@ -57,8 +57,7 @@ export default function WhatWeDoHero() {
       >
         {/* Main Heading */}
         <h1
-          className="text-3xl sm:text-5xl lg:text-[52px] font-normal leading-[1.15] text-white tracking-tight max-w-6xl"
-          style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+          className="text-3xl sm:text-5xl lg:text-[52px] font-normal leading-[1.15] text-white tracking-tight max-w-6xl font-duru"
         >
           Intelligent Technology Solutions for{" "} <br />
           <span
@@ -70,8 +69,7 @@ export default function WhatWeDoHero() {
 
         {/* Supporting Description */}
         <p
-          className="text-xs sm:text-sm lg:text-base text-white/70 leading-relaxed max-w-5xl mx-auto tracking-wide"
-          style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+          className="text-xs sm:text-sm lg:text-base text-white/70 leading-relaxed max-w-5xl mx-auto tracking-wide font-intel"
         >
           We help organizations harness the power of AI, Salesforce, enterprise software, cloud technologies, and digital engineering to automate operations, accelerate growth, and deliver exceptional customer experiences.
         </p>
@@ -81,8 +79,7 @@ export default function WhatWeDoHero() {
           {/* Button 1: Explore Our Services */}
           <Link
             href="#services"
-            className="px-7 py-3 rounded-full bg-[#0A0A0E]/80 border border-white/20 text-white text-xs sm:text-sm font-normal tracking-wide hover:border-white/40 hover:bg-[#111116] transition-all duration-300 shadow-lg active:scale-95"
-            style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+            className="px-7 py-3 rounded-full bg-[#0A0A0E]/80 border border-white/20 text-white text-xs sm:text-sm font-normal tracking-wide hover:border-white/40 hover:bg-[#111116] transition-all duration-300 shadow-lg active:scale-95 font-intel"
           >
             Explore Our Services
           </Link>
@@ -90,8 +87,7 @@ export default function WhatWeDoHero() {
           {/* Button 2: Talk to an Expert */}
           <Link
             href="#contact"
-            className="px-7 py-3 rounded-full bg-gradient-to-r from-[#2563EB] via-[#7C3AED] to-[#A855F7] text-white text-xs sm:text-sm font-normal tracking-wide hover:opacity-95 transition-all duration-300 shadow-[0_0_25px_rgba(124,58,237,0.5)] active:scale-95"
-            style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+            className="px-7 py-3 rounded-full bg-gradient-to-r from-[#2563EB] via-[#7C3AED] to-[#A855F7] text-white text-xs sm:text-sm font-normal tracking-wide hover:opacity-95 transition-all duration-300 shadow-[0_0_25px_rgba(124,58,237,0.5)] active:scale-95 font-intel"
           >
             Talk to an Expert
           </Link>

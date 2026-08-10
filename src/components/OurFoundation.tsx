@@ -105,8 +105,7 @@ export default function OurFoundation() {
 
         {/* Heading */}
         <h2 
-          className="mt-6 md:mt-8 text-xl sm:text-3xl md:text-4xl lg:text-[38px] font-normal leading-[1.3] text-white tracking-tight max-w-[1100px]"
-          style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+          className="mt-6 md:mt-8 text-xl sm:text-3xl md:text-4xl lg:text-[38px] font-normal leading-[1.3] text-white tracking-tight max-w-[1100px] font-duru"
         >
           At CloudCentric, We Combine AI Innovation, Enterprise Technology, And Business Expertise To Help Organizations Automate Operations, Enhance Customer Experiences, And Accelerate Digital Growth.
         </h2>
@@ -127,8 +126,7 @@ export default function OurFoundation() {
                 )}
               </span>
               <span 
-                className="text-[11px] sm:text-xs text-[#BDBDC8] tracking-wider font-medium font-mono uppercase"
-                style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                className="text-[11px] sm:text-xs text-[#BDBDC8] tracking-wider font-medium font-intel uppercase"
               >
                 {stat.label}
               </span>
