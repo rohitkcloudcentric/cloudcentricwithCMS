@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 /* ─────────────────────────────────────────────
    FAQ data
@@ -49,15 +49,24 @@ const FAQS: FAQItem[] = [
 ───────────────────────────────────────────── */
 function AccordionItem({
   item,
+  index,
+  isVisible,
   isOpen,
   onToggle,
 }: {
   item: FAQItem;
+  index: number;
+  isVisible: boolean;
   isOpen: boolean;
   onToggle: () => void;
 }) {
   return (
-    <div className="border-b border-white/[0.08]">
+    <div 
+      className={`border-b border-white/[0.08] transition-all duration-800 ease-out transform ${
+        isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-16"
+      }`}
+      style={{ transitionDelay: `${250 + index * 120}ms` }}
+    >
       <button
         onClick={onToggle}
         className="w-full flex items-start justify-between gap-4 py-5 text-left group"
@@ -109,17 +118,44 @@ export default function FAQSection() {
   /* Second item (index 1) open by default */
   const [openId, setOpenId] = useState<number>(2);
 
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const toggle = (id: number) => setOpenId((prev) => (prev === id ? 0 : id));
 
   return (
     <section
-      className="w-full bg-black text-white px-4 sm:px-6 lg:px-8 py-20"
+      ref={sectionRef}
+      className="w-full bg-black text-white px-4 sm:px-6 lg:px-8 py-20 overflow-hidden"
       aria-label="Frequently Asked Questions"
     >
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
-        {/* ── Left Column ── */}
-        <div className="flex flex-col space-y-5 lg:sticky lg:top-28">
+        {/* ── Left Column: Heading & Description (Comes from Left) ── */}
+        <div
+          className={`flex flex-col space-y-5 lg:sticky lg:top-28 transition-all duration-800 ease-out transform ${
+            isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-16"
+          }`}
+          style={{ transitionDelay: "150ms" }}
+        >
           {/* Subtitle */}
           <p
             className="text-xs font-normal uppercase tracking-widest text-white font-intel"
@@ -149,16 +185,18 @@ export default function FAQSection() {
           </p>
         </div>
 
-        {/* ── Right Column: Accordion ── */}
+        {/* ── Right Column: Accordion Questions & Answers (Comes One-by-One from Right) ── */}
         <div
           className="flex flex-col divide-y-0"
           role="list"
           aria-label="FAQ accordion"
         >
-          {FAQS.map((item) => (
+          {FAQS.map((item, idx) => (
             <AccordionItem
               key={item.id}
               item={item}
+              index={idx}
+              isVisible={isVisible}
               isOpen={openId === item.id}
               onToggle={() => toggle(item.id)}
             />

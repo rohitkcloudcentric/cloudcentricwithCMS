@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import { Sparkles, Paperclip, ChevronRight } from "lucide-react";
 
 export default function AIChatBar() {
+  const [mounted, setMounted] = useState(false);
   const [isFixed, setIsFixed] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+
     const handleScroll = () => {
-      // If user scrolls past 120px, stick it to the bottom of the viewport
-      if (window.scrollY > 120) {
+      if (window.scrollY > 80) {
         setIsFixed(true);
       } else {
         setIsFixed(false);
@@ -21,12 +23,14 @@ export default function AIChatBar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  if (!mounted) return null;
+
   return (
     <div 
-      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[650px] h-[54px] rounded-full p-[6px] pl-[8px] flex items-center justify-between border transition-all duration-500 ease-in-out hover:border-white/[0.2] ${
+      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] w-[90%] max-w-[650px] h-[54px] rounded-full p-[6px] pl-[8px] flex items-center justify-between border transition-all duration-500 ease-out hover:border-white/[0.4] pointer-events-auto ${
         isFixed 
-          ? "bg-[rgba(10,10,12,0.85)] backdrop-blur-[24px] border-[#7C3AED]/45 shadow-[0_15px_40px_rgba(0,0,0,0.85),0_0_25px_rgba(124,58,237,0.35)]" 
-          : "bg-[rgba(10,10,12,0.65)] backdrop-blur-[16px] border-white/[0.12] shadow-[0_12px_40px_rgba(0,0,0,0.6),0_0_20px_rgba(124,58,237,0.15)]"
+          ? "bg-[#0A0A0C]/90 backdrop-blur-[24px] border-[#7C3AED]/60 shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_30px_rgba(124,58,237,0.5)] scale-100 opacity-100" 
+          : "bg-[#0A0A0C]/80 backdrop-blur-[16px] border-white/[0.2] shadow-[0_12px_40px_rgba(0,0,0,0.7),0_0_20px_rgba(124,58,237,0.3)] scale-100 opacity-100"
       }`}
     >
       {/* Left Quick Icons */}

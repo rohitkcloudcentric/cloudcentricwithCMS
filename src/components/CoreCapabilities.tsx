@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 export interface CapabilityItem {
@@ -62,13 +64,23 @@ export const capabilitiesData: CapabilityItem[] = [
 
 interface CapabilityCardProps {
   capability: CapabilityItem;
+  index: number;
+  isVisible: boolean;
 }
 
-export const CapabilityCard: React.FC<CapabilityCardProps> = ({ capability }) => {
+export const CapabilityCard: React.FC<CapabilityCardProps> = ({ capability, index, isVisible }) => {
   return (
-    <article className="group relative flex flex-col sm:flex-row items-center gap-6 pb-7 transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer">
-      {/* SVG Icon */}
-      <div className="relative w-[130px] h-[130px] flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+    <article 
+      className={`group relative flex flex-col sm:flex-row items-center gap-6 pb-7 transition-all duration-700 transform hover:-translate-y-1.5 cursor-pointer ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+      style={{ transitionDelay: `${250 + index * 120}ms` }}
+    >
+      {/* SVG Icon — Floating up and down smoothly */}
+      <div 
+        className="relative w-[130px] h-[130px] flex-shrink-0 transition-transform duration-300 group-hover:scale-105 animate-float-slow"
+        style={{ animationDelay: `${(index % 3) * 0.7}s` }}
+      >
         <Image
           src={capability.iconSrc}
           alt={`${capability.title} Icon`}
@@ -127,14 +139,41 @@ export const CapabilityCard: React.FC<CapabilityCardProps> = ({ capability }) =>
 };
 
 export default function CoreCapabilities() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       className="w-full bg-[#050505] text-white py-16 sm:py-20 lg:py-[120px] px-5 sm:px-8 z-10"
       aria-label="Core Capabilities"
     >
       <div className="max-w-[1280px] mx-auto flex flex-col space-y-12 lg:space-y-16">
-        {/* Section Header */}
-        <header className="flex flex-col space-y-4">
+        {/* Section Header — Comes from Left */}
+        <header 
+          className={`flex flex-col space-y-4 transition-all duration-800 ease-out transform ${
+            isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-16"
+          }`}
+          style={{ transitionDelay: "180ms" }}
+        >
           <p
             className="text-[12px] font-medium uppercase tracking-[2px] text-[#9CA3AF] font-intel"
           >
@@ -151,8 +190,8 @@ export default function CoreCapabilities() {
 
         {/* 2-Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[70px] gap-y-[45px]">
-          {capabilitiesData.map((item) => (
-            <CapabilityCard key={item.id} capability={item} />
+          {capabilitiesData.map((item, idx) => (
+            <CapabilityCard key={item.id} capability={item} index={idx} isVisible={isVisible} />
           ))}
         </div>
       </div>

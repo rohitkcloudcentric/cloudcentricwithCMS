@@ -62,8 +62,10 @@ export default function OurValues() {
         <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-radial from-[#7C3AED]/5 to-transparent blur-[80px] pointer-events-none" />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start relative z-10">
-          {/* Left Column: Heading, badge & CTA */}
-          <div className="lg:col-span-5 flex flex-col items-start space-y-6">
+          {/* Left Column: Heading, badge & CTA — Comes from Left */}
+          <div className={`lg:col-span-5 flex flex-col items-start space-y-6 transition-all duration-800 ease-out transform ${
+            isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-16"
+          }`} style={{ transitionDelay: "200ms" }}>
             {/* Gradient Badge */}
             <span className="px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-normal tracking-widest text-white uppercase bg-gradient-to-r from-[#4F8BFF] via-[#7C3AED] to-[#A855F7] shadow-[0_0_15px_rgba(124,58,237,0.3)]">
               OUR VALUES
@@ -97,7 +99,7 @@ export default function OurValues() {
             </Link>
           </div>
 
-          {/* Right Column: 2x2 Feature Grid with custom borders */}
+          {/* Right Column: 2x2 Feature Grid — All items come from Right smoothly */}
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 w-full">
             {valuesList.map((item, idx) => {
               
@@ -116,7 +118,10 @@ export default function OurValues() {
               return (
                 <div 
                   key={idx} 
-                  className={`flex flex-col items-start space-y-4 hover:bg-white/[0.01] mb-8 transition-all duration-300 group ${borderClasses}`}
+                  className={`flex flex-col items-start space-y-4 hover:bg-white/[0.01] mb-8 transition-all duration-800 ease-out transform group ${borderClasses} ${
+                    isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-16"
+                  }`}
+                  style={{ transitionDelay: `${350 + idx * 150}ms` }}
                 >
                   {/* Outlined Icon Container */}
                   <div className="w-10 h-10 rounded-xl bg-white/[0.02] border border-white/[0.12] text-white flex items-center justify-center group-hover:bg-[#7C3AED]/10 group-hover:border-[#7C3AED]/40 transition-colors">

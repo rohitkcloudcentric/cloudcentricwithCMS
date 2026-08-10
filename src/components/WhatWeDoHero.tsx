@@ -26,8 +26,14 @@ export default function WhatWeDoHero() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#050505]" />
       </div>
 
-      {/* ── Decorative Absolute Shape 1 (Top Right Metallic Coil / Ornament) ── */}
-      <div className="absolute top-12 sm:top-16 right-4 sm:right-10 w-24 sm:w-36 h-auto pointer-events-none z-10 opacity-80 animate-pulse duration-3000" aria-hidden="true">
+      {/* ── Decorative Absolute Shape 1 (Top Right Metallic Coil / Ornament) — Comes from Right ── */}
+      <div 
+        className={`absolute top-12 sm:top-16 right-4 sm:right-10 w-24 sm:w-36 h-auto pointer-events-none z-10 animate-float-slow transition-all duration-1000 ease-out transform ${
+          isVisible ? "opacity-90 translate-x-0" : "opacity-0 translate-x-16"
+        }`} 
+        style={{ transitionDelay: "200ms" }}
+        aria-hidden="true"
+      >
         <Image
           src="/images/what we-do/shape-1.svg"
           alt=""
@@ -37,8 +43,14 @@ export default function WhatWeDoHero() {
         />
       </div>
 
-      {/* ── Decorative Absolute Shape 2 (Bottom Right Metallic 3D Sphere/Cage) ── */}
-      <div className="absolute bottom-4 sm:bottom-10 right-4 sm:right-16 w-56 sm:w-80 md:w-[260px] h-auto pointer-events-none z-10 opacity-90 transition-transform duration-700 hover:scale-105" aria-hidden="true">
+      {/* ── Decorative Absolute Shape 2 (Bottom Right Metallic 3D Sphere/Cage) — Comes from Right ── */}
+      <div 
+        className={`absolute bottom-4 sm:bottom-10 right-4 sm:right-16 w-56 sm:w-80 md:w-[260px] h-auto pointer-events-none z-10 transition-all duration-1000 ease-out transform ${
+          isVisible ? "opacity-90 translate-x-0" : "opacity-0 translate-x-20"
+        }`} 
+        style={{ transitionDelay: "400ms" }}
+        aria-hidden="true"
+      >
         <Image
           src="/images/what we-do/shape-2.svg"
           alt=""
@@ -51,13 +63,14 @@ export default function WhatWeDoHero() {
 
       {/* ── Hero Content Container ── */}
       <div
-        className={`relative z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center space-y-6 sm:space-y-8 transition-all duration-1000 transform ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+        className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center space-y-6 sm:space-y-8"
       >
-        {/* Main Heading */}
+        {/* Main Heading — Comes from Left */}
         <h1
-          className="text-3xl sm:text-5xl lg:text-[52px] font-normal leading-[1.15] text-white tracking-tight max-w-6xl font-duru"
+          className={`text-3xl sm:text-5xl lg:text-[52px] font-normal leading-[1.15] text-white tracking-tight max-w-6xl font-duru transition-all duration-800 ease-out transform ${
+            isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-16"
+          }`}
+          style={{ transitionDelay: "150ms" }}
         >
           Intelligent Technology Solutions for{" "} <br />
           <span
@@ -67,15 +80,23 @@ export default function WhatWeDoHero() {
           </span>
         </h1>
 
-        {/* Supporting Description */}
+        {/* Supporting Description — Comes from Right */}
         <p
-          className="text-xs sm:text-sm lg:text-base text-white/70 leading-relaxed max-w-5xl mx-auto tracking-wide font-intel"
+          className={`text-xs sm:text-sm lg:text-base text-white/70 leading-relaxed max-w-5xl mx-auto tracking-wide font-intel transition-all duration-800 ease-out transform ${
+            isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-16"
+          }`}
+          style={{ transitionDelay: "350ms" }}
         >
           We help organizations harness the power of AI, Salesforce, enterprise software, cloud technologies, and digital engineering to automate operations, accelerate growth, and deliver exceptional customer experiences.
         </p>
 
-        {/* CTA Buttons Row */}
-        <div className="flex flex-wrap items-center justify-center gap-4 pt-2 sm:pt-4">
+        {/* CTA Buttons Row — Comes from Bottom */}
+        <div 
+          className={`flex flex-wrap items-center justify-center gap-4 pt-2 sm:pt-4 transition-all duration-800 ease-out transform ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+          style={{ transitionDelay: "550ms" }}
+        >
           {/* Button 1: Explore Our Services */}
           <Link
             href="#services"

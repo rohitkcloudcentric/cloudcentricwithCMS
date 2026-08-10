@@ -84,7 +84,7 @@ export default function HeroCard({ activeIdx, setActiveIdx }: HeroCardProps) {
   const activeIndicator = activeIdx === slides.length ? 0 : activeIdx;
 
   return (
-    <div className="w-full rounded-[24px] bg-[rgba(15,15,20,0.45)] backdrop-blur-[24px] border border-white/10 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col justify-between hover:border-[#7C3AED]/40 transition-all duration-300 relative group overflow-hidden">
+    <div className="w-full rounded-[24px] bg-[rgba(15,15,20,0.45)] backdrop-blur-[24px] border border-white/10 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col justify-between hover:border-[#7C3AED]/40 transition-all duration-300 relative group overflow-hidden animate-float-slow">
       
       {/* Slides Container */}
       <div className="w-full overflow-hidden relative">

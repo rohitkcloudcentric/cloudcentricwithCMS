@@ -1,11 +1,69 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function PrivacyPolicyContent() {
+function PolicySection({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="w-full max-w-7xl mx-auto px-6 pt-10 pb-20 md:pb-28 z-10">
+    <div
+      ref={ref}
+      className={`transition-all duration-800 ease-out transform ${
+        isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      } ${className}`}
+    >
+      {children}
+    </div>
+  );
+}
+
+export default function PrivacyPolicyContent() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const [isHeroVisible, setIsHeroVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsHeroVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (heroRef.current) {
+      observer.observe(heroRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section className="w-full max-w-7xl mx-auto px-6 pt-10 pb-20 md:pb-28 z-10 overflow-hidden">
       {/* Decorative Right Side Shape (shape-1.svg) */}
-      <div className="absolute top-30 right-0 h-auto pointer-events-none z-30 opacity-90">
+      <div className="absolute top-30 right-0 h-auto pointer-events-none z-30 opacity-90 animate-float-slow">
         <Image
           src="/images/what we-do/shape-1.svg"
           alt="Decorative Shape"
@@ -16,11 +74,15 @@ export default function PrivacyPolicyContent() {
         />
       </div>
 
-      {/* Top Hero Section Header */}
-      <div className="relative w-full flex flex-col items-center justify-center text-center pt-4 pb-6 sm:pb-10 mb-6">
+      {/* Top Hero Section Header — Comes from Left */}
+      <div ref={heroRef} className="relative w-full flex flex-col items-center justify-center text-center pt-4 pb-6 sm:pb-10 mb-6">
 
-        {/* Breadcrumb Pill */}
-        <div className="relative z-10 inline-flex items-center space-x-2 px-5 py-2 rounded-full bg-[rgba(18,18,26,0.85)] border border-white/10 text-xs font-semibold tracking-widest uppercase mb-6 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] font-intel">
+        {/* Breadcrumb Pill — Comes from Left */}
+        <div 
+          className={`relative z-10 inline-flex items-center space-x-2 px-5 py-2 rounded-full bg-[rgba(18,18,26,0.85)] border border-white/10 text-xs font-semibold tracking-widest uppercase mb-6 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] font-intel transition-all duration-800 ease-out transform ${
+            isHeroVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"
+          }`}
+        >
           <Link href="/" className="text-white/60 hover:text-white transition-colors">
             HOME
           </Link>
@@ -30,26 +92,31 @@ export default function PrivacyPolicyContent() {
           </span>
         </div>
 
-        {/* Page Title */}
-        <h1 className="relative z-10 text-3xl sm:text-5xl lg:text-[56px] font-normal text-white tracking-tight font-duru leading-tight">
+        {/* Page Title — Comes from Left */}
+        <h1 
+          className={`relative z-10 text-3xl sm:text-5xl lg:text-[56px] font-normal text-white tracking-tight font-duru leading-tight transition-all duration-800 ease-out transform ${
+            isHeroVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-16"
+          }`}
+          style={{ transitionDelay: "150ms" }}
+        >
           Privacy Policy
         </h1>
       </div>
 
-      {/* Content Sections */}
+      {/* Content Sections — Each section observes its own scroll visibility & comes from Bottom */}
       <div className="max-w-5xl mx-auto space-y-10 sm:space-y-12">
         {/* Section 1: Legal Disclaimer */}
-        <div className="space-y-3">
+        <PolicySection className="space-y-3">
           <h2 className="text-xl sm:text-xl font-normal text-white tracking-wide font-duru">
             Legal Disclaimer:
           </h2>
           <p className="text-sm sm:text-base text-[#BDBDC8] leading-relaxed font-intel">
             The information provided on this site is for general informational purposes only and does not constitute legal, financial, or professional advice. While we strive to keep content accurate and up to date, we make no guarantees regarding completeness, reliability, or suitability for specific purposes. Any reliance you place on such information is strictly at your own risk. We are not liable for any losses or damages arising from the use of our Site.
           </p>
-        </div>
+        </PolicySection>
 
         {/* Section 2: Credit Reporting Terms of Service */}
-        <div className="space-y-4">
+        <PolicySection className="space-y-4">
           <h2 className="text-xl sm:text-2xl font-normal text-white tracking-wide font-duru">
             Credit Reporting Terms of Service
           </h2>
@@ -62,10 +129,10 @@ export default function PrivacyPolicyContent() {
             <li>We do not guarantee approval for loans, mortgages, or other financial products based on credit report data.</li>
             <li>Unauthorized use, distribution, or resale of credit reports is strictly prohibited.</li>
           </ol>
-        </div>
+        </PolicySection>
 
         {/* Section 3: Ownership of Site Agreement to Terms of Use */}
-        <div className="space-y-4">
+        <PolicySection className="space-y-4">
           <h2 className="text-xl sm:text-2xl font-normal text-white tracking-wide font-duru">
             Ownership of Site Agreement to Terms of Use
           </h2>
@@ -75,30 +142,30 @@ export default function PrivacyPolicyContent() {
           <p className="text-sm sm:text-base text-[#BDBDC8] leading-relaxed font-intel">
             You may not reproduce, distribute, modify, or otherwise exploit any part of the Site without prior written permission. Continued use of the Site constitutes acceptance of these terms.
           </p>
-        </div>
+        </PolicySection>
 
         {/* Section 4: Provision of Services */}
-        <div className="space-y-3">
+        <PolicySection className="space-y-3">
           <h2 className="text-xl sm:text-2xl font-normal text-white tracking-wide font-duru">
             Provision of Services
           </h2>
           <p className="text-sm sm:text-base text-[#BDBDC8] leading-relaxed font-intel">
             We reserve the right to modify, suspend, or discontinue any part of our services at any time without prior notice. While we aim to ensure continuous availability, we do not guarantee that the Site or its services will be uninterrupted, error-free, or free from harmful components such as viruses. Your use of the services is at your own risk.
           </p>
-        </div>
+        </PolicySection>
 
         {/* Section 5: Limitation of Liability */}
-        <div className="space-y-3">
+        <PolicySection className="space-y-3">
           <h2 className="text-xl sm:text-2xl font-normal text-white tracking-wide font-duru">
             Limitation of Liability
           </h2>
           <p className="text-sm sm:text-base text-[#BDBDC8] leading-relaxed font-intel">
             To the fullest extent permitted by law, we disclaim all liability for any direct, indirect, incidental, or consequential damages resulting from your use or inability to use the Site or its services. This includes but is not limited to loss of profits, business interruption, or data loss, even if we have been advised of the possibility of such damages.
           </p>
-        </div>
+        </PolicySection>
 
         {/* Section 6: Accounts, Passwords and Security */}
-        <div className="space-y-4">
+        <PolicySection className="space-y-4">
           <h2 className="text-xl sm:text-2xl font-normal text-white tracking-wide font-duru">
             Accounts, Passwords and Security
           </h2>
@@ -108,7 +175,7 @@ export default function PrivacyPolicyContent() {
           <p className="text-sm sm:text-base text-[#BDBDC8] leading-relaxed font-intel">
             We are not liable for any loss or damage arising from your failure to protect account information. You may be held responsible for activities that occur under your account if adequate precautions are not taken.
           </p>
-        </div>
+        </PolicySection>
       </div>
     </section>
   );

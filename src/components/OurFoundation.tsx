@@ -95,25 +95,36 @@ export default function OurFoundation() {
       ref={sectionRef}
       className="relative w-full max-w-7xl mx-auto px-6 py-6 md:py-14 lg:py-18 z-10"
     >
-      <div className={`transition-all duration-1000 ease-out transform ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}>
-        {/* Top Badge */}
-        <div className="inline-flex items-center">
-          <span className="px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-bold tracking-widest text-white uppercase bg-gradient-to-r from-[#4F8BFF] via-[#7C3AED] to-[#A855F7] shadow-[0_0_15px_rgba(124,58,237,0.3)]">
-            OUR FOUNDATION
-          </span>
+      <div>
+        {/* Top Badge & Heading — Comes from Left */}
+        <div className={`transition-all duration-800 ease-out transform ${
+          isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-16"
+        }`} style={{ transitionDelay: "150ms" }}>
+          {/* Top Badge */}
+          <div className="inline-flex items-center">
+            <span className="px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-bold tracking-widest text-white uppercase bg-gradient-to-r from-[#4F8BFF] via-[#7C3AED] to-[#A855F7] shadow-[0_0_15px_rgba(124,58,237,0.3)]">
+              OUR FOUNDATION
+            </span>
+          </div>
+
+          {/* Heading */}
+          <h2 
+            className="mt-6 md:mt-8 text-xl sm:text-3xl md:text-4xl lg:text-[38px] font-normal leading-[1.3] text-white tracking-tight max-w-[1100px] font-duru"
+          >
+            At CloudCentric, We Combine AI Innovation, Enterprise Technology, And Business Expertise To Help Organizations Automate Operations, Enhance Customer Experiences, And Accelerate Digital Growth.
+          </h2>
         </div>
 
-        {/* Heading */}
-        <h2 
-          className="mt-6 md:mt-8 text-xl sm:text-3xl md:text-4xl lg:text-[38px] font-normal leading-[1.3] text-white tracking-tight max-w-[1100px] font-duru"
-        >
-          At CloudCentric, We Combine AI Innovation, Enterprise Technology, And Business Expertise To Help Organizations Automate Operations, Enhance Customer Experiences, And Accelerate Digital Growth.
-        </h2>
-
-        {/* Responsive Stats Grid */}
+        {/* Responsive Stats Grid — All counts come from Right smoothly */}
         <div className="mt-8 md:mt-10 lg:mt-12 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {stats.map((stat, idx) => (
-            <div key={idx} className="flex flex-col space-y-2">
+            <div 
+              key={idx} 
+              className={`flex flex-col space-y-2 transition-all duration-800 ease-out transform ${
+                isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-16"
+              }`}
+              style={{ transitionDelay: `${350 + idx * 120}ms` }}
+            >
               <span className="text-4xl sm:text-5xl lg:text-[54px] font-bold text-white tracking-tight leading-none">
                 {isVisible ? (
                   <CountUp 

@@ -32,28 +32,39 @@ export default function WhoWeAreCTA() {
     >
       <div 
         className={`w-full rounded-[24px] md:rounded-[32px] bg-gradient-to-r from-[#2563EB] via-[#7C3AED] to-[#A855F7] p-8 sm:p-12 md:py-10 md:px-6 text-center shadow-[0_20px_50px_rgba(124,58,237,0.25)] relative overflow-hidden transition-all duration-1000 ease-out transform ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
+          isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
         }`}
       >
         {/* Subtle decorative grid/glow pattern inside card */}
         <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center space-y-6">
-          {/* Main Heading */}
+          {/* Main Heading — Comes from Bottom */}
           <h2 
-            className="text-2xl sm:text-4xl md:text-5xl lg:text-[52px] font-bold text-white leading-[1.15] tracking-tight font-sans"
+            className={`text-2xl sm:text-4xl md:text-5xl lg:text-[52px] font-bold text-white leading-[1.15] tracking-tight font-sans transition-all duration-800 ease-out transform ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+            style={{ transitionDelay: "200ms" }}
           >
             Let's Build The Future Of Your <br className="hidden sm:inline" />
             Business Together
           </h2>
 
-          {/* Description */}
+          {/* Description — Comes from Bottom */}
           <p 
-            className="text-xs sm:text-base text-white/90 leading-relaxed max-w-2xl tracking-wide font-intel"
+            className={`text-xs sm:text-base text-white/90 leading-relaxed max-w-2xl tracking-wide font-intel transition-all duration-800 ease-out transform ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+            style={{ transitionDelay: "400ms" }}
           >
             Whether you&apos;re exploring AI, modernizing Salesforce, or building enterprise software, our experts are ready to help you transform ideas into scalable digital solutions.
           </p>
 
-          {/* Action Buttons */}
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full">
+          {/* Action Buttons — Come from Bottom */}
+          <div 
+            className={`pt-4 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full transition-all duration-800 ease-out transform ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+            style={{ transitionDelay: "600ms" }}
+          >
             {/* Button 1: Book a Free Consultation */}
             <Link 
               href="/book-consultation"
