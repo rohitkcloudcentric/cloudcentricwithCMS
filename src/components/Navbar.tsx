@@ -60,9 +60,9 @@ export default function Navbar() {
             <Image
               src="/logo.svg"
               alt="CloudCentric Logo"
-              width={170}
-              height={42}
-              className="h-9 w-auto object-contain"
+              width={210}
+              height={52}
+              className="object-contain"
               priority
             />
           </Link>
