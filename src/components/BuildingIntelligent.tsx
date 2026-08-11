@@ -82,7 +82,7 @@ export default function BuildingIntelligent() {
           
           {/* Card 1 — Comes from Left */}
           <article 
-            className={`relative aspect-[477/663] w-full rounded-[24px] border border-white/10 overflow-hidden flex flex-col justify-start p-8 transition-all duration-800 ease-out hover:-translate-y-2 hover:border-[#7C3AED]/40 hover:shadow-[0_0_30px_rgba(124,58,237,0.2)] group transform ${
+            className={`relative min-h-[220px] sm:min-h-[260px] lg:aspect-[477/663] w-full rounded-[24px] border border-white/10 overflow-hidden flex flex-col justify-start p-5 sm:p-6 lg:p-8 transition-all duration-800 ease-out hover:-translate-y-2 hover:border-[#7C3AED]/40 hover:shadow-[0_0_30px_rgba(124,58,237,0.2)] group transform ${
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-16"
             }`}
             style={{
@@ -110,7 +110,7 @@ export default function BuildingIntelligent() {
 
           {/* Card 2 — Comes from Bottom */}
           <article 
-            className={`relative aspect-[477/663] w-full rounded-[24px] border border-white/10 overflow-hidden flex flex-col justify-start p-8 transition-all duration-800 ease-out hover:-translate-y-2 hover:border-[#7C3AED]/40 hover:shadow-[0_0_30px_rgba(124,58,237,0.2)] group transform ${
+            className={`relative min-h-[220px] sm:min-h-[260px] lg:aspect-[477/663] w-full rounded-[24px] border border-white/10 overflow-hidden flex flex-col justify-start p-5 sm:p-6 lg:p-8 transition-all duration-800 ease-out hover:-translate-y-2 hover:border-[#7C3AED]/40 hover:shadow-[0_0_30px_rgba(124,58,237,0.2)] group transform ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
             }`}
             style={{
@@ -138,7 +138,7 @@ export default function BuildingIntelligent() {
 
           {/* Card 3 — Comes from Right */}
           <article 
-            className={`relative aspect-[477/663] w-full rounded-[24px] border border-white/10 overflow-hidden flex flex-col justify-start p-8 transition-all duration-800 ease-out hover:-translate-y-2 hover:border-[#7C3AED]/40 hover:shadow-[0_0_30px_rgba(124,58,237,0.2)] group transform ${
+            className={`relative min-h-[220px] sm:min-h-[260px] lg:aspect-[477/663] w-full rounded-[24px] border border-white/10 overflow-hidden flex flex-col justify-start p-5 sm:p-6 lg:p-8 transition-all duration-800 ease-out hover:-translate-y-2 hover:border-[#7C3AED]/40 hover:shadow-[0_0_30px_rgba(124,58,237,0.2)] group transform ${
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-16"
             }`}
             style={{

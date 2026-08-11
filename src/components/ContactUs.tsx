@@ -184,20 +184,20 @@ export default function ContactUs() {
         </div>
 
         {/* Contact Information Strip - Matching exact reference image with clickable anchor tags */}
-        <div className="w-full flex flex-wrap items-center justify-center gap-4 text-xs font-normal">
+        <div className="w-full flex flex-col md:flex-row flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs font-normal px-2">
           {/* Phone section — Comes from Left */}
-          <div className={`flex items-center space-x-2 transition-all duration-800 ease-out transform ${
+          <div className={`flex items-center gap-2 sm:gap-3 transition-all duration-800 ease-out transform ${
             isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-16"
           }`} style={{ transitionDelay: "1000ms" }}>
             <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-black shadow-sm shrink-0">
               <Phone className="w-3.5 h-3.5 fill-black stroke-black" />
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-wrap items-center gap-2">
               {["+91-7042912244", "+1-3024060272", "+44 7842243933"].map((phone) => (
                 <a
                   key={phone}
                   href={`tel:${phone.replace(/\s+/g, "")}`}
-                  className="bg-[#111116] text-sm border border-white/[0.06] text-[#8535FA] px-3 py-1.5 rounded-md hover:border-[#8B3DFF]/80 hover:text-purple-300 transition-colors"
+                  className="bg-[#111116] text-xs sm:text-sm border border-white/[0.06] text-[#8535FA] px-2.5 sm:px-3 py-1.5 rounded-md hover:border-[#8B3DFF]/80 hover:text-purple-300 transition-colors whitespace-nowrap"
                   style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
                 >
                   {phone}
@@ -207,18 +207,18 @@ export default function ContactUs() {
           </div>
 
           {/* Email section — Comes from Right */}
-          <div className={`flex items-center space-x-2 ml-0 sm:ml-4 transition-all duration-800 ease-out transform ${
+          <div className={`flex items-center gap-2 sm:gap-3 transition-all duration-800 ease-out transform ${
             isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-16"
           }`} style={{ transitionDelay: "1150ms" }}>
             <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-black shadow-sm shrink-0">
               <Mail className="w-3.5 h-3.5 stroke-black" />
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-wrap items-center gap-2">
               {["support@cccinfotech.com", "sales@cccinfotech.com"].map((email) => (
                 <a
                   key={email}
                   href={`mailto:${email}`}
-                  className="bg-[#111116] text-sm border border-white/[0.06] text-[#8535FA] px-3 py-1.5 rounded-md hover:border-[#8B3DFF]/80 hover:text-purple-300 transition-colors"
+                  className="bg-[#111116] text-xs sm:text-sm border border-white/[0.06] text-[#8535FA] px-2.5 sm:px-3 py-1.5 rounded-md hover:border-[#8B3DFF]/80 hover:text-purple-300 transition-colors whitespace-nowrap"
                   style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
                 >
                   {email}
@@ -227,10 +227,7 @@ export default function ContactUs() {
             </div>
           </div>
         </div>
-
-       
       </div>
-       
     </div>
   );
 }

@@ -83,7 +83,7 @@ export default function TrustedClients() {
             {/* Card 1: CSAT Card */}
             <div
               ref={card1Ref}
-              className={`relative p-6 sm:p-7 flex flex-col justify-between min-h-[380px] sm:h-[400px] lg:h-[440px] w-full border border-white/10 transition-all duration-800 ease-out transform hover:-translate-y-2 ${
+              className={`relative p-4 sm:p-5 lg:p-7 flex flex-col justify-between min-h-[240px] sm:h-[280px] lg:h-[440px] w-full border border-white/10 transition-all duration-800 ease-out transform hover:-translate-y-2 ${
                 isCard1Visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-16"
               }`}
               style={{
@@ -102,10 +102,10 @@ export default function TrustedClients() {
               </div>
 
               <div>
-                <h3 className="text-2xl sm:text-[28px] font-normal text-white tracking-wide mb-6 sm:mb-8 font-duru">
+                <h3 className="text-xl sm:text-2xl lg:text-[28px] font-normal text-white tracking-wide mb-3 sm:mb-4 lg:mb-8 font-duru">
                   CSAT
                 </h3>
-                <p className="text-[10px] sm:text-[11px] font-bold text-white/90 uppercase tracking-wider mb-2.5 font-intel">
+                <p className="text-[10px] sm:text-[11px] font-bold text-white/90 uppercase tracking-wider mb-2 font-intel">
                   4.9★ Customer Satisfaction
                 </p>
                 <p className="text-xs sm:text-[13px] text-white/70 leading-[1.6] font-normal font-intel">
@@ -121,7 +121,7 @@ export default function TrustedClients() {
             {/* Card 2: Great Place to Work® Certified */}
             <div
               ref={card2Ref}
-              className={`relative p-6 sm:p-7 flex flex-col justify-between min-h-[380px] sm:h-[400px] lg:h-[440px] w-full border border-white/10 transition-all duration-800 ease-out transform hover:-translate-y-2 ${
+              className={`relative p-4 sm:p-5 lg:p-7 flex flex-col justify-between min-h-[240px] sm:h-[280px] lg:h-[440px] w-full border border-white/10 transition-all duration-800 ease-out transform hover:-translate-y-2 ${
                 isCard2Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
               }`}
               style={{
@@ -140,7 +140,7 @@ export default function TrustedClients() {
               </div>
 
               <div>
-                <h3 className="text-2xl sm:text-[25px] font-normal text-white tracking-wide leading-[1.25] mb-6 sm:mb-8 pr-4 font-duru">
+                <h3 className="text-xl sm:text-2xl lg:text-[25px] font-normal text-white tracking-wide leading-[1.25] mb-3 sm:mb-4 lg:mb-8 pr-4 font-duru">
                   Great Place to Work® Certified
                 </h3>
                 <p className="text-xs sm:text-[13px] text-white/70 leading-[1.6] font-normal font-intel">
@@ -157,7 +157,7 @@ export default function TrustedClients() {
             {/* Card 3: Clutch */}
             <div
               ref={card3Ref}
-              className={`relative p-6 sm:p-7 flex flex-col justify-between min-h-[380px] sm:h-[400px] lg:h-[440px] w-full border border-white/10 transition-all duration-800 ease-out transform hover:-translate-y-2 sm:col-span-2 lg:col-span-1 ${
+              className={`relative p-4 sm:p-5 lg:p-7 flex flex-col justify-between min-h-[240px] sm:h-[280px] lg:h-[440px] w-full border border-white/10 transition-all duration-800 ease-out transform hover:-translate-y-2 sm:col-span-2 lg:col-span-1 ${
                 isCard3Visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-16"
               }`}
               style={{
@@ -176,7 +176,7 @@ export default function TrustedClients() {
               </div>
 
               <div>
-                <h3 className="text-2xl sm:text-[28px] font-normal text-white tracking-wide mb-5 font-duru">
+                <h3 className="text-xl sm:text-2xl lg:text-[28px] font-normal text-white tracking-wide mb-3 sm:mb-4 lg:mb-5 font-duru">
                   Clutch
                 </h3>
                 <p className="text-[10px] sm:text-[11px] font-bold text-white/90 uppercase tracking-wider mb-2 font-intel">
@@ -187,7 +187,7 @@ export default function TrustedClients() {
                 </p>
               </div>
 
-              <div className="space-y-3.5 text-xs sm:text-[13px] font-normal text-white/90 font-intel pb-1">
+              <div className="space-y-2 lg:space-y-3.5 text-xs sm:text-[13px] font-normal text-white/90 font-intel pb-1">
                 <div>
                   <p className="text-white/60 text-[10.5px]">Average Review Rating</p>
                   <p className="font-semibold text-white text-xs sm:text-[13px] mt-0.5">4.9 (57 reviews)</p>

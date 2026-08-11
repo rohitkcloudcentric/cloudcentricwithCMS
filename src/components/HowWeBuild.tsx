@@ -141,7 +141,7 @@ export default function HowWeBuild() {
             subtitle={"Leverage the world's\nleading AI models"}
           />
           {/* logo grid */}
-          <div className="flex-1 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 lg:grid-rows-2 p-2">
+          <div className="flex-1 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-4 lg:grid-rows-2 p-2">
             {aiModels.map((m, i) => (
               <div
                 key={i}
@@ -168,11 +168,11 @@ export default function HowWeBuild() {
             subtitle={"From AI assistants to\nadvanced analytics"}
           />
           {/* capability tiles */}
-          <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 p-2 gap-2 sm:gap-1.5 items-center justify-items-center">
+          <div className="flex-1 grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 p-2 gap-2 sm:gap-1.5 items-center justify-items-center">
             {aiCapabilities.map((c, i) => (
               <div
                 key={i}
-                className="flex flex-col items-center justify-center p-2 min-h-[60px] transition-transform duration-300 hover:scale-105 cursor-pointer"
+                className="flex flex-col items-center justify-center min-h-[60px] transition-transform duration-300 hover:scale-105 cursor-pointer"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={c.src} alt={c.alt} className="max-w-full h-auto object-contain" />
@@ -195,7 +195,7 @@ export default function HowWeBuild() {
             subtitle={"End-to-end digital\nbusiness platforms"}
           />
           {/* solution tiles */}
-          <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 p-2 items-center justify-items-center">
+          <div className="flex-1 grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 p-2 gap-2 items-center justify-items-center">
             {businessSolutions.map((s, i) => (
               <div
                 key={i}
@@ -210,7 +210,7 @@ export default function HowWeBuild() {
 
         {/* ── ROW 4: Development Technologies (Comes from Right) ── */}
         <div
-          className={`flex flex-col lg:flex-row items-stretch rounded-[8px] mt-4 overflow-hidden transition-all duration-800 ease-out transform hover:border-white/20 ${
+          className={`flex flex-col lg:flex-row items-stretch rounded-[8px] mt-4 p-2 gap-2 overflow-hidden transition-all duration-800 ease-out transform hover:border-white/20 ${
             isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-16"
           }`}
           style={{ background: "rgba(255, 255, 255, 0.06)", border: `1px solid ${BORDER_COLOR}`, transitionDelay: "800ms" }}
@@ -222,7 +222,7 @@ export default function HowWeBuild() {
             subtitle={"Built with enterprise-\ngrade technologies"}
           />
           {/* tech logo grid */}
-          <div className="flex-1 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 lg:grid-rows-2 p-2">
+          <div className="flex-1 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-4 lg:grid-rows-2 p-2">
             {devTech.map((t, i) => (
               <div
                 key={i}

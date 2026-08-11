@@ -93,7 +93,7 @@ export default function OurFoundation() {
   return (
     <section 
       ref={sectionRef}
-      className="relative w-full max-w-7xl mx-auto px-6 py-6 md:py-14 lg:py-18 z-10"
+      className="relative w-full max-w-7xl mx-auto px-6 mt-60 sm:mt-30 lg:mt-0 py-6 md:py-14 lg:py-18 z-10"
     >
       <div>
         {/* Top Badge & Heading — Comes from Left */}

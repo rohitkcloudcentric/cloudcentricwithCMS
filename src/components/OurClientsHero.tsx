@@ -2,7 +2,126 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Search } from "lucide-react";
+
+/* ─────────────────────────────────────────────
+   Searchable Dropdown Component
+───────────────────────────────────────────── */
+interface SearchableDropdownOption<T extends string | number> {
+  label: string;
+  value: T;
+}
+
+interface SearchableDropdownProps<T extends string | number> {
+  label?: string;
+  options: SearchableDropdownOption<T>[];
+  value: T;
+  onChange: (value: T) => void;
+  placeholder?: string;
+}
+
+function SearchableDropdown<T extends string | number>({
+  label,
+  options,
+  value,
+  onChange,
+  placeholder = "Search...",
+}: SearchableDropdownProps<T>) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const selectedOpt = options.find((o) => o.value === value) || options[0];
+
+  const filteredOptions = options.filter((o) =>
+    o.label.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
+
+  return (
+    <div className="w-full flex flex-col items-start gap-1.5" ref={containerRef}>
+      {label && (
+        <label className="text-white text-sm font-semibold uppercase tracking-wider font-intel text-left">
+          {label}
+        </label>
+      )}
+      <div className="relative w-full">
+        {/* Trigger button */}
+        <button
+          type="button"
+          onClick={() => {
+            setIsOpen(!isOpen);
+            setSearchQuery("");
+          }}
+          className="w-full bg-[#181621] text-white border border-white/20 rounded-lg px-4 py-2 text-sm font-medium flex items-center justify-between focus:outline-none focus:border-[#7C3AED] transition-colors"
+          style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+        >
+          <span className="truncate pr-2">{selectedOpt ? selectedOpt.label : "Select..."}</span>
+          <svg
+            className={`w-4 h-4 text-white/60 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        {/* Dropdown panel */}
+        {isOpen && (
+          <div className="absolute left-0 right-0 top-full mt-1 bg-[#181621] border border-white/20 rounded-lg shadow-2xl z-50 overflow-hidden flex flex-col max-h-60">
+            {/* Search Input Box */}
+            <div className="p-2 border-b border-white/10 sticky top-0 bg-[#181621] z-10 flex items-center gap-2">
+              <Search className="w-3.5 h-3.5 text-white/40 shrink-0 ml-1" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={placeholder}
+                className="w-full bg-black/40 text-white text-xs rounded px-2.5 py-1.5 border border-white/10 focus:outline-none focus:border-[#7C3AED]"
+                autoFocus
+              />
+            </div>
+
+            {/* List */}
+            <div className="overflow-y-auto flex-1 scrollbar-thin">
+              {filteredOptions.length > 0 ? (
+                filteredOptions.map((opt) => (
+                  <button
+                    key={String(opt.value)}
+                    type="button"
+                    onClick={() => {
+                      onChange(opt.value);
+                      setIsOpen(false);
+                    }}
+                    className={`w-full text-left px-3.5 py-2 text-sm transition-colors hover:bg-[#7C3AED]/20 ${
+                      opt.value === value
+                        ? "bg-[#7C3AED] text-white font-semibold"
+                        : "text-white/80"
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))
+              ) : (
+                <div className="px-4 py-3 text-xs text-white/40 text-center">No matches found</div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 /* ─────────────────────────────────────────────
    Category definitions
@@ -153,13 +272,25 @@ function Lightbox({ clients, activeIndex, onClose, onNavigate }: LightboxProps) 
           </div>
         </div>
 
-        {/* Client name */}
-        <p
-          className="text-white/90 text-base font-medium tracking-wide"
-          style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
-        >
-          {current.name}
-        </p>
+        {/* Client name (Desktop text / Mobile searchable dropdown filter with label) */}
+        <div className="w-full flex justify-center px-4">
+          <p
+            className="hidden sm:block text-white/90 text-base font-medium tracking-wide"
+            style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+          >
+            {current.name}
+          </p>
+
+          <div className="sm:hidden w-full max-w-[280px]">
+            <SearchableDropdown
+              label="Select Client"
+              placeholder="Search client name..."
+              value={activeIndex}
+              options={clients.map((c, i) => ({ label: c.name, value: i }))}
+              onChange={(newIdx) => onNavigate(newIdx)}
+            />
+          </div>
+        </div>
 
         {/* Navigation row */}
         <div className="flex items-center gap-4 w-full">
@@ -285,12 +416,23 @@ function LogoCard({ client, index, onClick }: LogoCardProps) {
 ───────────────────────────────────────────── */
 export default function OurClientsHero() {
   const [activeCategory, setActiveCategory] = useState<string>("All Clients");
+  const [mobileVisibleCount, setMobileVisibleCount] = useState<number>(8);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const filtered =
     activeCategory === "All Clients"
       ? CLIENTS
       : CLIENTS.filter((c) => c.category === activeCategory);
+
+  const hasMoreMobile = mobileVisibleCount < filtered.length;
+
+  const handleMobileLoadToggle = () => {
+    if (hasMoreMobile) {
+      setMobileVisibleCount((prev) => Math.min(prev + 4, filtered.length));
+    } else {
+      setMobileVisibleCount(8);
+    }
+  };
 
   const handleCardClick = useCallback((index: number) => {
     setLightboxIndex(index);
@@ -328,9 +470,24 @@ export default function OurClientsHero() {
             </p>
           </div>
 
-          {/* ── Category Filter Pills ── */}
+          {/* ── Category Filter Pills & Mobile Searchable Dropdown ── */}
+          {/* Mobile Category Searchable Dropdown Filter */}
+          <div className="md:hidden w-full max-w-xs">
+            <SearchableDropdown
+              label="Filter Industry"
+              placeholder="Search industry..."
+              value={activeCategory}
+              options={CATEGORIES.map((cat) => ({ label: cat, value: cat }))}
+              onChange={(cat) => {
+                setActiveCategory(cat);
+                setMobileVisibleCount(8);
+              }}
+            />
+          </div>
+
+          {/* Desktop Category Filter Pills */}
           <div
-            className="flex flex-wrap justify-center gap-2"
+            className="hidden md:flex flex-wrap justify-center gap-2"
             role="tablist"
             aria-label="Filter clients by industry"
           >
@@ -341,7 +498,10 @@ export default function OurClientsHero() {
                   key={cat}
                   role="tab"
                   aria-selected={isActive}
-                  onClick={() => setActiveCategory(cat)}
+                  onClick={() => {
+                    setActiveCategory(cat);
+                    setMobileVisibleCount(8);
+                  }}
                   className={`
                     px-3.5 py-1.5 rounded-[5px] text-sm font-medium tracking-wide transition-all duration-200 font-manrope
                     ${isActive
@@ -365,20 +525,46 @@ export default function OurClientsHero() {
 
           {/* ── Logo Grid ── */}
           {filtered.length > 0 ? (
-            <div
-              className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-1.5 gap-y-1 sm:gap-x-3 sm:gap-y-3"
-              role="list"
-              aria-label="Client logos"
-            >
-              {filtered.map((client, i) => (
-                <div key={client.src} role="listitem">
-                  <LogoCard
-                    client={client}
-                    index={i}
-                    onClick={() => handleCardClick(i)}
-                  />
+            <div className="w-full flex flex-col items-center gap-6">
+              <div
+                className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-1.5 gap-y-1 sm:gap-x-3 sm:gap-y-3"
+                role="list"
+                aria-label="Client logos"
+              >
+                {filtered.map((client, i) => (
+                  <div 
+                    key={client.src} 
+                    role="listitem"
+                    className={i >= mobileVisibleCount ? "hidden sm:block" : "block"}
+                  >
+                    <LogoCard
+                      client={client}
+                      index={i}
+                      onClick={() => handleCardClick(i)}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Mobile Load More (+4 images) / Load Less Button with Linear Gradient Text */}
+              {filtered.length > 8 && (
+                <div className="sm:hidden pt-2 flex justify-center w-full">
+                  <button
+                    onClick={handleMobileLoadToggle}
+                    className="px-6 py-2.5 rounded-full border border-white/20 bg-[#181621] hover:border-white/40 transition-all font-manrope font-semibold text-sm shadow-lg active:scale-95 cursor-pointer"
+                  >
+                    <span
+                      style={{
+                        background: "linear-gradient(90deg, #2563EB 0%, #7C3AED 100%)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                      }}
+                    >
+                      {hasMoreMobile ? "Load More" : "Load Less"}
+                    </span>
+                  </button>
                 </div>
-              ))}
+              )}
             </div>
           ) : (
             <p className="text-white/40 text-sm py-16">No clients in this category yet.</p>

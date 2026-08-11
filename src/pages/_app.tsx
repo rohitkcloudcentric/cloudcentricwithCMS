@@ -1,5 +1,6 @@
 import type { AppProps } from "next/app";
 import { Geist, Geist_Mono, Duru_Sans, Intel_One_Mono, Manrope } from "next/font/google";
+import Preloader from "@/components/Preloader";
 import "../pages/globals.css";
 
 const geistSans = Geist({
@@ -33,6 +34,7 @@ const manrope = Manrope({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} ${duruSans.variable} ${intelOneMono.variable} ${manrope.variable} h-full antialiased dark`}>
+      <Preloader />
       <Component {...pageProps} />
     </div>
   );

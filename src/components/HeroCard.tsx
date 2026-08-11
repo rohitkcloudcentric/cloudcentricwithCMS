@@ -96,7 +96,7 @@ export default function HeroCard({ activeIdx, setActiveIdx }: HeroCardProps) {
           {extendedSlides.map((slide, idx) => (
             <div key={idx} className="w-full flex-shrink-0 flex items-center space-x-6">
               {/* Left Phone / Robot Visual */}
-              <div className="relative w-[150px] h-[160px] rounded-2xl overflow-hidden shrink-0 border border-white/10 flex items-center justify-center bg-black/20">
+              <div className="hidden lg:flex relative w-[150px] h-[160px] rounded-2xl overflow-hidden shrink-0 border border-white/10 items-center justify-center bg-black/20">
                 <Image
                   src={slide.image}
                   alt={slide.title}

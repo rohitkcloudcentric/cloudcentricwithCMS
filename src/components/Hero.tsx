@@ -71,11 +71,11 @@ export default function Hero() {
       </div>
 
       {/* Lower Hero Grid: Expertise Menu & AI Chat Input Bar */}
-      <div className={`relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 md:mt-16 justify-center items-center transition-all duration-1000 ease-out transform ${
+      <div className={`relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 mt-2 md:mt-16 justify-center items-center transition-all duration-1000 ease-out transform ${
         mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`} style={{ transitionDelay: "750ms" }}>
         {/* Left Expertise Vertical List */}
-        <div className="lg:col-span-4 flex flex-col space-y-2">
+        <div className="hidden lg:flex lg:col-span-4 flex-col space-y-2">
           <span 
             className="text-[10px] font-bold tracking-[0.25em] text-white/40 uppercase mb-2 font-intel"
           >

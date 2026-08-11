@@ -12,7 +12,7 @@ export default function WhatWeDoHero() {
   }, []);
 
   return (
-    <section className="relative w-full min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center bg-[#050505] text-white overflow-hidden py-20 sm:py-28 lg:py-36 z-10">
+    <section className="relative w-full min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center bg-[#050505] text-white overflow-hidden pb-20 sm:py-28 lg:py-36 z-10">
       {/* ── Main Full-Width Hero Background Image ── */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <Image
