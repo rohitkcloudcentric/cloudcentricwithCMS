@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const slides = [
   {
@@ -123,12 +124,13 @@ export default function HeroCard({ activeIdx, setActiveIdx }: HeroCardProps) {
                   </p>
                 </div>
                 <div>
-                  <button 
-                    className="px-5 py-2 rounded-lg bg-white/[0.03] border border-white/10 text-white text-sm font-semibold hover:bg-white/[0.08] hover:border-white/20 transition-all active:scale-95"
+                  <Link 
+                    href="/contact-us"
+                    className="inline-block px-5 py-2 rounded-lg bg-white/[0.03] border border-white/10 text-white text-sm font-semibold hover:bg-white/[0.08] hover:border-white/20 transition-all active:scale-95 cursor-pointer"
                     style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
                   >
                     {slide.btnText}
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AIEcosystem() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -54,15 +55,16 @@ export default function AIEcosystem() {
         </h2>
 
         {/* CTA Button */}
-        <button
-          className="mt-2 px-8 py-3 rounded-xl text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-all duration-300 hover:opacity-90 hover:scale-[1.03] active:scale-95 shadow-[0_0_28px_rgba(47,137,255,0.4)]"
+        <Link
+          href="/contact-us"
+          className="mt-2 inline-block px-8 py-3 rounded-xl text-white text-[11px] font-semibold tracking-[0.18em] uppercase transition-all duration-300 hover:opacity-90 hover:scale-[1.03] active:scale-95 shadow-[0_0_28px_rgba(47,137,255,0.4)] cursor-pointer"
           style={{
             fontFamily: "var(--font-intel-one-mono), monospace",
             background: "linear-gradient(90deg, #2F89FF 0%, #B021F0 100%)",
           }}
         >
           Explore AI Solutions
-        </button>
+        </Link>
 
         {/* Ecosystem Network Diagram — using actual image */}
         <div className={`relative w-full max-w-4xl mt-6 transition-all duration-1000 transform ${

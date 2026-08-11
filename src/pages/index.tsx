@@ -20,10 +20,11 @@ export default function Home() {
     "logo": "https://cloudcentric.com/logo.png",
     "description": "Where Artificial Intelligence meets business innovation. We build scalable AI solutions, Salesforce platforms, enterprise software, and digital cloud experiences.",
     "sameAs": [
-      "https://linkedin.com",
-      "https://facebook.com",
-      "https://twitter.com",
-      "https://instagram.com"
+      "https://www.youtube.com/channel/UC21Gs_6xh8PF1nc8-XIyHJg",
+      "https://www.instagram.com/cccinfotech/",
+      "https://x.com/CCCInfotech",
+      "https://www.linkedin.com/company/cccinfotech/",
+      "https://www.facebook.com/cloudcentricinfotech/"
     ]
   };
 

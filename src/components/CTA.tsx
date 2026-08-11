@@ -67,8 +67,8 @@ export default function WhoWeAreCTA() {
           >
             {/* Button 1: Book a Free Consultation */}
             <Link 
-              href="/book-consultation"
-              className="inline-flex items-center justify-center space-x-2 px-7 py-3.5 bg-white text-[#0f172a] rounded-full text-sm font-normal shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:bg-slate-50 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] group w-full sm:w-auto"
+              href="/contact-us"
+              className="inline-flex items-center justify-center space-x-2 px-7 py-3.5 bg-white text-[#0f172a] rounded-full text-sm font-normal shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:bg-slate-50 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] group w-full sm:w-auto cursor-pointer"
             >
               <span>Book a Free Consultation</span>
               <ArrowRight className="w-4 h-4 text-[#0f172a] transition-transform duration-300 group-hover:translate-x-1" />
@@ -76,8 +76,8 @@ export default function WhoWeAreCTA() {
 
             {/* Button 2: Talk to Our Experts */}
             <Link 
-              href="/contact-experts"
-              className="inline-flex items-center justify-center space-x-2 px-7 py-3.5 bg-transparent border font-normal border-white/40 text-white rounded-full text-sm hover:bg-white/10 hover:border-white transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
+              href="/contact-us"
+              className="inline-flex items-center justify-center space-x-2 px-7 py-3.5 bg-transparent border font-normal border-white/40 text-white rounded-full text-sm hover:bg-white/10 hover:border-white transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto cursor-pointer"
             >
               <Phone className="w-4 h-4 text-white" />
               <span>Talk to Our Experts</span>

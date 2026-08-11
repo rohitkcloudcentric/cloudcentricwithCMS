@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Upload } from "lucide-react";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 export interface OfficeLocation {
   country: string;
@@ -47,11 +49,11 @@ export const YoutubeIcon: React.FC<{ className?: string }> = ({ className = "w-4
 );
 
 export const socialLinks = [
-  { name: "Facebook", icon: FacebookIcon, href: "https://facebook.com" },
-  { name: "LinkedIn", icon: LinkedinIcon, href: "https://linkedin.com" },
-  { name: "X", icon: XIcon, href: "https://twitter.com" },
-  { name: "Instagram", icon: InstagramIcon, href: "https://instagram.com" },
-  { name: "YouTube", icon: YoutubeIcon, href: "https://youtube.com" },
+  { name: "Facebook", icon: FacebookIcon, href: "https://www.facebook.com/cloudcentricinfotech/" },
+  { name: "LinkedIn", icon: LinkedinIcon, href: "https://www.linkedin.com/company/cccinfotech/" },
+  { name: "X", icon: XIcon, href: "https://x.com/CCCInfotech" },
+  { name: "Instagram", icon: InstagramIcon, href: "https://www.instagram.com/cccinfotech/" },
+  { name: "YouTube", icon: YoutubeIcon, href: "https://www.youtube.com/channel/UC21Gs_6xh8PF1nc8-XIyHJg" },
 ];
 
 export const ContactInfo: React.FC = () => {
@@ -268,9 +270,106 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
     referralSource: "",
   });
 
+  const [errors, setErrors] = useState<Record<string, string | undefined>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [submitted, setSubmitted] = useState(false);
+
+  const validateField = (name: string, value: string | File | null): string | undefined => {
+    switch (name) {
+      case "name":
+        if (typeof value === "string" && !value.trim()) return "Name is required.";
+        return undefined;
+      case "email":
+        if (typeof value === "string") {
+          if (!value.trim()) return "Please enter a valid email address.";
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) return "Please enter a valid email address.";
+        }
+        return undefined;
+      case "phone":
+        if (typeof value === "string") {
+          const digits = value.replace(/\D/g, "");
+          if (!digits || digits.length < 7) return "Please enter a valid phone number.";
+        }
+        return undefined;
+      case "telegram":
+        if (typeof value === "string" && value.trim()) {
+          if (!/^[a-zA-Z0-9_@]+$/.test(value.trim())) return "Please enter a valid Telegram username.";
+        }
+        return undefined;
+      case "description":
+        if (typeof value === "string" && !value.trim()) return "Please describe your idea.";
+        return undefined;
+      case "budget":
+        if (typeof value === "string" && (!value || value === "")) return "Please select your budget.";
+        return undefined;
+      case "file":
+        if (value && value instanceof File) {
+          const ext = value.name.split(".").pop()?.toLowerCase() || "";
+          if (!["zip", "pdf", "pages", "doc", "docx"].includes(ext)) return "This file type is not supported.";
+          if (value.size > 5 * 1024 * 1024) return "File size must be less than 5 MB.";
+        }
+        return undefined;
+      default:
+        return undefined;
+    }
+  };
+
+  const handleBlur = (field: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    const val = field === "file" ? selectedFile : (formData[field as keyof typeof formData] as string);
+    const err = validateField(field, val);
+    setErrors((prev) => ({ ...prev, [field]: err }));
+  };
+
+  const handleChange = (field: string, val: string) => {
+    setFormData((prev) => ({ ...prev, [field]: val }));
+    if (touched[field]) {
+      const err = validateField(field, val);
+      setErrors((prev) => ({ ...prev, [field]: err }));
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thank you! Your request has been submitted successfully.");
+
+    const newErrors: Record<string, string | undefined> = {
+      name: validateField("name", formData.name),
+      email: validateField("email", formData.email),
+      phone: validateField("phone", formData.phone),
+      telegram: validateField("telegram", formData.telegram),
+      description: validateField("description", formData.description),
+      budget: validateField("budget", formData.budget),
+      file: validateField("file", selectedFile),
+    };
+
+    const activeErrors = Object.fromEntries(
+      Object.entries(newErrors).filter(([_, v]) => v !== undefined)
+    );
+
+    setErrors(activeErrors);
+    setTouched({
+      name: true,
+      email: true,
+      phone: true,
+      telegram: true,
+      description: true,
+      budget: true,
+      file: true,
+    });
+
+    if (Object.keys(activeErrors).length > 0) {
+      const firstInvalidId = Object.keys(activeErrors)[0];
+      const element = document.getElementById(`hero-field-${firstInvalidId}`);
+      if (element) {
+        element.focus();
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      return;
+    }
+
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 4000);
   };
 
   return (
@@ -281,42 +380,61 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
           : "bg-[rgba(255,255,255,0.04)] backdrop-blur-[16px] shadow-[0_20px_60px_rgba(124,58,237,0.15)]"
       }`}
     >
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
+      <form onSubmit={handleSubmit} noValidate className="flex flex-col space-y-6">
         {/* Row 1: Name & Email */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="flex flex-col space-y-2">
             <label
-              htmlFor="contact-name"
+              htmlFor="hero-field-name"
               className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
             >
               NAME <span className="text-[#A855F7]">*</span>
             </label>
             <input
-              id="contact-name"
+              id="hero-field-name"
               type="text"
-              required
               placeholder="Your name"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full h-[56px] bg-transparent border-b border-white/12 text-white placeholder-[#8B8B95] outline-none focus:border-[#A855F7] transition-all text-sm font-intel"
+              onChange={(e) => handleChange("name", e.target.value)}
+              onBlur={() => handleBlur("name")}
+              aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? "hero-error-name" : undefined}
+              className={`w-full h-[56px] bg-transparent border-b text-white placeholder-[#8B8B95] outline-none transition-all text-sm font-intel ${
+                errors.name ? "border-red-500 focus:border-red-500" : "border-white/12 focus:border-[#A855F7]"
+              }`}
             />
+            {errors.name && (
+              <span id="hero-error-name" className="text-red-400 text-[11px] font-medium font-intel">
+                {errors.name}
+              </span>
+            )}
           </div>
+
           <div className="flex flex-col space-y-2">
             <label
-              htmlFor="contact-email"
+              htmlFor="hero-field-email"
               className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
             >
               EMAIL <span className="text-[#A855F7]">*</span>
             </label>
             <input
-              id="contact-email"
+              id="hero-field-email"
               type="email"
-              required
               placeholder="example@gmail.com"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full h-[56px] bg-transparent border-b border-white/12 text-white placeholder-[#8B8B95] outline-none focus:border-[#A855F7] transition-all text-sm font-intel"
+              onChange={(e) => handleChange("email", e.target.value)}
+              onBlur={() => handleBlur("email")}
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? "hero-error-email" : undefined}
+              className={`w-full h-[56px] bg-transparent border-b text-white placeholder-[#8B8B95] outline-none transition-all text-sm font-intel ${
+                errors.email ? "border-red-500 focus:border-red-500" : "border-white/12 focus:border-[#A855F7]"
+              }`}
             />
+            {errors.email && (
+              <span id="hero-error-email" className="text-red-400 text-[11px] font-medium font-intel">
+                {errors.email}
+              </span>
+            )}
           </div>
         </div>
 
@@ -324,98 +442,147 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="flex flex-col space-y-2">
             <label
-              htmlFor="contact-phone"
+              htmlFor="hero-field-phone"
               className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
             >
               PHONE NUMBER <span className="text-[#A855F7]">*</span>
             </label>
-            <div className="flex items-center space-x-3 border-b border-white/12 focus-within:border-[#A855F7] transition-all h-[56px]">
-              <span className="text-sm shrink-0" aria-hidden="true">🇺🇸</span>
-              <input
-                id="contact-phone"
-                type="tel"
-                required
-                placeholder="+1 201-555-0123"
+            <div
+              className={`relative border-b transition-all custom-phone-container h-[56px] flex items-center ${
+                errors.phone ? "border-red-500 focus-within:border-red-500" : "border-white/12 focus-within:border-[#A855F7]"
+              }`}
+            >
+              <PhoneInput
+                country={"us"}
+                enableSearch
+                searchPlaceholder="Search country..."
                 value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full bg-transparent text-white placeholder-[#8B8B95] outline-none text-sm font-intel"
+                onChange={(phoneVal) => handleChange("phone", phoneVal)}
+                onBlur={() => handleBlur("phone")}
+                placeholder="+1 201-555-0123"
+                inputProps={{
+                  name: "phone",
+                  id: "hero-field-phone",
+                  "aria-invalid": !!errors.phone,
+                  "aria-describedby": errors.phone ? "hero-error-phone" : undefined,
+                }}
+                containerClass="!bg-transparent !w-full"
+                inputClass="!w-full !bg-transparent !text-white !text-sm !border-none !h-auto !py-2 !pl-14 !font-intel focus:!outline-none focus:!ring-0"
+                buttonClass="!bg-transparent !border-none !p-0 !mr-2"
+                dropdownClass="!bg-[#0E0E12] !text-white !border !border-white/10 !rounded-xl !shadow-2xl"
+                searchClass="!bg-[#181820] !text-white !border-b !border-white/10 !p-2"
               />
             </div>
+            {errors.phone && (
+              <span id="hero-error-phone" className="text-red-400 text-[11px] font-medium font-intel">
+                {errors.phone}
+              </span>
+            )}
           </div>
+
           <div className="flex flex-col space-y-2">
             <label
-              htmlFor="contact-telegram"
+              htmlFor="hero-field-telegram"
               className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
             >
               TELEGRAM
             </label>
             <input
-              id="contact-telegram"
+              id="hero-field-telegram"
               type="text"
               placeholder="@username"
               value={formData.telegram}
-              onChange={(e) => setFormData({ ...formData, telegram: e.target.value })}
-              className="w-full h-[56px] bg-transparent border-b border-white/12 text-white placeholder-[#8B8B95] outline-none focus:border-[#A855F7] transition-all text-sm font-intel"
+              onChange={(e) => handleChange("telegram", e.target.value)}
+              onBlur={() => handleBlur("telegram")}
+              aria-invalid={!!errors.telegram}
+              aria-describedby={errors.telegram ? "hero-error-telegram" : undefined}
+              className={`w-full h-[56px] bg-transparent border-b text-white placeholder-[#8B8B95] outline-none transition-all text-sm font-intel ${
+                errors.telegram ? "border-red-500 focus:border-red-500" : "border-white/12 focus:border-[#A855F7]"
+              }`}
             />
+            {errors.telegram && (
+              <span id="hero-error-telegram" className="text-red-400 text-[11px] font-medium font-intel">
+                {errors.telegram}
+              </span>
+            )}
           </div>
         </div>
 
         {/* Row 3: Describe Your Idea */}
         <div className="flex flex-col space-y-2">
           <label
-            htmlFor="contact-description"
+            htmlFor="hero-field-description"
             className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
           >
             DESCRIBE YOUR IDEA <span className="text-[#A855F7]">*</span>
           </label>
           <textarea
-            id="contact-description"
-            required
+            id="hero-field-description"
             rows={3}
             placeholder="How can we help you?"
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            className="w-full min-h-[130px] bg-transparent border border-white/12 rounded-xl p-4 text-white placeholder-[#8B8B95] outline-none focus:border-[#A855F7] transition-all text-sm resize-none font-intel"
+            onChange={(e) => handleChange("description", e.target.value)}
+            onBlur={() => handleBlur("description")}
+            aria-invalid={!!errors.description}
+            aria-describedby={errors.description ? "hero-error-description" : undefined}
+            className={`w-full min-h-[130px] bg-transparent border rounded-xl p-4 text-white placeholder-[#8B8B95] outline-none transition-all text-sm resize-none font-intel ${
+              errors.description ? "border-red-500 focus:border-red-500" : "border-white/12 focus:border-[#A855F7]"
+            }`}
           />
+          {errors.description && (
+            <span id="hero-error-description" className="text-red-400 text-[11px] font-medium font-intel">
+              {errors.description}
+            </span>
+          )}
         </div>
 
         {/* Row 4: Budget & Referral */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="flex flex-col space-y-2">
             <label
-              htmlFor="contact-budget"
+              htmlFor="hero-field-budget"
               className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
             >
               WHAT IS YOUR BUDGET? <span className="text-[#A855F7]">*</span>
             </label>
             <select
-              id="contact-budget"
-              required
+              id="hero-field-budget"
               value={formData.budget}
-              onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-              className="w-full h-[56px] bg-[#0E0E12]/90 border border-white/12 rounded-xl px-4 text-white/80 outline-none focus:border-[#A855F7] transition-all text-sm appearance-none cursor-pointer font-intel"
+              onChange={(e) => handleChange("budget", e.target.value)}
+              onBlur={() => handleBlur("budget")}
+              aria-invalid={!!errors.budget}
+              aria-describedby={errors.budget ? "hero-error-budget" : undefined}
+              className={`w-full h-[56px] bg-[#0E0E12]/90 border rounded-xl px-4 text-white/80 outline-none transition-all text-sm appearance-none cursor-pointer font-intel ${
+                errors.budget ? "border-red-500 focus:border-red-500" : "border-white/12 focus:border-[#A855F7]"
+              }`}
             >
-              <option value="" disabled>Choose an option here</option>
+              <option value="">Choose an option here</option>
               <option value="10k-25k">$10k – $25k</option>
               <option value="25k-50k">$25k – $50k</option>
               <option value="50k-100k">$50k – $100k</option>
               <option value="100k+">$100k+</option>
             </select>
+            {errors.budget && (
+              <span id="hero-error-budget" className="text-red-400 text-[11px] font-medium font-intel">
+                {errors.budget}
+              </span>
+            )}
           </div>
+
           <div className="flex flex-col space-y-2">
             <label
-              htmlFor="contact-referral"
+              htmlFor="hero-field-referralSource"
               className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
             >
               HOW DID YOU HEAR ABOUT US?
             </label>
             <select
-              id="contact-referral"
+              id="hero-field-referralSource"
               value={formData.referralSource}
               onChange={(e) => setFormData({ ...formData, referralSource: e.target.value })}
               className="w-full h-[56px] bg-[#0E0E12]/90 border border-white/12 rounded-xl px-4 text-white/80 outline-none focus:border-[#A855F7] transition-all text-sm appearance-none cursor-pointer font-intel"
             >
-              <option value="" disabled>Choose an option here</option>
+              <option value="">Choose an option here</option>
               <option value="google">Search Engine (Google)</option>
               <option value="linkedin">LinkedIn</option>
               <option value="referral">Client Referral</option>
@@ -425,7 +592,19 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
         </div>
 
         {/* Upload File Area */}
-        <UploadField />
+        <UploadField
+          onFileSelect={(file) => {
+            setSelectedFile(file);
+            setTouched((prev) => ({ ...prev, file: true }));
+            const err = validateField("file", file);
+            setErrors((prev) => ({ ...prev, file: err }));
+          }}
+        />
+        {errors.file && (
+          <span id="hero-error-file" className="text-red-400 text-[11px] font-medium font-intel -mt-4">
+            {errors.file}
+          </span>
+        )}
 
         {/* CTA Button */}
         <button
@@ -433,7 +612,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
           className="w-full h-[58px] rounded-full bg-gradient-to-r from-[#4F7CFF] to-[#B624FF] text-white text-[13px] font-bold tracking-[2px] uppercase shadow-[0_0_30px_rgba(182,36,255,0.4)] hover:shadow-[0_0_40px_rgba(182,36,255,0.6)] hover:-translate-y-0.5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center space-x-2"
           style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
         >
-          <span>SCHEDULE A FREE CONSULTATION</span>
+          <span>{submitted ? "REQUEST SENT SUCCESSFULLY!" : "SCHEDULE A FREE CONSULTATION"}</span>
           <span className="text-base">↗</span>
         </button>
       </form>

@@ -31,22 +31,24 @@ export default function Footer() {
               <span className="text-md font-semibold text-white/80">Follow Us</span>
               <div className="flex items-center space-x-3">
                 {[
-                  { name: "Facebook", src: "/social-media-icons/facebook.svg" },
-                  { name: "LinkedIn", src: "/social-media-icons/linkedin.svg" },
-                  { name: "Twitter", src: "/social-media-icons/twitter.svg" },
-                  { name: "Instagram", src: "/social-media-icons/instagram.svg" },
-                  { name: "YouTube", src: "/social-media-icons/youtube.svg" },
+                  { name: "Facebook", src: "/social-media-icons/facebook.svg", href: "https://www.facebook.com/cloudcentricinfotech/" },
+                  { name: "LinkedIn", src: "/social-media-icons/linkedin.svg", href: "https://www.linkedin.com/company/cccinfotech/" },
+                  { name: "Twitter", src: "/social-media-icons/twitter.svg", href: "https://x.com/CCCInfotech" },
+                  { name: "Instagram", src: "/social-media-icons/instagram.svg", href: "https://www.instagram.com/cccinfotech/" },
+                  { name: "YouTube", src: "/social-media-icons/youtube.svg", href: "https://www.youtube.com/channel/UC21Gs_6xh8PF1nc8-XIyHJg" },
                 ].map((social) => (
                   <a
                     key={social.name}
-                    href="#"
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={`CloudCentric on ${social.name}`}
-                    className="w-9 h-9 rounded-full bg-white text-black hover:bg-[#8B3DFF] hover:text-white flex items-center justify-center transition-all duration-200 shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:scale-110"
+                    className="w-9 h-9 rounded-full bg-white text-black hover:bg-[#8B3DFF] hover:text-white flex items-center justify-center transition-all duration-200 shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:scale-110 cursor-pointer"
                   >
                     <img
                       src={social.src}
                       alt={`${social.name} Icon`}
-                      className="w-[18px] h-auto"
+                      className="w-[30px] h-auto"
                     />
                   </a>
                 ))}

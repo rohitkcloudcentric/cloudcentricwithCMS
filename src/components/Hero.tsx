@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import HeroCard from "./HeroCard";
 import AIChatBar from "./AIChatBar";
 
@@ -49,8 +50,9 @@ export default function Hero() {
           </p>
 
           <div className="pt-2">
-            <button 
-              className={`group flex items-center justify-between gap-5 py-2 pl-6 pr-2 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs font-semibold tracking-wider hover:border-white/20 hover:bg-white/[0.08] transition-all active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.4)] font-intel duration-1000 ease-out transform ${
+            <Link 
+              href="/contact-us"
+              className={`group inline-flex items-center justify-between gap-5 py-2 pl-6 pr-2 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs font-semibold tracking-wider hover:border-white/20 hover:bg-white/[0.08] transition-all active:scale-95 shadow-[0_4px_20px_rgba(0,0,0,0.4)] font-intel duration-1000 ease-out transform cursor-pointer ${
                 mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
               }`}
               style={{ transitionDelay: "550ms" }}
@@ -61,7 +63,7 @@ export default function Hero() {
                   <path d="M4 8H26M26 8L20 3M26 8L20 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
-            </button>
+            </Link>
           </div>
         </div>
 

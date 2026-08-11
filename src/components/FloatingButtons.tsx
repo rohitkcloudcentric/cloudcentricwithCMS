@@ -9,13 +9,15 @@ export default function FloatingButtons() {
       <div className="fixed right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col space-x-3 items-center">
       
         <a
-          href="#consultation"
+          href="/contact-us"
           className="bg-gradient-to-b from-[#2563EB] to-[#9333EA] text-white text-[11px] font-[family:var(--font-intel-one-mono)] font-extrabold tracking-[0.15em] w-[38px] py-1 rounded-lg shadow-[0_4px_20px_rgba(124,58,237,0.3)] hover:shadow-[0_4px_25px_rgba(37,99,235,0.5)] hover:-translate-x-1 hover:scale-105 transition-all duration-300 uppercase [writing-mode:vertical-rl] px-3 flex items-center justify-center h-auto text-center cursor-pointer"
         >
           BOOK A CONSULTATION
         </a>
         <a
-          href="#whatsapp"
+          href="https://api.whatsapp.com/send/?phone=9971126721&type=phone_number&app_absent=0"
+          target="_blank"
+          rel="noopener noreferrer"
           className="bg-[#22C55E] text-white text-[11px] font-[family:var(--font-intel-one-mono)] font-extrabold tracking-[0.15em] w-[38px] py-1 px-3 rounded-lg shadow-[0_4px_20px_rgba(34,197,94,0.3)] hover:shadow-[0_4px_25px_rgba(34,197,94,0.5)] hover:-translate-x-1 hover:scale-105 transition-all duration-300 uppercase [writing-mode:vertical-rl] flex items-center justify-center h-auto text-center cursor-pointer"
         >
           WHATSAPP

@@ -3,9 +3,23 @@
 import { useState, useEffect } from "react";
 import { Sparkles, Paperclip, ChevronRight } from "lucide-react";
 
+const PLACEHOLDER_PHRASES = [
+  "What would you like AI to automate?",
+//   "Build intelligent Salesforce workflows...",
+//   "Deploy autonomous AI agents for your business...",
+//   "Optimize enterprise cloud infrastructure...",
+//   "Transform customer experience with generative AI...",
+];
+
 export default function AIChatBar() {
   const [mounted, setMounted] = useState(false);
   const [isFixed, setIsFixed] = useState(false);
+
+  // Typewriter effect state
+  const [placeholderText, setPlaceholderText] = useState("");
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -22,6 +36,39 @@ export default function AIChatBar() {
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Typewriter animation effect
+  useEffect(() => {
+    if (!mounted) return;
+
+    const currentPhrase = PLACEHOLDER_PHRASES[phraseIndex];
+    let typingSpeed = isDeleting ? 30 : 60;
+
+    if (!isDeleting && charIndex === currentPhrase.length) {
+      // Pause at full word before deleting
+      typingSpeed = 2000;
+    } else if (isDeleting && charIndex === 0) {
+      // Pause before starting next phrase
+      typingSpeed = 400;
+    }
+
+    const timer = setTimeout(() => {
+      if (!isDeleting && charIndex < currentPhrase.length) {
+        setPlaceholderText(currentPhrase.substring(0, charIndex + 1));
+        setCharIndex((prev) => prev + 1);
+      } else if (!isDeleting && charIndex === currentPhrase.length) {
+        setIsDeleting(true);
+      } else if (isDeleting && charIndex > 0) {
+        setPlaceholderText(currentPhrase.substring(0, charIndex - 1));
+        setCharIndex((prev) => prev - 1);
+      } else if (isDeleting && charIndex === 0) {
+        setIsDeleting(false);
+        setPhraseIndex((prev) => (prev + 1) % PLACEHOLDER_PHRASES.length);
+      }
+    }, typingSpeed);
+
+    return () => clearTimeout(timer);
+  }, [mounted, charIndex, isDeleting, phraseIndex]);
 
   if (!mounted) return null;
 
@@ -43,11 +90,11 @@ export default function AIChatBar() {
         </button>
       </div>
 
-      {/* Input */}
+      {/* Input with animated typewriter placeholder */}
       <input
         type="text"
-        placeholder="What would you like AI to automate?"
-        className="flex-1 bg-transparent border-none outline-none text-xs md:text-sm text-white placeholder-white px-4 font-[family:var(--font-intel-one-mono)] font-medium"
+        placeholder={`${placeholderText}|`}
+        className="flex-1 bg-transparent border-none outline-none text-xs md:text-sm text-white placeholder-white/80 px-4 font-[family:var(--font-intel-one-mono)] font-medium"
       />
 
       {/* Purple Action Button */}
