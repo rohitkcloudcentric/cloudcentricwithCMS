@@ -36,36 +36,34 @@ export default function TrustedClients() {
   const [card3Ref, isCard3Visible] = useInView(0.1);
 
   return (
-    <section className="w-full bg-[#050505] py-20 px-4 md:px-8 lg:px-12 overflow-hidden text-white border-t border-white/10">
-      <div className="max-w-7xl mx-auto flex flex-col space-y-8">
+    <section className="w-full bg-[#030304] pb-12 md:pb-20 px-4 sm:px-6 md:px-8 lg:px-12 overflow-hidden text-white relative">
+      <div className="max-w-[1280px] mx-auto flex flex-col relative z-10">
         
-        {/* Top Header: Badge & Title aligned right */}
-        <div 
-          ref={headerRef}
-          className={`flex flex-col items-start text-left self-end space-y-3 pr-2 max-w-2xl transition-all duration-800 transform ${
-            isHeaderVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          <div
-            className="inline-flex items-center px-4 py-1.5 rounded-full border border-[#8673F6]/40 bg-[#8673F6]/10 text-[#A855F7] text-xs tracking-widest uppercase font-intel"
+        {/* Top Header: Responsive Positioning */}
+        <div className="w-full flex justify-end mb-6 md:mb-10">
+          <div 
+            ref={headerRef}
+            className={`w-full max-w-[660px] flex flex-col items-start text-left z-20 transition-all duration-800 transform lg:absolute lg:top-16 lg:right-12 ${
+              isHeaderVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
           >
-            TRUSTED &amp; RECOGNIZED
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-[#8673F6]/50 bg-[#8673F6]/10 text-[#C4B5FD] text-[10px] tracking-[0.25em] uppercase font-intel mb-3">
+              TRUSTED &amp; RECOGNIZED
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[44px] font-normal text-white leading-[1.2] tracking-tight font-duru">
+              Trusted by Clients.<br />
+              Recognized by the Industry.
+            </h2>
           </div>
-          <h2
-            className="text-3xl sm:text-4xl md:text-5xl font-normal text-white leading-tight tracking-tight text-left font-duru"
-          >
-            Trusted by Clients. <br />
-            Recognized by the Industry.
-          </h2>
         </div>
 
-        {/* Overlapping Hero Layout Grid */}
-        <div className="relative pt-6 min-h-[540px]">
+        {/* Overlapping Hero Layout Container */}
+        <div className="relative w-full min-h-0 lg:min-h-[580px] pt-2 lg:pt-8">
           
           {/* Left Office Team Photo Box */}
           <div 
             ref={photoRef}
-            className={`w-[42%] h-[480px] rounded-[22.6px] overflow-hidden relative border border-white/10 shadow-2xl z-0 transition-all duration-1000 transform ${
+            className={`w-full lg:w-[42%] h-[280px] sm:h-[360px] md:h-[480px] lg:h-[620px] rounded-[24px] overflow-hidden relative shadow-2xl z-0 transition-all duration-1000 transform mb-8 lg:mb-0 ${
               isPhotoVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"
             }`}
           >
@@ -73,28 +71,29 @@ export default function TrustedClients() {
               src="/images/trusted-clients/trusted-clients.png"
               alt="Trusted Clients Team"
               fill
+              sizes="(max-width: 1024px) 100vw, 42vw"
               className="object-cover object-center"
               priority
             />
           </div>
 
-          {/* 3 Main Cards Grid Overlaying Right Corner of Office Photo */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-7 items-end absolute bottom-0 left-[26%] right-0 z-10">
+          {/* 3 Main Cards: Responsive Grid & Desktop Overlap */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 items-end relative lg:absolute lg:bottom-0 lg:left-[25%] lg:right-0 z-20">
 
-            {/* Card 1: CSAT Card (Comes from Left when visible) */}
+            {/* Card 1: CSAT Card */}
             <div
               ref={card1Ref}
-              className={`relative p-6 sm:p-7 flex flex-col justify-between h-[420px] w-full transition-all duration-800 ease-out transform hover:-translate-y-2 ${
+              className={`relative p-6 sm:p-7 flex flex-col justify-between min-h-[380px] sm:h-[400px] lg:h-[440px] w-full border border-white/10 transition-all duration-800 ease-out transform hover:-translate-y-2 ${
                 isCard1Visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-16"
               }`}
               style={{
-                borderRadius: "22.637px",
-                background: "radial-gradient(100.14% 100.1% at 50% 132.84%, #8673F6 0%, #7F6CED 0%, #7D2E91 37.82%, #000 100%)",
-                boxShadow: "0 10.187px 45.275px 0 rgba(0, 0, 0, 0.4)",
+                borderRadius: "22.6px",
+                background: "radial-gradient(100.14% 100.1% at 50% 132.84%, #8673F6 0%, #7F6CED 0%, #7D2E91 37.82%, #000000 100%)",
+                boxShadow: "0 15px 40px rgba(0, 0, 0, 0.6)",
               }}
             >
-              {/* CSAT Ribbon Badge (Top-Right Edge Pin) */}
-              <div className="absolute -top-5 right-4 w-12 h-16 z-30 drop-shadow-md">
+              {/* CSAT Ribbon Badge */}
+              <div className="absolute -top-5 right-4 w-11 sm:w-12 h-15 sm:h-16 z-30 drop-shadow-lg">
                 <img
                   src="/images/trusted-clients/csat.svg"
                   alt="CSAT Badge"
@@ -103,44 +102,36 @@ export default function TrustedClients() {
               </div>
 
               <div>
-                <h3
-                  className="text-2xl font-normal text-white tracking-wide mb-6 font-duru"
-                >
+                <h3 className="text-2xl sm:text-[28px] font-normal text-white tracking-wide mb-6 sm:mb-8 font-duru">
                   CSAT
                 </h3>
-                <p
-                  className="text-[10px] font-bold text-white/90 uppercase tracking-wide mb-3 font-intel"
-                >
+                <p className="text-[10px] sm:text-[11px] font-bold text-white/90 uppercase tracking-wider mb-2.5 font-intel">
                   4.9★ Customer Satisfaction
                 </p>
-                <p
-                  className="text-xs text-white/70 leading-relaxed font-normal font-intel"
-                >
+                <p className="text-xs sm:text-[13px] text-white/70 leading-[1.6] font-normal font-intel">
                   Consistently delivering quality solutions with exceptional client experiences.
                 </p>
               </div>
 
-              <div
-                className="text-xs font-normal text-white/80 font-intel"
-              >
+              <div className="text-xs sm:text-[13px] font-normal text-white/80 font-intel pb-1">
                 4.9/5 Customer Satisfaction
               </div>
             </div>
 
-            {/* Card 2: Great Place to Work® Certified (Comes from Bottom when visible) */}
+            {/* Card 2: Great Place to Work® Certified */}
             <div
               ref={card2Ref}
-              className={`relative p-6 sm:p-7 flex flex-col justify-between h-[420px] w-full transition-all duration-800 ease-out transform hover:-translate-y-2 ${
+              className={`relative p-6 sm:p-7 flex flex-col justify-between min-h-[380px] sm:h-[400px] lg:h-[440px] w-full border border-white/10 transition-all duration-800 ease-out transform hover:-translate-y-2 ${
                 isCard2Visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
               }`}
               style={{
-                borderRadius: "22.637px",
-                background: "radial-gradient(100.14% 100.1% at 50% 132.84%, #8673F6 0%, #7F6CED 0%, #3C2E91 37.82%, #000 100%)",
-                boxShadow: "0 10.187px 45.275px 0 rgba(0, 0, 0, 0.2)",
+                borderRadius: "22.6px",
+                background: "radial-gradient(100.14% 100.1% at 50% 132.84%, #8673F6 0%, #7F6CED 0%, #3C2E91 37.82%, #000000 100%)",
+                boxShadow: "0 15px 40px rgba(0, 0, 0, 0.6)",
               }}
             >
               {/* Badge Ribbon Top Right */}
-              <div className="absolute -top-4 right-5 w-12 h-16 z-30 drop-shadow-md">
+              <div className="absolute -top-4 right-4 w-11 sm:w-12 h-15 sm:h-16 z-30 drop-shadow-lg">
                 <img
                   src="/images/trusted-clients/greate-place-to-work.svg"
                   alt="Great Place to Work Badge"
@@ -149,40 +140,34 @@ export default function TrustedClients() {
               </div>
 
               <div>
-                <h3
-                  className="text-2xl font-normal text-white tracking-wide leading-snug mb-6 pr-8 font-duru"
-                >
+                <h3 className="text-2xl sm:text-[25px] font-normal text-white tracking-wide leading-[1.25] mb-6 sm:mb-8 pr-4 font-duru">
                   Great Place to Work® Certified
                 </h3>
-                <p
-                  className="text-xs text-white/70 leading-relaxed font-normal font-intel"
-                >
+                <p className="text-xs sm:text-[13px] text-white/70 leading-[1.6] font-normal font-intel">
                   An innovation-driven culture that empowers people to build extraordinary technology.
                 </p>
               </div>
 
-              <div
-                className="text-xs font-normal text-white/80 leading-relaxed font-intel"
-              >
+              <div className="text-xs sm:text-[13px] font-normal text-white/80 leading-snug font-intel pb-1">
                 Certified Great Place to Work® <br />
                 Innovation-Driven Culture
               </div>
             </div>
 
-            {/* Card 3: Clutch (Comes from Right when visible) */}
+            {/* Card 3: Clutch */}
             <div
               ref={card3Ref}
-              className={`relative p-6 sm:p-7 flex flex-col justify-between h-[420px] w-full transition-all duration-800 ease-out transform hover:-translate-y-2 ${
+              className={`relative p-6 sm:p-7 flex flex-col justify-between min-h-[380px] sm:h-[400px] lg:h-[440px] w-full border border-white/10 transition-all duration-800 ease-out transform hover:-translate-y-2 sm:col-span-2 lg:col-span-1 ${
                 isCard3Visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-16"
               }`}
               style={{
-                borderRadius: "22.637px",
-                background: "radial-gradient(100.14% 100.1% at 50% 132.84%, #8673F6 0%, #7F6CED 0%, #7D2E91 37.82%, #000 100%)",
-                boxShadow: "0 10.187px 45.275px 0 rgba(0, 0, 0, 0.2)",
+                borderRadius: "22.6px",
+                background: "radial-gradient(100.14% 100.1% at 50% 132.84%, #8673F6 0%, #7F6CED 0%, #7D2E91 37.82%, #000000 100%)",
+                boxShadow: "0 15px 40px rgba(0, 0, 0, 0.6)",
               }}
             >
-              {/* Clutch Icon Top Right */}
-              <div className="absolute -top-4 right-5 w-12 h-16 z-30 drop-shadow-md">
+              {/* Clutch Logo Top Right */}
+              <div className="absolute -top-3 right-4 w-11 sm:w-12 h-13 sm:h-14 z-30 drop-shadow-lg">
                 <img
                   src="/images/trusted-clients/clutch.svg"
                   alt="Clutch Logo Badge"
@@ -191,33 +176,25 @@ export default function TrustedClients() {
               </div>
 
               <div>
-                <h3
-                  className="text-2xl font-normal text-white tracking-wide mb-6 font-duru"
-                >
+                <h3 className="text-2xl sm:text-[28px] font-normal text-white tracking-wide mb-5 font-duru">
                   Clutch
                 </h3>
-                <p
-                  className="text-xs font-bold text-white/90 uppercase tracking-wide mb-3 font-intel"
-                >
+                <p className="text-[10px] sm:text-[11px] font-bold text-white/90 uppercase tracking-wider mb-2 font-intel">
                   Top Rated Technology Partner
                 </p>
-                <p
-                  className="text-xs text-white/70 leading-relaxed font-normal font-intel"
-                >
+                <p className="text-xs sm:text-[13px] text-white/70 leading-[1.6] font-normal font-intel">
                   Recognized for delivering secure, scalable, and business-focused digital solutions.
                 </p>
               </div>
 
-              <div
-                className="space-y-3 text-xs font-normal text-white/90 font-intel"
-              >
+              <div className="space-y-3.5 text-xs sm:text-[13px] font-normal text-white/90 font-intel pb-1">
                 <div>
-                  <p className="text-white/60 text-[11px]">Average Review Rating</p>
-                  <p className="font-semibold text-white text-sm mt-0.5">4.9 (57 reviews)</p>
+                  <p className="text-white/60 text-[10.5px]">Average Review Rating</p>
+                  <p className="font-semibold text-white text-xs sm:text-[13px] mt-0.5">4.9 (57 reviews)</p>
                 </div>
                 <div>
-                  <p className="text-white/60 text-[11px]">Average Referral Rating</p>
-                  <p className="font-bold text-white text-base mt-0.5">5.0 / 5</p>
+                  <p className="text-white/60 text-[10.5px]">Average Referral Rating</p>
+                  <p className="font-bold text-white text-lg sm:text-[22px] mt-0.5">5.0 / 5</p>
                 </div>
               </div>
             </div>
