@@ -11,9 +11,9 @@ export interface OfficeLocation {
 }
 
 export const officeLocations: OfficeLocation[] = [
-  { country: "India", cities: "Noida, Uttar Pradesh" },
-  { country: "USA", cities: "Delaware" },
-  { country: "United Kingdom", cities: "London" },
+  { country: "India", cities: "H-146 & 147, H Block, Sector 63, Noida, Uttar Pradesh 201301." },
+  { country: "USA", cities: "8357 Emerald Winds Cir, Boynton Beach, FL 33473 United States." },
+  // { country: "United Kingdom", cities: "London" },
 ];
 
 export const FacebookIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
@@ -98,11 +98,11 @@ export const ContactInfo: React.FC = () => {
             className="flex flex-col space-y-1 text-[15px] text-[#B6B6C2]"
             style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
           >
-            <a href="tel:+917042912246" className="hover:text-white transition-colors">
-              +91 70429 12246
+            <a href="tel:+919971126721" className="hover:text-white transition-colors">
+              +91 9971126721
             </a>
-            <a href="tel:+1XXXXXXXXXX" className="hover:text-white transition-colors">
-              +1 XXX XXX XXXX
+            <a href="tel:+15615047778" className="hover:text-white transition-colors">
+              +1 5615047778
             </a>
           </div>
         </div>
@@ -120,7 +120,7 @@ export const ContactInfo: React.FC = () => {
             style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
           >
             {officeLocations.map((loc) => (
-              <p key={loc.country}>
+              <p key={loc.country} className="mb-4">
                 <span className="text-white font-medium">{loc.country}</span> – {loc.cities}
               </p>
             ))}
@@ -136,11 +136,11 @@ export const ContactInfo: React.FC = () => {
             Email
           </h3>
           <a
-            href="mailto:sales@cloudcentric.com"
+            href="mailto:sales@cccinfotech.com"
             className="text-[15px] text-[#B6B6C2] hover:text-white transition-colors"
             style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
           >
-            sales@cloudcentric.com
+            sales@cccinfotech.com
           </a>
         </div>
 

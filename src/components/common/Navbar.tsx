@@ -46,7 +46,7 @@ export default function Navbar() {
   const resourceSubMenu = [
     { name: "Our Clients", description: "Brands & enterprises who trust us", icon: Briefcase, href: "/our-clients" },
     { name: "Blog & Insights", description: "Latest AI trends & whitepapers", icon: BookOpen, href: "/blogs" },
-    // { name: "Case Studies", description: "Real-world client success stories", icon: Briefcase, href: "#case-studies" },
+    { name: "Case Studies", description: "Real-world client success stories", icon: Briefcase, href: "/case-studies" },
     // { name: "Documentation", description: "Developer guides & API specs", icon: FileText, href: "#docs" },
     // { name: "Webinars & Videos", description: "Watch expert keynotes and demos", icon: Video, href: "#webinars" },
     // { name: "FAQs & Support", description: "Get answers to common questions", icon: HelpCircle, href: "#faq" },
@@ -117,7 +117,7 @@ export default function Navbar() {
                   aria-haspopup="true"
                   aria-label="Resources menu"
                   className={`relative flex items-center space-x-1 text-sm transition-colors py-1 group font-duru ${
-                    resourcesOpen || pathname === "/resources" || pathname === "/our-clients" || pathname === "/blogs" || pathname?.startsWith("/blog")
+                    resourcesOpen || pathname === "/resources" || pathname === "/our-clients" || pathname === "/blogs" || pathname?.startsWith("/blog") || pathname === "/case-studies" || pathname?.startsWith("/case-stud")
                       ? "bg-gradient-to-r from-[#2563EB] via-[#7C3AED] to-[#A855F7] bg-clip-text text-transparent font-bold"
                       : "text-white/80 hover:text-white font-medium"
                   }`}
@@ -125,7 +125,7 @@ export default function Navbar() {
                   <span>Resources</span>
                   <svg
                     className={`w-2.5 h-2.5 transition-transform duration-200 ${
-                      resourcesOpen || pathname === "/resources" || pathname === "/our-clients" || pathname === "/blogs" || pathname?.startsWith("/blog")
+                      resourcesOpen || pathname === "/resources" || pathname === "/our-clients" || pathname === "/blogs" || pathname?.startsWith("/blog") || pathname === "/case-studies" || pathname?.startsWith("/case-stud")
                         ? "text-[#A855F7] rotate-180"
                         : "text-white/80"
                     }`}
@@ -151,7 +151,8 @@ export default function Navbar() {
                         const IconComp = item.icon;
                         const isSubActive =
                           pathname === item.href ||
-                          (item.href === "/blogs" && (pathname === "/blogs" || pathname?.startsWith("/blog")));
+                          (item.href === "/blogs" && (pathname === "/blogs" || pathname?.startsWith("/blog"))) ||
+                          (item.href === "/case-studies" && (pathname === "/case-studies" || pathname?.startsWith("/case-stud")));
                         return (
                           <Link
                             key={item.name}

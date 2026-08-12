@@ -214,7 +214,7 @@ export default function ContactUs() {
               <Mail className="w-3.5 h-3.5 stroke-black" />
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              {["support@cccinfotech.com", "sales@cccinfotech.com"].map((email) => (
+              {["sales@cccinfotech.com", "support@cccinfotech.com"].map((email) => (
                 <a
                   key={email}
                   href={`mailto:${email}`}
