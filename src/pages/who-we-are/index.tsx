@@ -1,15 +1,15 @@
 import Head from "next/head";
 import Image from "next/image";
-import AnnouncementBar from "@/components/AnnouncementBar";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import FloatingButtons from "@/components/FloatingButtons";
-import WhoWeAreHero from "@/components/WhoWeAreHero";
-import OurFoundation from "@/components/OurFoundation";
-import OurValues from "@/components/OurValues";
-import TrustedClients from "@/components/TrustedClients";
-import RankedSection from "@/components/RankedSection";
-import WhoWeAreCTA from "@/components/CTA";
+import AnnouncementBar from "@/components/common/AnnouncementBar";
+import Navbar from "@/components/common/Navbar";
+import Footer from "@/components/common/Footer";
+import FloatingButtons from "@/components/common/FloatingButtons";
+import WhoWeAreHero from "@/components/who-we-are/WhoWeAreHero";
+import OurFoundation from "@/components/home/OurFoundation";
+import OurValues from "@/components/who-we-are/OurValues";
+import TrustedClients from "@/components/common/TrustedClients";
+import RankedSection from "@/components/common/RankedSection";
+import WhoWeAreCTA from "@/components/home/CTA";
 
 export default function WhoWeAre() {
   const jsonLd = {

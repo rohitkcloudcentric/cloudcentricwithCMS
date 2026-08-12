@@ -5,10 +5,10 @@ import { Sparkles, Paperclip, ChevronRight } from "lucide-react";
 
 const PLACEHOLDER_PHRASES = [
   "What would you like AI to automate?",
-//   "Build intelligent Salesforce workflows...",
-//   "Deploy autonomous AI agents for your business...",
-//   "Optimize enterprise cloud infrastructure...",
-//   "Transform customer experience with generative AI...",
+  "Build intelligent Salesforce workflows...",
+  "Deploy autonomous AI agents for your business...",
+  "Optimize enterprise cloud infrastructure...",
+  "Transform customer experience with generative AI...",
 ];
 
 export default function AIChatBar() {
@@ -22,7 +22,7 @@ export default function AIChatBar() {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const handle = requestAnimationFrame(() => setMounted(true));
 
     const handleScroll = () => {
       if (window.scrollY > 80) {
@@ -34,7 +34,10 @@ export default function AIChatBar() {
 
     window.addEventListener("scroll", handleScroll);
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      cancelAnimationFrame(handle);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   // Typewriter animation effect
@@ -82,10 +85,18 @@ export default function AIChatBar() {
     >
       {/* Left Quick Icons */}
       <div className="flex items-center space-x-1.5">
-        <button className="w-8 h-8 rounded-full bg-white/[0.9] text-[#18181b] hover:bg-white flex items-center justify-center transition-all shadow-sm active:scale-95 cursor-pointer">
+        <button 
+          type="button"
+          aria-label="AI Feature Suggestions"
+          className="w-8 h-8 rounded-full bg-white/[0.9] text-[#18181b] hover:bg-white flex items-center justify-center transition-all shadow-sm active:scale-95 cursor-pointer"
+        >
           <Sparkles className="w-3.5 h-3.5" />
         </button>
-        <button className="w-8 h-8 rounded-full bg-white/[0.9] text-[#18181b] hover:bg-white flex items-center justify-center transition-all shadow-sm active:scale-95 cursor-pointer">
+        <button 
+          type="button"
+          aria-label="Attach File"
+          className="w-8 h-8 rounded-full bg-white/[0.9] text-[#18181b] hover:bg-white flex items-center justify-center transition-all shadow-sm active:scale-95 cursor-pointer"
+        >
           <Paperclip className="w-3.5 h-3.5" />
         </button>
       </div>
@@ -93,12 +104,17 @@ export default function AIChatBar() {
       {/* Input with animated typewriter placeholder */}
       <input
         type="text"
+        aria-label="Ask AI input prompt"
         placeholder={`${placeholderText}|`}
         className="flex-1 bg-transparent border-none outline-none text-xs md:text-sm text-white placeholder-white/80 px-4 font-[family:var(--font-intel-one-mono)] font-medium"
       />
 
       {/* Purple Action Button */}
-      <button className="w-8 h-8 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#8B5CF6] flex items-center justify-center text-white shrink-0 shadow-[0_0_12px_rgba(124,58,237,0.55)] hover:scale-105 active:scale-95 transition-transform cursor-pointer">
+      <button 
+        type="button"
+        aria-label="Submit Prompt"
+        className="w-8 h-8 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#8B5CF6] flex items-center justify-center text-white shrink-0 shadow-[0_0_12px_rgba(124,58,237,0.55)] hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+      >
         <ChevronRight className="w-4 h-4 stroke-[3]" />
       </button>
     </div>

@@ -8,7 +8,8 @@ export default function WhatWeDoHero() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    setIsVisible(true);
+    const handle = requestAnimationFrame(() => setIsVisible(true));
+    return () => cancelAnimationFrame(handle);
   }, []);
 
   return (

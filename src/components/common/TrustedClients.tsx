@@ -97,6 +97,9 @@ export default function TrustedClients() {
                 <img
                   src="/images/trusted-clients/csat.svg"
                   alt="CSAT Badge"
+                  width={48}
+                  height={64}
+                  loading="lazy"
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -135,6 +138,9 @@ export default function TrustedClients() {
                 <img
                   src="/images/trusted-clients/greate-place-to-work.svg"
                   alt="Great Place to Work Badge"
+                  width={48}
+                  height={64}
+                  loading="lazy"
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -171,6 +177,9 @@ export default function TrustedClients() {
                 <img
                   src="/images/trusted-clients/clutch.svg"
                   alt="Clutch Logo Badge"
+                  width={48}
+                  height={56}
+                  loading="lazy"
                   className="w-full h-full object-contain"
                 />
               </div>

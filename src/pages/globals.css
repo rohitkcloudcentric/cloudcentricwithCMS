@@ -45,6 +45,16 @@ body {
   overflow-x: hidden;
 }
 
+/* Ensure cursor pointer on all buttons, links and clickable elements */
+button,
+a,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  cursor: pointer;
+}
+
 /* Custom Font Utilities */
 .font-intel {
   font-family: var(--font-intel-one-mono), monospace;

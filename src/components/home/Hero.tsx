@@ -3,14 +3,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import HeroCard from "./HeroCard";
-import AIChatBar from "./AIChatBar";
+import AIChatBar from "@/components/common/AIChatBar";
 
 export default function Hero() {
   const [activeIdx, setActiveIdx] = useState(0);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const handle = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(handle);
   }, []);
 
   const expertiseItems = [

@@ -39,12 +39,12 @@ export default function WhoWeAreCTA() {
         <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center space-y-6">
           {/* Main Heading — Comes from Bottom */}
           <h2 
-            className={`text-2xl sm:text-4xl md:text-5xl lg:text-[52px] font-bold text-white leading-[1.15] tracking-tight font-sans transition-all duration-800 ease-out transform ${
+            className={`text-2xl sm:text-4xl md:text-5xl lg:text-[52px] font-normal text-white leading-[1.15] tracking-tight font-sans transition-all duration-800 ease-out transform ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
             style={{ transitionDelay: "200ms" }}
           >
-            Let's Build The Future Of Your <br className="hidden sm:inline" />
+            Let&apos;s Build The Future Of Your <br className="hidden sm:inline" />
             Business Together
           </h2>
 

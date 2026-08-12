@@ -9,7 +9,7 @@ export default function AnnouncementBar() {
   if (!isVisible) return null;
 
   return (
-    <div className="relative z-40 h-[30px] w-full bg-[rgba(10,10,12,0.4)] backdrop-blur-sm flex items-center justify-between px-4 text-xs font-normal text-white">
+    <div className="hidden sm:flex relative z-40 h-[30px] w-full bg-[rgba(10,10,12,0.4)] backdrop-blur-sm items-center justify-between px-4 text-xs font-normal text-white">
       <div className="flex-1 flex items-center justify-center space-x-1.5" style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}>
         <span className="text-white/90 text-xs">
           Ready to Transform Your Business with AI &amp; Intelligent Automation?
@@ -18,7 +18,7 @@ export default function AnnouncementBar() {
           href="#contact"
           className="inline-flex items-center text-xs text-white/90 hover:text-purple-400 font-medium transition-colors ml-1 group"
         >
-          <span>Let's Talk</span>
+          <span>Let&apos;s Talk</span>
           <ArrowRight className="w-3 h-3 ml-1 group-hover:translate-x-0.5 transition-transform" />
         </a>
       </div>

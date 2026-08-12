@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 
 export default function RankedSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -61,8 +60,10 @@ export default function RankedSection() {
               <img
                 src={badge.src}
                 alt={badge.name}
+                width={badge.width}
+                height={badge.height}
+                loading="lazy"
                 className="h-10 sm:h-12 md:h-14 w-auto object-contain image-render-crisp"
-                loading="eager"
               />
             </div>
           ))}

@@ -3,6 +3,37 @@
 import Link from "next/link";
 
 export default function Footer() {
+  const companyLinks = [
+    { name: "About Us", href: "/who-we-are" },
+    { name: "Our Team", href: "/who-we-are" },
+    { name: "Careers", href: "/contact-us" },
+    { name: "Our Clients", href: "/our-clients" },
+    { name: "Contact Us", href: "/contact-us" },
+  ];
+
+  const aiSalesforceLinks = [
+    { name: "AI Solutions", href: "/what-we-do" },
+    { name: "Salesforce & Agentforce", href: "/what-we-do" },
+    { name: "Custom Development", href: "/what-we-do" },
+    { name: "Cloud Solutions", href: "/what-we-do" },
+    { name: "Implementation & Support", href: "/contact-us" },
+  ];
+
+  const productLinks = [
+    { name: "FieldBlaze", href: "http://fieldblaze.com/", external: true },
+    { name: "FlyBlaze", href: "http://flyblaze.com/", external: true },
+    { name: "Messagify", href: "https://messagify.net/", external: true },
+    { name: "Hoopmein", href: "https://hoopmein.com/", external: true },
+    { name: "C3IM", href: "https://appexchange.salesforce.com/appxListingDetail?listingId=a0N3A00000FvKpqUAF", external: true },
+  ];
+
+  const resourceLinks = [
+    { name: "Blog and Insights", href: "/blogs" },
+    { name: "Case Studies", href: "/blogs" },
+    { name: "Success Stories", href: "/our-clients" },
+    { name: "News & Insights", href: "/blogs" },
+  ];
+
   return (
     <footer 
       className="w-full border-t border-white/[0.08] pt-12 pb-6 space-y-12 bg-cover bg-center bg-no-repeat relative"
@@ -58,82 +89,74 @@ export default function Footer() {
 
           {/* Right Column: Company Description & 4 Columns */}
           <div className="lg:col-span-7 flex flex-col space-y-8">
-            <p
-              className="text-sm md:text-base text-[#BDBDC8] leading-relaxed font-intel"
-            >
+            <p className="text-sm md:text-base text-[#BDBDC8] leading-relaxed font-intel">
               CloudCentric Infotech is an AI-first technology company helping businesses accelerate growth through intelligent automation, Salesforce solutions, enterprise software, cloud technologies, and innovative SaaS products. We build secure, scalable, and future-ready digital experiences for organizations worldwide.
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-xs">
               {/* Company */}
               <div className="flex flex-col space-y-2.5">
-                <h3
-                  className="font-bold text-white text-sm tracking-wide font-duru"
-                >
+                <h3 className="font-bold text-white text-sm tracking-wide font-duru">
                   Company
                 </h3>
-                {["About Us", "Our Team", "Careers", "Our Clients", "Contact Us"].map((item) => (
-                  <a
-                    key={item}
-                    href="#"
+                {companyLinks.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
                     className="text-[#BDBDC8] hover:text-[#8B3DFF] transition-colors text-sm font-intel"
                   >
-                    {item}
-                  </a>
+                    {item.name}
+                  </Link>
                 ))}
               </div>
 
               {/* AI & Salesforce */}
               <div className="flex flex-col space-y-2.5">
-                <h3
-                  className="font-bold text-white text-sm tracking-wide font-duru"
-                >
+                <h3 className="font-bold text-white text-sm tracking-wide font-duru">
                   AI &amp; Salesforce
                 </h3>
-                {["AI Solutions", "Salesforce & Agentforce", "Custom Development", "Cloud Solutions", "Implementation & Support"].map((item) => (
-                  <a
-                    key={item}
-                    href="#"
+                {aiSalesforceLinks.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
                     className="text-[#BDBDC8] hover:text-[#8B3DFF] transition-colors text-sm font-intel"
                   >
-                    {item}
-                  </a>
+                    {item.name}
+                  </Link>
                 ))}
               </div>
 
               {/* Products */}
               <div className="flex flex-col space-y-2.5">
-                <h3
-                  className="font-bold text-white text-sm tracking-wide font-duru"
-                >
+                <h3 className="font-bold text-white text-sm tracking-wide font-duru">
                   Products
                 </h3>
-                {["FieldBlaze", "FlyBlaze", "Messagify", "HoopMeln", "CSIN"].map((item) => (
+                {productLinks.map((item) => (
                   <a
-                    key={item}
-                    href="#"
+                    key={item.name}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-[#BDBDC8] hover:text-[#8B3DFF] transition-colors text-sm font-intel"
                   >
-                    {item}
+                    {item.name}
                   </a>
                 ))}
               </div>
 
               {/* Resources */}
               <div className="flex flex-col space-y-2.5">
-                <h3
-                  className="font-bold text-white text-sm tracking-wide font-duru"
-                >
+                <h3 className="font-bold text-white text-sm tracking-wide font-duru">
                   Resources
                 </h3>
-                {["Blog and Insights", "Case Studies", "Success Stories", "News & Insights"].map((item) => (
-                  <a
-                    key={item}
-                    href="#"
+                {resourceLinks.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
                     className="text-[#BDBDC8] hover:text-[#8B3DFF] transition-colors text-sm font-intel"
                   >
-                    {item}
-                  </a>
+                    {item.name}
+                  </Link>
                 ))}
               </div>
             </div>
@@ -146,9 +169,9 @@ export default function Footer() {
           <div className="flex items-center space-x-4">
             <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <span>|</span>
-            <a href="#" className="hover:text-white transition-colors">Terms of Services</a>
+            <Link href="/privacy-policy" className="hover:text-white transition-colors">Terms of Services</Link>
             <span>|</span>
-            <a href="#" className="hover:text-white transition-colors">Customer Support</a>
+            <Link href="/contact-us" className="hover:text-white transition-colors">Customer Support</Link>
           </div>
         </div>
       </div>

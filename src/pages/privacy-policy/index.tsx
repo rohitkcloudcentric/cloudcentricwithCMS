@@ -1,9 +1,9 @@
 import Head from "next/head";
-import AnnouncementBar from "@/components/AnnouncementBar";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import FloatingButtons from "@/components/FloatingButtons";
-import PrivacyPolicyContent from "@/components/PrivacyPolicyContent";
+import AnnouncementBar from "@/components/common/AnnouncementBar";
+import Navbar from "@/components/common/Navbar";
+import Footer from "@/components/common/Footer";
+import FloatingButtons from "@/components/common/FloatingButtons";
+import PrivacyPolicyContent from "@/components/privacy-policy/PrivacyPolicyContent";
 
 export default function PrivacyPolicyPage() {
   const jsonLd = {

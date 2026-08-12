@@ -1,13 +1,13 @@
 import Head from "next/head";
-import AnnouncementBar from "@/components/AnnouncementBar";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import FloatingButtons from "@/components/FloatingButtons";
-import OurClientsHero from "@/components/OurClientsHero";
-import TrustedClients from "@/components/TrustedClients";
-import FAQSection from "@/components/FAQSection";
-import RankedSection from "@/components/RankedSection";
-import WhoWeAreCTA from "@/components/CTA";
+import AnnouncementBar from "@/components/common/AnnouncementBar";
+import Navbar from "@/components/common/Navbar";
+import Footer from "@/components/common/Footer";
+import FloatingButtons from "@/components/common/FloatingButtons";
+import OurClientsHero from "@/components/our-clients/OurClientsHero";
+import TrustedClients from "@/components/common/TrustedClients";
+import FAQSection from "@/components/home/FAQSection";
+import RankedSection from "@/components/common/RankedSection";
+import WhoWeAreCTA from "@/components/home/CTA";
 
 export default function OurClients() {
   const jsonLd = {

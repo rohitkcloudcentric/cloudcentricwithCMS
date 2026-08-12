@@ -39,16 +39,17 @@ export default function Navbar() {
 
   // Close mobile drawer on route change
   useEffect(() => {
-    setMobileDrawerOpen(false);
+    const handle = requestAnimationFrame(() => setMobileDrawerOpen(false));
+    return () => cancelAnimationFrame(handle);
   }, [pathname]);
 
   const resourceSubMenu = [
     { name: "Our Clients", description: "Brands & enterprises who trust us", icon: Briefcase, href: "/our-clients" },
-    { name: "Blog & Insights", description: "Latest AI trends & whitepapers", icon: BookOpen, href: "#blog" },
-    { name: "Case Studies", description: "Real-world client success stories", icon: Briefcase, href: "#case-studies" },
-    { name: "Documentation", description: "Developer guides & API specs", icon: FileText, href: "#docs" },
-    { name: "Webinars & Videos", description: "Watch expert keynotes and demos", icon: Video, href: "#webinars" },
-    { name: "FAQs & Support", description: "Get answers to common questions", icon: HelpCircle, href: "#faq" },
+    { name: "Blog & Insights", description: "Latest AI trends & whitepapers", icon: BookOpen, href: "/blogs" },
+    // { name: "Case Studies", description: "Real-world client success stories", icon: Briefcase, href: "#case-studies" },
+    // { name: "Documentation", description: "Developer guides & API specs", icon: FileText, href: "#docs" },
+    // { name: "Webinars & Videos", description: "Watch expert keynotes and demos", icon: Video, href: "#webinars" },
+    // { name: "FAQs & Support", description: "Get answers to common questions", icon: HelpCircle, href: "#faq" },
   ];
 
   return (
@@ -116,7 +117,7 @@ export default function Navbar() {
                   aria-haspopup="true"
                   aria-label="Resources menu"
                   className={`relative flex items-center space-x-1 text-sm transition-colors py-1 group font-duru ${
-                    resourcesOpen || pathname === "/resources" || pathname === "/our-clients"
+                    resourcesOpen || pathname === "/resources" || pathname === "/our-clients" || pathname === "/blogs" || pathname?.startsWith("/blog")
                       ? "bg-gradient-to-r from-[#2563EB] via-[#7C3AED] to-[#A855F7] bg-clip-text text-transparent font-bold"
                       : "text-white/80 hover:text-white font-medium"
                   }`}
@@ -124,7 +125,7 @@ export default function Navbar() {
                   <span>Resources</span>
                   <svg
                     className={`w-2.5 h-2.5 transition-transform duration-200 ${
-                      resourcesOpen || pathname === "/resources" || pathname === "/our-clients"
+                      resourcesOpen || pathname === "/resources" || pathname === "/our-clients" || pathname === "/blogs" || pathname?.startsWith("/blog")
                         ? "text-[#A855F7] rotate-180"
                         : "text-white/80"
                     }`}
@@ -148,7 +149,9 @@ export default function Navbar() {
                     <div className="rounded-2xl bg-[rgba(18,18,24,0.95)] backdrop-blur-[24px] border border-white/[0.12] p-2 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(124,58,237,0.2)]">
                       {resourceSubMenu.map((item) => {
                         const IconComp = item.icon;
-                        const isSubActive = pathname === item.href;
+                        const isSubActive =
+                          pathname === item.href ||
+                          (item.href === "/blogs" && (pathname === "/blogs" || pathname?.startsWith("/blog")));
                         return (
                           <Link
                             key={item.name}
@@ -200,6 +203,8 @@ export default function Navbar() {
             {/* ASK AI Button & Grid Icon (Desktop) / Hamburger Icon (Mobile) */}
             <div className="flex items-center space-x-3">
               <button 
+                type="button"
+                aria-label="Open AI Assistant"
                 className="hidden sm:flex items-center space-x-2 px-5 py-2 rounded-full bg-gradient-to-r from-[#4F8BFF] via-[#7C3AED] to-[#A855F7] text-white text-sm font-semibold tracking-wider hover:opacity-95 transition-all shadow-[0_0_20px_rgba(124,58,237,0.6)] active:scale-95 font-intel"
               >
                 <Sparkles className="w-3.5 h-3.5" />
@@ -352,6 +357,8 @@ export default function Navbar() {
         {/* Drawer Footer Actions */}
         <div className="pt-6 border-t border-white/10 flex flex-col space-y-3">
           <button 
+            type="button"
+            aria-label="Open AI Assistant"
             className="w-full flex items-center justify-center space-x-2 py-3 rounded-full bg-gradient-to-r from-[#4F8BFF] via-[#7C3AED] to-[#A855F7] text-white text-xs font-semibold tracking-wider shadow-[0_0_20px_rgba(124,58,237,0.5)] active:scale-95 font-intel"
           >
             <Sparkles className="w-4 h-4" />

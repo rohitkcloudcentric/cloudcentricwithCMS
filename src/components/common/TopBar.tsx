@@ -8,7 +8,7 @@ export default function TopBar() {
   if (!isVisible) return null;
 
   return (
-    <div className="relative w-full bg-gradient-to-r from-slate-300 via-slate-400 to-slate-300 dark:from-slate-800 dark:via-slate-700 dark:to-slate-800 text-slate-800 dark:text-slate-100 text-sm py-2 px-4 shadow-sm border-b border-slate-300/40 dark:border-slate-700/40">
+    <div className="hidden sm:block relative w-full bg-gradient-to-r from-slate-300 via-slate-400 to-slate-300 dark:from-slate-800 dark:via-slate-700 dark:to-slate-800 text-slate-800 dark:text-slate-100 text-sm py-2 px-4 shadow-sm border-b border-slate-300/40 dark:border-slate-700/40">
       <div className="max-w-7xl mx-auto flex items-center justify-center relative">
         <div className="flex items-center space-x-2 text-center">
           <span className="font-normal text-md tracking-wide">
@@ -18,7 +18,7 @@ export default function TopBar() {
             href="#contact"
             className="inline-flex items-center font-medium text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors duration-150 ml-1 group"
           >
-            <span>Let's Talk</span>
+            <span>Let&apos;s Talk</span>
             <svg
               className="w-4 h-4 ml-1 transition-transform duration-150 group-hover:translate-x-0.5"
               fill="none"

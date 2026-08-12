@@ -51,12 +51,12 @@ export default function Preloader() {
           <div className="absolute w-44 h-44 rounded-full border border-t-transparent border-r-[#8B5CF6]/40 border-b-transparent border-l-[#3B82F6]/40 animate-[spin_3s_linear_infinite_reverse]" />
 
           {/* CloudCentric Logo */}
-          <div className="w-24 h-24 relative flex items-center justify-center p-3 animate-pulse">
+          <div className="w-full h-auto relative flex items-center justify-center p-3 animate-pulse">
             <Image
               src="/logo.svg"
               alt="CloudCentric Logo"
-              width={120}
-              height={120}
+              width={150}
+              height={150}
               priority
               className="object-contain drop-shadow-[0_0_25px_rgba(124,58,237,0.7)]"
             />
@@ -64,32 +64,7 @@ export default function Preloader() {
         </div>
 
         {/* CloudCentric Header Menu Logo */}
-        <div className="flex flex-col items-center justify-center space-y-3">
-          <Image
-            src="/logo.svg"
-            alt="CloudCentric Logo"
-            width={260}
-            height={64}
-            priority
-            className="object-contain drop-shadow-[0_0_30px_rgba(139,61,255,0.7)] animate-pulse"
-          />
-        </div>
-
-        {/* Progress Bar & Percentage */}
-        <div className="w-64 flex flex-col space-y-2 items-center">
-          <div className="w-full h-[3px] bg-white/10 rounded-full overflow-hidden relative">
-            <div
-              className="h-full bg-gradient-to-r from-[#3B82F6] via-[#7C3AED] to-[#B021F0] transition-all duration-300 ease-out rounded-full shadow-[0_0_15px_rgba(124,58,237,0.8)]"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <span
-            className="text-[11px] font-semibold text-white/60 tracking-wider font-mono"
-          >
-            {progress}%
-          </span>
-        </div>
-      </div>
+            </div>
     </div>
   );
 }

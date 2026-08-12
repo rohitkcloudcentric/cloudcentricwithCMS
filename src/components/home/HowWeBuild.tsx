@@ -43,10 +43,7 @@ const devTech = [
   { src: "/images/how-we-build/c-sharp-icon.png", alt: "and More" },
 ];
 
-const LEFT_W = 230;
-const LEFT_BG = "#0d0d11";
 const BORDER_COLOR = "#1E1E2A";
-const MONO = "var(--font-intel-one-mono), monospace";
 
 interface LeftPanelProps {
   icon: string;
@@ -148,7 +145,7 @@ export default function HowWeBuild() {
                 className="flex items-center justify-center min-h-[55px] sm:min-h-[70px] transition-transform duration-300 hover:scale-110 cursor-pointer"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={m.src} alt={m.alt} className="transition-opacity duration-300 hover:opacity-100" />
+                <img src={m.src} alt={m.alt} loading="lazy" className="transition-opacity duration-300 hover:opacity-100" />
               </div>
             ))}
           </div>
@@ -175,7 +172,7 @@ export default function HowWeBuild() {
                 className="flex flex-col items-center justify-center min-h-[60px] transition-transform duration-300 hover:scale-105 cursor-pointer"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={c.src} alt={c.alt} className="max-w-full h-auto object-contain" />
+                <img src={c.src} alt={c.alt} loading="lazy" className="max-w-full h-auto object-contain" />
               </div>
             ))}
           </div>
@@ -202,7 +199,7 @@ export default function HowWeBuild() {
                 className="flex flex-col items-center justify-center min-h-[60px] transition-transform duration-300 hover:scale-105 cursor-pointer"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={s.src} alt={s.alt} className="max-w-full h-auto object-contain" />
+                <img src={s.src} alt={s.alt} loading="lazy" className="max-w-full h-auto object-contain" />
               </div>
             ))}
           </div>
@@ -229,7 +226,7 @@ export default function HowWeBuild() {
                 className="flex items-center justify-center min-h-[55px] sm:min-h-[70px] transition-transform duration-300 hover:scale-110 cursor-pointer"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={t.src} alt={t.alt} />
+                <img src={t.src} alt={t.alt} loading="lazy" />
               </div>
             ))}
           </div>

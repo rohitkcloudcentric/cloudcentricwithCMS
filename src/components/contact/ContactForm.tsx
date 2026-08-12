@@ -140,7 +140,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
 
     // Filter out undefined errors
     const activeErrors = Object.fromEntries(
-      Object.entries(newErrors).filter(([_, v]) => v !== undefined)
+      Object.entries(newErrors).filter(([, v]) => v !== undefined)
     ) as FormErrors;
 
     setErrors(activeErrors);
@@ -206,6 +206,8 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
               value={formData.name}
               onChange={(e) => handleChange("name", e.target.value)}
               onBlur={() => handleBlur("name")}
+              required
+              aria-required="true"
               aria-invalid={!!errors.name}
               aria-describedby={errors.name ? "error-name" : undefined}
               className={`w-full bg-transparent border-b pb-3 text-white/90 placeholder-[#666677] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none transition-all text-sm font-normal ${
@@ -235,6 +237,8 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
               value={formData.email}
               onChange={(e) => handleChange("email", e.target.value)}
               onBlur={() => handleBlur("email")}
+              required
+              aria-required="true"
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? "error-email" : undefined}
               className={`w-full bg-transparent border-b pb-3 text-white/90 placeholder-[#666677] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none transition-all text-sm font-normal ${
@@ -339,6 +343,8 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
             value={formData.description}
             onChange={(e) => handleChange("description", e.target.value)}
             onBlur={() => handleBlur("description")}
+            required
+            aria-required="true"
             aria-invalid={!!errors.description}
             aria-describedby={errors.description ? "error-description" : undefined}
             className={`w-full bg-[#111115] border rounded-xl p-4 text-white/90 placeholder-[#666677] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none transition-all resize-none text-sm font-normal ${
@@ -369,6 +375,8 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
                 value={formData.budget}
                 onChange={(e) => handleChange("budget", e.target.value)}
                 onBlur={() => handleBlur("budget")}
+                required
+                aria-required="true"
                 aria-invalid={!!errors.budget}
                 aria-describedby={errors.budget ? "error-budget" : undefined}
                 className={`w-full bg-[#111115] border rounded-xl px-4 py-3.5 text-[#666677] focus:text-white outline-none focus:outline-none focus:ring-0 focus-visible:outline-none transition-all text-sm font-normal appearance-none cursor-pointer pr-10 ${

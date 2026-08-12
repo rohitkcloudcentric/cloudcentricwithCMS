@@ -1,12 +1,12 @@
 import Head from "next/head";
-import AnnouncementBar from "@/components/AnnouncementBar";
-import Navbar from "@/components/Navbar";
-import WhatWeDoHero from "@/components/WhatWeDoHero";
-import OurAICapabilities from "@/components/OurAICapabilities";
-import CoreCapabilities from "@/components/CoreCapabilities";
-import RankedSection from "@/components/RankedSection";
-import FloatingButtons from "@/components/FloatingButtons";
-import Footer from "@/components/Footer";
+import AnnouncementBar from "@/components/common/AnnouncementBar";
+import Navbar from "@/components/common/Navbar";
+import WhatWeDoHero from "@/components/home/WhatWeDoHero";
+import OurAICapabilities from "@/components/home/OurAICapabilities";
+import CoreCapabilities from "@/components/home/CoreCapabilities";
+import RankedSection from "@/components/common/RankedSection";
+import FloatingButtons from "@/components/common/FloatingButtons";
+import Footer from "@/components/common/Footer";
 
 export default function WhatWeDo() {
   const jsonLd = {

@@ -1,15 +1,15 @@
 import Head from "next/head";
-import AnnouncementBar from "@/components/AnnouncementBar";
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import BuildingIntelligent from "@/components/BuildingIntelligent";
-import HowWeBuild from "@/components/HowWeBuild";
-import AIEcosystem from "@/components/AIEcosystem";
-import TrustedClients from "@/components/TrustedClients";
-import RankedSection from "@/components/RankedSection";
-import ContactUs from "@/components/ContactUs";
-import FloatingButtons from "@/components/FloatingButtons";
-import Footer from "@/components/Footer";
+import AnnouncementBar from "@/components/common/AnnouncementBar";
+import Navbar from "@/components/common/Navbar";
+import Hero from "@/components/home/Hero";
+import BuildingIntelligent from "@/components/home/BuildingIntelligent";
+import HowWeBuild from "@/components/home/HowWeBuild";
+import AIEcosystem from "@/components/home/AIEcosystem";
+import TrustedClients from "@/components/common/TrustedClients";
+import RankedSection from "@/components/common/RankedSection";
+import ContactUs from "@/components/contact/ContactUs";
+import FloatingButtons from "@/components/common/FloatingButtons";
+import Footer from "@/components/common/Footer";
 
 export default function Home() {
   const jsonLd = {

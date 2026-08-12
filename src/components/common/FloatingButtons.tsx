@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { MessageSquare, ArrowUp } from "lucide-react";
 
 export default function FloatingButtons() {
@@ -8,12 +9,12 @@ export default function FloatingButtons() {
       {/* Right Side Rotated Vertical Action Tabs */}
       <div className="fixed right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col space-x-3 items-center">
       
-        <a
+        <Link
           href="/contact-us"
           className="bg-gradient-to-b from-[#2563EB] to-[#9333EA] text-white text-[11px] font-[family:var(--font-intel-one-mono)] font-extrabold tracking-[0.15em] w-[38px] py-1 rounded-lg shadow-[0_4px_20px_rgba(124,58,237,0.3)] hover:shadow-[0_4px_25px_rgba(37,99,235,0.5)] hover:-translate-x-1 hover:scale-105 transition-all duration-300 uppercase [writing-mode:vertical-rl] px-3 flex items-center justify-center h-auto text-center cursor-pointer"
         >
           BOOK A CONSULTATION
-        </a>
+        </Link>
         <a
           href="https://api.whatsapp.com/send/?phone=9971126721&type=phone_number&app_absent=0"
           target="_blank"
