@@ -1,4 +1,5 @@
-import Head from "next/head";
+import SEOHead from "@/components/seo/SEOHead";
+import { SITE_URL } from "@/config/seo.config";
 import AnnouncementBar from "@/components/common/AnnouncementBar";
 import Navbar from "@/components/common/Navbar";
 import Hero from "@/components/home/Hero";
@@ -16,8 +17,8 @@ export default function Home() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "CloudCentric",
-    "url": "https://cloudcentric.com",
-    "logo": "https://cloudcentric.com/logo.png",
+    "url": SITE_URL,
+    "logo": `${SITE_URL}/images/Logo.svg`,
     "description": "Where Artificial Intelligence meets business innovation. We build scalable AI solutions, Salesforce platforms, enterprise software, and digital cloud experiences.",
     "sameAs": [
       "https://www.youtube.com/channel/UC21Gs_6xh8PF1nc8-XIyHJg",
@@ -30,33 +31,12 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>CloudCentric - Where Artificial Intelligence Meets Business Innovation</title>
-        <meta
-          name="description"
-          content="CloudCentric helps modern businesses adopt AI, automate workflows, optimize customer experiences, and build scalable digital ecosystems."
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="canonical" href="https://cloudcentric.com" />
-        
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="CloudCentric - Where Artificial Intelligence Meets Business Innovation" />
-        <meta property="og:description" content="We help modern businesses adopt AI, automate workflows, optimize customer experiences, and build scalable digital ecosystems." />
-        <meta property="og:url" content="https://cloudcentric.com" />
-        <meta property="og:site_name" content="CloudCentric" />
-        
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="CloudCentric - Where Artificial Intelligence Meets Business Innovation" />
-        <meta name="twitter:description" content="We help modern businesses adopt AI, automate workflows, optimize customer experiences, and build scalable digital ecosystems." />
-
-        {/* Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </Head>
+      <SEOHead
+        title="CloudCentric - Where Artificial Intelligence Meets Business Innovation"
+        description="CloudCentric helps modern businesses adopt AI, automate workflows, optimize customer experiences, and build scalable digital ecosystems."
+        canonical={SITE_URL}
+        jsonLd={jsonLd}
+      />
       <main className="min-h-screen bg-[#050505] text-white flex flex-col overflow-x-clip selection:bg-[#7C3AED] selection:text-white relative">
         {/* Background Radial Glow Layer */}
         <div 

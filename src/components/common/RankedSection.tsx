@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 
 export default function RankedSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -25,14 +26,14 @@ export default function RankedSection() {
   }, []);
 
   const badgeImages = [
-    { name: "Badge 1", src: "/images/ranked-images/Container.png", width: 60, height: 60 },
-    { name: "Badge 2", src: "/images/ranked-images/Container-1.png", width: 140, height: 48 },
-    { name: "Badge 3", src: "/images/ranked-images/container-2.png", width: 80, height: 50 },
-    { name: "Badge 4", src: "/images/ranked-images/container-3.png", width: 65, height: 65 },
-    { name: "Badge 5", src: "/images/ranked-images/container-4.png", width: 60, height: 65 },
-    { name: "Badge 6", src: "/images/ranked-images/Container-5.png", width: 65, height: 65 },
-    { name: "Badge 7", src: "/images/ranked-images/container-6.png", width: 60, height: 65 },
-    { name: "Badge 8", src: "/images/ranked-images/container-7.png", width: 65, height: 65 },
+    { name: "Ranked Badge 1", src: "/images/ranked-images/Container.png", width: 60, height: 60 },
+    { name: "Ranked Badge 2", src: "/images/ranked-images/Container-1.png", width: 140, height: 48 },
+    { name: "Ranked Badge 3", src: "/images/ranked-images/container-2.png", width: 80, height: 50 },
+    { name: "Ranked Badge 4", src: "/images/ranked-images/container-3.png", width: 65, height: 65 },
+    { name: "Ranked Badge 5", src: "/images/ranked-images/container-4.png", width: 60, height: 65 },
+    { name: "Ranked Badge 6", src: "/images/ranked-images/Container-5.png", width: 65, height: 65 },
+    { name: "Ranked Badge 7", src: "/images/ranked-images/container-6.png", width: 60, height: 65 },
+    { name: "Ranked Badge 8", src: "/images/ranked-images/container-7.png", width: 65, height: 65 },
   ];
 
   return (
@@ -57,12 +58,11 @@ export default function RankedSection() {
               }`}
               style={{ transitionDelay: `${150 + idx * 100}ms` }}
             >
-              <img
+              <Image
                 src={badge.src}
                 alt={badge.name}
                 width={badge.width}
                 height={badge.height}
-                loading="lazy"
                 className="h-10 sm:h-12 md:h-14 w-auto object-contain image-render-crisp"
               />
             </div>

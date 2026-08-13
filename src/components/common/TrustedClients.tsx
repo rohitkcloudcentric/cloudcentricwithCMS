@@ -94,12 +94,11 @@ export default function TrustedClients() {
             >
               {/* CSAT Ribbon Badge */}
               <div className="absolute -top-5 right-4 w-11 sm:w-12 h-15 sm:h-16 z-30 drop-shadow-lg">
-                <img
+                <Image
                   src="/images/trusted-clients/csat.svg"
                   alt="CSAT Badge"
                   width={48}
                   height={64}
-                  loading="lazy"
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -135,12 +134,11 @@ export default function TrustedClients() {
             >
               {/* Badge Ribbon Top Right */}
               <div className="absolute -top-4 right-4 w-11 sm:w-12 h-15 sm:h-16 z-30 drop-shadow-lg">
-                <img
+                <Image
                   src="/images/trusted-clients/greate-place-to-work.svg"
                   alt="Great Place to Work Badge"
                   width={48}
                   height={64}
-                  loading="lazy"
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -174,12 +172,11 @@ export default function TrustedClients() {
             >
               {/* Clutch Logo Top Right */}
               <div className="absolute -top-3 right-4 w-11 sm:w-12 h-13 sm:h-14 z-30 drop-shadow-lg">
-                <img
+                <Image
                   src="/images/trusted-clients/clutch.svg"
                   alt="Clutch Logo Badge"
                   width={48}
                   height={56}
-                  loading="lazy"
                   className="w-full h-full object-contain"
                 />
               </div>

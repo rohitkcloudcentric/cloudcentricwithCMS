@@ -14,6 +14,22 @@ export interface CaseStudyPost {
   solution: string;
   impacts: string[];
   image: string;
+  clientName?: string;
+  industry?: string;
+  technologies?: string[];
+  clientUrl?: string;
+  challengeSubtitle?: string;
+  challengeParagraph?: string;
+  challengeBullets?: string[];
+  approachSubtitle?: string;
+  approachIntro?: string;
+  approachSteps?: { number: string; title: string; desc: string }[];
+  solutionSubtitle?: string;
+  solutionIntro?: string;
+  solutionBullets?: { title: string; desc: string }[];
+  impactSubtitle?: string;
+  impactQuote?: string;
+  impactBullets?: { title: string; desc: string }[];
 }
 
 interface CaseStudyCardProps {

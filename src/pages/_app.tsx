@@ -36,9 +36,13 @@ const manrope = Manrope({
   display: "swap",
 });
 
+import SEOHead from "@/components/seo/SEOHead";
+import { ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/sitemap-helper";
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} ${duruSans.variable} ${intelOneMono.variable} ${manrope.variable} h-full antialiased dark`}>
+      <SEOHead jsonLd={[ORGANIZATION_SCHEMA, WEBSITE_SCHEMA]} />
       <Preloader />
       <Component {...pageProps} />
     </div>

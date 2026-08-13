@@ -95,9 +95,9 @@ export default function Navbar() {
               </Link>
 
               <Link
-                href="/#products"
+                href="/products"
                 className={`relative text-sm transition-colors py-1 group font-duru ${
-                  pathname === "/#products"
+                  pathname === "/products"
                     ? "bg-gradient-to-r from-[#2563EB] via-[#7C3AED] to-[#A855F7] bg-clip-text text-transparent font-bold"
                     : "text-white/80 hover:text-white font-medium"
                 }`}
@@ -302,11 +302,11 @@ export default function Navbar() {
               What we do
             </Link>
 
-            <Link
-              href="/#products"
+             <Link
+              href="/products"
               onClick={() => setMobileDrawerOpen(false)}
               className={`text-base py-2.5 px-3 rounded-xl transition-colors ${
-                pathname === "/#products"
+                pathname === "/products"
                   ? "bg-[#7C3AED]/20 text-[#A855F7] font-semibold border border-[#7C3AED]/40"
                   : "text-white/90 hover:bg-white/5"
               }`}

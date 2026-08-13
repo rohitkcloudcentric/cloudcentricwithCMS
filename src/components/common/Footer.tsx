@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   const companyLinks = [
@@ -76,10 +77,12 @@ export default function Footer() {
                     aria-label={`CloudCentric on ${social.name}`}
                     className="w-9 h-9 rounded-full bg-white text-black hover:bg-[#8B3DFF] hover:text-white flex items-center justify-center transition-all duration-200 shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:scale-110 cursor-pointer"
                   >
-                    <img
+                    <Image
                       src={social.src}
                       alt={`${social.name} Icon`}
-                      className="w-[30px] h-auto"
+                      width={30}
+                      height={30}
+                      className="w-[30px] h-auto object-contain"
                     />
                   </a>
                 ))}
@@ -169,7 +172,7 @@ export default function Footer() {
           <div className="flex items-center space-x-4">
             <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <span>|</span>
-            <Link href="/privacy-policy" className="hover:text-white transition-colors">Terms of Services</Link>
+            <Link href="/terms-and-conditions" className="hover:text-white transition-colors">Terms & Conditions</Link>
             <span>|</span>
             <Link href="/contact-us" className="hover:text-white transition-colors">Customer Support</Link>
           </div>

@@ -75,8 +75,8 @@ export default function AIEcosystem() {
             alt="AI Ecosystem - Connected integrations diagram"
             width={1400}
             height={780}
+            sizes="(max-width: 1024px) 100vw, 896px"
             className="w-full h-auto object-contain transition-transform duration-500 hover:scale-[1.01]"
-            priority
           />
         </div>
 
