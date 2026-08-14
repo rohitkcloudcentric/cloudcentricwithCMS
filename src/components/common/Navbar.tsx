@@ -13,6 +13,12 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
+  const handleOpenAIChat = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("open-ai-chat"));
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
@@ -205,8 +211,9 @@ export default function Navbar() {
             <div className="flex items-center space-x-3">
               <button 
                 type="button"
+                onClick={handleOpenAIChat}
                 aria-label="Open AI Assistant"
-                className="hidden sm:flex items-center space-x-2 px-5 py-2 rounded-full bg-gradient-to-r from-[#4F8BFF] via-[#7C3AED] to-[#A855F7] text-white text-sm font-semibold tracking-wider hover:opacity-95 transition-all shadow-[0_0_20px_rgba(124,58,237,0.6)] active:scale-95 font-intel"
+                className="hidden sm:flex items-center space-x-2 px-5 py-2 rounded-full bg-gradient-to-r from-[#4F8BFF] via-[#7C3AED] to-[#A855F7] text-white text-sm font-semibold tracking-wider hover:opacity-95 transition-all shadow-[0_0_20px_rgba(124,58,237,0.6)] active:scale-95 font-intel cursor-pointer"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>ASK AI</span>
@@ -359,8 +366,12 @@ export default function Navbar() {
         <div className="pt-6 border-t border-white/10 flex flex-col space-y-3">
           <button 
             type="button"
+            onClick={() => {
+              setMobileDrawerOpen(false);
+              handleOpenAIChat();
+            }}
             aria-label="Open AI Assistant"
-            className="w-full flex items-center justify-center space-x-2 py-3 rounded-full bg-gradient-to-r from-[#4F8BFF] via-[#7C3AED] to-[#A855F7] text-white text-xs font-semibold tracking-wider shadow-[0_0_20px_rgba(124,58,237,0.5)] active:scale-95 font-intel"
+            className="w-full flex items-center justify-center space-x-2 py-3 rounded-full bg-gradient-to-r from-[#4F8BFF] via-[#7C3AED] to-[#A855F7] text-white text-xs font-semibold tracking-wider shadow-[0_0_20px_rgba(124,58,237,0.5)] active:scale-95 font-intel cursor-pointer"
           >
             <Sparkles className="w-4 h-4" />
             <span>ASK AI</span>

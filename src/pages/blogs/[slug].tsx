@@ -27,7 +27,7 @@ export default function BlogDetailsPage() {
       "headline": post.title,
       "description": post.description,
       "image": post.image?.startsWith("http") ? post.image : `${SITE_URL}${post.image}`,
-      "datePublished": post.date ? new Date(post.date).toISOString() : new Date().toISOString(),
+      "datePublished": post.date ? new Date(post.date).toISOString() : "2026-08-14T00:00:00.000Z",
       "author": {
         "@type": "Organization",
         "name": post.author || "CloudCentric Infotech"

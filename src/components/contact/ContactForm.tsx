@@ -14,7 +14,7 @@ interface FormErrors {
   name?: string;
   email?: string;
   phone?: string;
-  telegram?: string;
+  location?: string;
   description?: string;
   budget?: string;
   file?: string;
@@ -28,7 +28,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
     name: "",
     email: "",
     phone: "",
-    telegram: "",
+    location: "",
     description: "",
     budget: "",
     referralSource: "",
@@ -65,12 +65,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
         }
         return undefined;
 
-      case "telegram":
-        if (typeof value === "string" && value.trim()) {
-          if (!/^[a-zA-Z0-9_@]+$/.test(value.trim())) {
-            return "Please enter a valid Telegram username.";
-          }
-        }
+      case "location":
         return undefined;
 
       case "description":
@@ -132,7 +127,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
       name: validateField("name", formData.name),
       email: validateField("email", formData.email),
       phone: validateField("phone", formData.phone),
-      telegram: validateField("telegram", formData.telegram),
+      location: validateField("location", formData.location),
       description: validateField("description", formData.description),
       budget: validateField("budget", formData.budget),
       file: validateField("file", selectedFile),
@@ -148,7 +143,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
       name: true,
       email: true,
       phone: true,
-      telegram: true,
+      location: true,
       description: true,
       budget: true,
       file: true,
@@ -299,29 +294,29 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
 
           <div className="flex flex-col space-y-2">
             <label
-              htmlFor="field-telegram"
+              htmlFor="field-location"
               className="text-[11px] font-bold tracking-widest text-white/90 uppercase"
               style={{ fontFamily: "var(--font-manrope), sans-serif" }}
             >
-              TELEGRAM
+              LOCATION
             </label>
             <input
-              id="field-telegram"
+              id="field-location"
               type="text"
-              placeholder="@username"
-              value={formData.telegram}
-              onChange={(e) => handleChange("telegram", e.target.value)}
-              onBlur={() => handleBlur("telegram")}
-              aria-invalid={!!errors.telegram}
-              aria-describedby={errors.telegram ? "error-telegram" : undefined}
+              placeholder="e.g. London, UK"
+              value={formData.location}
+              onChange={(e) => handleChange("location", e.target.value)}
+              onBlur={() => handleBlur("location")}
+              aria-invalid={!!errors.location}
+              aria-describedby={errors.location ? "error-location" : undefined}
               className={`w-full bg-transparent border-b pb-3 text-white/90 placeholder-[#666677] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none transition-all text-sm font-normal ${
-                errors.telegram ? "border-red-500 focus:border-red-500" : "border-white/20 focus:border-[#A855F7]"
+                errors.location ? "border-red-500 focus:border-red-500" : "border-white/20 focus:border-[#A855F7]"
               }`}
               style={{ fontFamily: "var(--font-manrope), sans-serif" }}
             />
-            {errors.telegram && (
-              <span id="error-telegram" className="text-red-400 text-[11px] font-medium transition-all">
-                {errors.telegram}
+            {errors.location && (
+              <span id="error-location" className="text-red-400 text-[11px] font-medium transition-all">
+                {errors.location}
               </span>
             )}
           </div>

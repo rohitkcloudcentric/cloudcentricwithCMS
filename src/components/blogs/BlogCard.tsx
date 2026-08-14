@@ -70,14 +70,14 @@ export default function BlogCard({ post, index }: BlogCardProps) {
         </div>
 
         {/* Right Column: Featured AI Diagram Box */}
-        <div className="w-full sm:w-[200px] md:w-[230px] lg:w-[240px] h-[160px] sm:h-[180px] rounded-[14px] overflow-hidden shrink-0 border border-white/15 relative bg-[#07070B]">
+        <div className="w-full sm:w-[200px] md:w-[230px] lg:w-[240px] h-[160px] sm:h-[180px] rounded-[14px] overflow-hidden shrink-0 relative">
           <Image
             src={post.image}
             alt={post.title}
             fill
             sizes="(max-width: 640px) 100vw, 240px"
             loading="lazy"
-            className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-500"
+            className="object-contain object-center group-hover:scale-[1.03] transition-transform duration-500 p-1"
           />
         </div>
       </div>

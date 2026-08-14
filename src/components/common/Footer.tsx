@@ -30,7 +30,7 @@ export default function Footer() {
 
   const resourceLinks = [
     { name: "Blog and Insights", href: "/blogs" },
-    { name: "Case Studies", href: "/blogs" },
+    { name: "Case Studies", href: "/case-studies" },
     { name: "Success Stories", href: "/our-clients" },
     { name: "News & Insights", href: "/blogs" },
   ];

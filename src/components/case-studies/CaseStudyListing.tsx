@@ -67,63 +67,7 @@ export const SAMPLE_CASE_STUDIES: CaseStudyPost[] = [
     industry: "TELECOMMUNICATIONS",
     technologies: ["SALESFORCE", "AGENTFORCE", "CRM INTEGRATION", "AI AGENTS", "CUSTOMER SERVICE"],
     clientUrl: "/contact-us"
-  },
-  {
-    id: "cs-3",
-    title: "Modernizing Core Architecture for Digital Transformation",
-    slug: "modernizing-core-architecture-digital-transformation",
-    category: "Digital Transformation",
-    challenge: "Legacy monolithic systems struggled to handle peak traffic demands and rapid feature rollouts.",
-    solution: "Migrated legacy infrastructure to cloud-native microservices with automated event-driven pipelines.",
-    impacts: ["99.99% UPTIME", "10X DEPLOYMENT SPEED", "ZERO DOWNTIME"],
-    image: "/images/case-studies/case-studies-3.png",
-    clientName: "FINTECH SOLUTIONS",
-    industry: "FINANCIAL SERVICES",
-    technologies: ["CLOUD NATIVE", "MICROSERVICES", "KUBERNETES", "DOCKER", "AWS"],
-    clientUrl: "/contact-us"
-  },
-  {
-    id: "cs-4",
-    title: "Architecting Cloud Infrastructure for Generative AI Models",
-    slug: "architecting-cloud-infrastructure-generative-ai",
-    category: "Technology",
-    challenge: "High latency and unoptimized GPU cloud infrastructure increased AI operational costs significantly.",
-    solution: "Engineered auto-scaling multi-region Kubernetes clusters optimized for LLM inference workloads.",
-    impacts: ["40% COST REDUCTION", "SUB-50MS LATENCY", "ENTERPRISE SECURITY"],
-    image: "/images/case-studies/case-studies-1.png",
-    clientName: "NEURAL NETWORKS INC",
-    industry: "TECHNOLOGY / AI",
-    technologies: ["LLM INFERENCE", "GPU ORCHESTRATION", "KUBERNETES", "PYTORCH"],
-    clientUrl: "/contact-us"
-  },
-  {
-    id: "cs-5",
-    title: "Building Intelligent B2B SaaS Product Workflows",
-    slug: "building-intelligent-b2b-saas-product-workflows",
-    category: "Product",
-    challenge: "Complex user onboarding flows resulted in user drop-offs and lower feature adoption rates.",
-    solution: "Redesigned conversational UX interfaces driven by context-aware AI copilots for enterprise users.",
-    impacts: ["3.5X ADOPTION", "ENHANCED RETENTION", "INTUITIVE UX"],
-    image: "/images/case-studies/case-studies-2.png",
-    clientName: "SAASIFY CORP",
-    industry: "SOFTWARE AS A SERVICE",
-    technologies: ["CONVERSATIONAL UI", "AI COCOPILOT", "UX RESEARCH", "REACT"],
-    clientUrl: "/contact-us"
-  },
-  {
-    id: "cs-6",
-    title: "AI-Powered Real-Time Data Pipeline & Analytics",
-    slug: "ai-powered-real-time-data-pipeline-analytics",
-    category: "AI & Automation",
-    challenge: "Fragmented data silos delayed operational decision-making across international market branches.",
-    solution: "Unified streaming data pipelines with predictive machine learning forecasting models.",
-    impacts: ["REAL-TIME INSIGHTS", "99.8% ACCURACY", "SEAMLESS INTEGRATION"],
-    image: "/images/case-studies/case-studies-3.png",
-    clientName: "RETAIL METRICS GROUP",
-    industry: "RETAIL & E-COMMERCE",
-    technologies: ["PREDICTIVE ANALYTICS", "DATA STREAMING", "MACHINE LEARNING", "APIS"],
-    clientUrl: "/contact-us"
-  },
+  }
 ];
 
 interface CaseStudyListingProps {

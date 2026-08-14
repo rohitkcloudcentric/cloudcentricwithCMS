@@ -264,7 +264,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
     name: "",
     email: "",
     phone: "",
-    telegram: "",
+    location: "",
     description: "",
     budget: "",
     referralSource: "",
@@ -292,10 +292,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
           if (!digits || digits.length < 7) return "Please enter a valid phone number.";
         }
         return undefined;
-      case "telegram":
-        if (typeof value === "string" && value.trim()) {
-          if (!/^[a-zA-Z0-9_@]+$/.test(value.trim())) return "Please enter a valid Telegram username.";
-        }
+      case "location":
         return undefined;
       case "description":
         if (typeof value === "string" && !value.trim()) return "Please describe your idea.";
@@ -337,7 +334,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
       name: validateField("name", formData.name),
       email: validateField("email", formData.email),
       phone: validateField("phone", formData.phone),
-      telegram: validateField("telegram", formData.telegram),
+      location: validateField("location", formData.location),
       description: validateField("description", formData.description),
       budget: validateField("budget", formData.budget),
       file: validateField("file", selectedFile),
@@ -352,7 +349,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
       name: true,
       email: true,
       phone: true,
-      telegram: true,
+      location: true,
       description: true,
       budget: true,
       file: true,
@@ -482,27 +479,27 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
 
           <div className="flex flex-col space-y-2">
             <label
-              htmlFor="hero-field-telegram"
+              htmlFor="hero-field-location"
               className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
             >
-              TELEGRAM
+              LOCATION
             </label>
             <input
-              id="hero-field-telegram"
+              id="hero-field-location"
               type="text"
-              placeholder="@username"
-              value={formData.telegram}
-              onChange={(e) => handleChange("telegram", e.target.value)}
-              onBlur={() => handleBlur("telegram")}
-              aria-invalid={!!errors.telegram}
-              aria-describedby={errors.telegram ? "hero-error-telegram" : undefined}
+              placeholder="e.g. London, UK"
+              value={formData.location}
+              onChange={(e) => handleChange("location", e.target.value)}
+              onBlur={() => handleBlur("location")}
+              aria-invalid={!!errors.location}
+              aria-describedby={errors.location ? "hero-error-location" : undefined}
               className={`w-full h-[56px] bg-transparent border-b text-white placeholder-[#8B8B95] outline-none transition-all text-sm font-intel ${
-                errors.telegram ? "border-red-500 focus:border-red-500" : "border-white/12 focus:border-[#A855F7]"
+                errors.location ? "border-red-500 focus:border-red-500" : "border-white/12 focus:border-[#A855F7]"
               }`}
             />
-            {errors.telegram && (
-              <span id="hero-error-telegram" className="text-red-400 text-[11px] font-medium font-intel">
-                {errors.telegram}
+            {errors.location && (
+              <span id="hero-error-location" className="text-red-400 text-[11px] font-medium font-intel">
+                {errors.location}
               </span>
             )}
           </div>

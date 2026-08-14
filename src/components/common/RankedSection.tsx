@@ -64,6 +64,7 @@ export default function RankedSection() {
                 width={badge.width}
                 height={badge.height}
                 className="h-10 sm:h-12 md:h-14 w-auto object-contain image-render-crisp"
+                unoptimized
               />
             </div>
           ))}

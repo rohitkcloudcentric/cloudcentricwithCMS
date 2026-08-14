@@ -51,14 +51,14 @@ export default function BlogDetailsHero({ post }: BlogDetailsHeroProps) {
           </div>
 
           {/* Right Column: Featured AI Diagram Box */}
-          <div className="w-full lg:w-[480px] xl:w-[510px] h-[280px] sm:h-[360px] lg:h-[380px] rounded-[22px] overflow-hidden shrink-0 border border-white/15 relative bg-[#07070B] shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
+          <div className="w-full lg:w-[480px] xl:w-[510px] h-[280px] sm:h-[360px] lg:h-[380px] rounded-[22px] overflow-hidden shrink-0 relative">
             <Image
               src={post.image}
               alt={post.title}
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 510px"
-              className="object-cover object-center"
+              className="object-contain object-center"
             />
           </div>
         </div>

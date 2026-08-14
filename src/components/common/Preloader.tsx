@@ -53,10 +53,10 @@ export default function Preloader() {
           {/* CloudCentric Logo */}
           <div className="w-full h-auto relative flex items-center justify-center p-3 animate-pulse">
             <Image
-              src="/logo.svg"
+              src="/favicon.svg"
               alt="CloudCentric Logo"
-              width={150}
-              height={150}
+              width={130}
+              height={130}
               priority
               className="object-contain drop-shadow-[0_0_25px_rgba(124,58,237,0.7)]"
             />

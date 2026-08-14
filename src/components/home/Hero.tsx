@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import HeroCard from "./HeroCard";
-import AIChatBar from "@/components/common/AIChatBar";
 
 export default function Hero() {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -116,8 +115,6 @@ export default function Hero() {
 
       </div>
 
-      {/* Floating AI Chat Bar */}
-      <AIChatBar />
     </section>
   );
 }

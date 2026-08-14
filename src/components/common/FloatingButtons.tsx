@@ -1,9 +1,38 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MessageSquare, ArrowUp } from "lucide-react";
+import AIChatBar from "./AIChatBar";
 
 export default function FloatingButtons() {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOpenChatEvent = () => {
+      setIsChatOpen(true);
+    };
+
+    window.addEventListener("open-ai-chat", handleOpenChatEvent);
+    return () => {
+      window.removeEventListener("open-ai-chat", handleOpenChatEvent);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isChatOpen) return;
+
+    const handleScroll = () => {
+      setIsChatOpen(false);
+    };
+
+    // Close chat bar on scroll
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isChatOpen]);
+
   return (
     <>
       {/* Right Side Rotated Vertical Action Tabs */}
@@ -30,7 +59,8 @@ export default function FloatingButtons() {
       {/* Bottom Floating Action Buttons */}
       <div className="fixed bottom-6 left-6 z-50">
         <button
-          className="w-12 h-12 rounded-full bg-[#7C3AED] text-white flex items-center justify-center shadow-[0_0_25px_rgba(124,58,237,0.7)] hover:scale-110 active:scale-95 transition-transform"
+          onClick={() => setIsChatOpen((prev) => !prev)}
+          className="w-12 h-12 rounded-full bg-[#7C3AED] text-white flex items-center justify-center shadow-[0_0_25px_rgba(124,58,237,0.7)] hover:scale-110 active:scale-95 transition-transform cursor-pointer"
           aria-label="Open AI Assistant"
         >
           <MessageSquare className="w-5 h-5" />
@@ -40,12 +70,15 @@ export default function FloatingButtons() {
       <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="w-12 h-12 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#4F8BFF] text-white flex items-center justify-center shadow-[0_0_25px_rgba(79,139,255,0.7)] hover:scale-110 active:scale-95 transition-transform"
+          className="w-12 h-12 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#4F8BFF] text-white flex items-center justify-center shadow-[0_0_25px_rgba(79,139,255,0.7)] hover:scale-110 active:scale-95 transition-transform cursor-pointer"
           aria-label="Scroll to top"
         >
           <ArrowUp className="w-5 h-5" />
         </button>
       </div>
+
+      {/* Conditionally rendered AI Chat Bar */}
+      {isChatOpen && <AIChatBar />}
     </>
   );
 }
