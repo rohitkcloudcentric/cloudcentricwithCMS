@@ -14,8 +14,8 @@ export interface CapabilityItem {
 export const capabilitiesData: CapabilityItem[] = [
   {
     id: "salesforce-ecosystem",
-    iconSrc: "/images/what we-do/salesforce-ecosystem.svg",
-    title: "Salesforce Ecosystem",
+    iconSrc: "/images/what we-do/salesforce-ecosystem.png",
+    title: "Salesforce",
     technologies: "Consulting • Development • Agentforce",
     description:
       "Maximize Salesforce with consulting, implementation, customization, integrations, and managed services.",
