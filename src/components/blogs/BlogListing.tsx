@@ -8,10 +8,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 export const SAMPLE_BLOG_POSTS: BlogPost[] = [
   {
     id: "1",
-    title: "How AI Agents Are Changing Business Automation",
+    title: "How AI Agents Are Changing Business Operations",
     slug: "how-ai-agents-are-changing-business-automation",
     category: "AI & Automation",
-    description: "AI agents are moving beyond simple chatbots to automate complex multi-step tasks, decision-making, and end-to-end workflows...",
+    description: "Artificial intelligence is moving beyond chatbots and content generation. Businesses are increasingly looking at AI systems that can understand goals, make decisions, and complete tasks.",
     readTime: "5 MIN READ",
     image: "/images/building-intelligent/Container-1.png",
   },
