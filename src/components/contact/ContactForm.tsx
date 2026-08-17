@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Upload, ArrowUpRight } from "lucide-react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { isSpamSubmission } from "@/lib/spam-detector";
 
 const ALLOWED_FILE_EXTENSIONS = ["zip", "pdf", "pages", "doc", "docx"];
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
@@ -22,6 +23,7 @@ interface FormErrors {
 
 export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boolean }) {
   const router = useRouter();
+  const hiddenFormRef = useRef<HTMLFormElement>(null);
   const isContactPage = isContactUsPage ?? (router?.pathname === "/contact-us" || router?.asPath === "/contact-us");
 
   const [formData, setFormData] = useState({
@@ -32,12 +34,55 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
     description: "",
     budget: "",
     referralSource: "",
+    ipAddress: "",
+    pageName: "",
+    honeypot: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const fallbackTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleIframeLoad = () => {
+    if (submitting) {
+      if (fallbackTimerRef.current) {
+        clearTimeout(fallbackTimerRef.current);
+      }
+      setSubmitting(false);
+      setSubmitted(true);
+      setTimeout(() => {
+        router.push("/thank-you");
+      }, 1500);
+    }
+  };
+
+  useEffect(() => {
+    // Get page name dynamically
+    const currentPage = router?.pathname || window.location.pathname || "unknown";
+    const displayName = currentPage === "/" ? "Home Page" : currentPage;
+    setFormData((prev) => ({ ...prev, pageName: displayName }));
+
+    // Fetch user IP address dynamically
+    fetch("https://api.ipify.org?format=json")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.ip) {
+          setFormData((prev) => ({ ...prev, ipAddress: data.ip }));
+        }
+      })
+      .catch(() => {
+        setFormData((prev) => ({ ...prev, ipAddress: "Blocked or Unavailable" }));
+      });
+
+    return () => {
+      if (fallbackTimerRef.current) {
+        clearTimeout(fallbackTimerRef.current);
+      }
+    };
+  }, [router]);
 
   // Field validation helpers
   const validateField = (name: string, value: string | File | null): string | undefined => {
@@ -123,6 +168,11 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Restrict submission until IP address is successfully captured
+    if (!formData.ipAddress || formData.ipAddress === "Blocked or Unavailable" || formData.ipAddress.trim() === "") {
+      return;
+    }
+
     const newErrors: FormErrors = {
       name: validateField("name", formData.name),
       email: validateField("email", formData.email),
@@ -160,8 +210,69 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
       return;
     }
 
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
+    const spamCheck = isSpamSubmission(formData);
+    const isLocalhost = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+
+    if (spamCheck.isSpam) {
+      if (isLocalhost) {
+        console.warn("Spam detected but bypassed because on localhost:", spamCheck.reason);
+      } else {
+        // Spam submission: Silently drop it and show success to the spammer/bot
+        setSubmitted(true);
+        setTimeout(() => {
+          router.push("/thank-you");
+        }, 1500);
+        return;
+      }
+    }
+
+    // Check duplicate submission in localStorage
+    try {
+      const lastSub = localStorage.getItem("cc_last_submission");
+      if (lastSub) {
+        const { email: lastEmail, time: lastTime } = JSON.parse(lastSub);
+        if (lastEmail === formData.email && Date.now() - lastTime < 60000 && !isLocalhost) {
+          // Block duplicate and redirect immediately
+          router.push("/thank-you");
+          return;
+        }
+      }
+    } catch (err) {
+      // Ignore localStorage errors
+    }
+
+    console.log("Submitting form data to Pardot:", {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      location: formData.location,
+      description: formData.description,
+      budget: formData.budget,
+      pageName: formData.pageName,
+      ipAddress: formData.ipAddress,
+      referralSource: formData.referralSource,
+    });
+
+    setSubmitting(true);
+
+    try {
+      localStorage.setItem(
+        "cc_last_submission",
+        JSON.stringify({ email: formData.email, time: Date.now() })
+      );
+    } catch (err) {
+      // Ignore localStorage
+    }
+
+    if (hiddenFormRef.current) {
+      hiddenFormRef.current.submit();
+    }
+
+    // Set fallback timeout (5 seconds) to re-enable button if iframe fails to load
+    fallbackTimerRef.current = setTimeout(() => {
+      setSubmitting(false);
+      fallbackTimerRef.current = null;
+    }, 5000);
   };
 
   return (
@@ -462,21 +573,70 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
           )}
         </div>
 
+        {/* Honeypot field for spam prevention */}
+        <p style={{ position: "absolute", width: "190px", left: "-9999px", top: "-9999px", opacity: 0, pointerEvents: "none" }} aria-hidden="true">
+          <label htmlFor="field-honeypot">Comments</label>
+          <input 
+            type="text" 
+            name="pi_extra_field" 
+            id="field-honeypot" 
+            tabIndex={-1} 
+            value={formData.honeypot} 
+            onChange={(e) => setFormData(prev => ({ ...prev, honeypot: e.target.value }))} 
+            autoComplete="off"
+          />
+        </p>
+
         {/* Submit Button Pill */}
         <div className="pt-2">
           <button
             type="submit"
-            className="w-full h-14 rounded-full text-white text-sm font-semibold tracking-wider uppercase hover:opacity-95 transition-all flex items-center justify-center space-x-2 group active:scale-98 shadow-[0_0_30px_rgba(47,137,255,0.4)]"
+            disabled={submitting || submitted}
+            className="w-full h-14 rounded-full text-white text-sm font-semibold tracking-wider uppercase hover:opacity-95 transition-all flex items-center justify-center space-x-2 group active:scale-98 shadow-[0_0_30px_rgba(47,137,255,0.4)] disabled:opacity-80 disabled:cursor-not-allowed disabled:pointer-events-none"
             style={{
               background: "linear-gradient(90deg, #2F89FF 0%, #B021F0 100%)",
               fontFamily: "var(--font-intel-one-mono), monospace",
             }}
           >
-            <span>{submitted ? "REQUEST SENT SUCCESSFULLY!" : "SCHEDULE A FREE CONSULTATION"}</span>
-            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            <span>{submitted ? "REQUEST SENT SUCCESSFULLY!" : submitting ? "SUBMITTING..." : "SCHEDULE A FREE CONSULTATION"}</span>
+            {submitting ? (
+              <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            ) : (
+              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            )}
           </button>
         </div>
       </form>
+
+      {/* Hidden Pardot Submission Elements */}
+      <form
+        ref={hiddenFormRef}
+        action="https://sales.cccinfotech.com/l/978703/2026-08-17/64gn8"
+        method="POST"
+        target="pardot-iframe"
+        style={{ display: "none" }}
+      >
+        <input type="hidden" name="978703_93907pi_978703_93907" value={formData.name} />
+        <input type="hidden" name="978703_93913pi_978703_93913" value={formData.email} />
+        <input type="hidden" name="978703_93919pi_978703_93919" value={formData.location} />
+        <input type="hidden" name="978703_93922pi_978703_93922" value={formData.description} />
+        <input type="hidden" name="978703_93925pi_978703_93925" value={formData.budget} />
+        <input type="hidden" name="978703_93928pi_978703_93928" value={formData.pageName} />
+        <input type="hidden" name="978703_93931pi_978703_93931" value={formData.ipAddress} />
+        <input type="hidden" name="978703_93934pi_978703_93934" value={formData.referralSource} />
+        <input type="hidden" name="pi_extra_field" value={formData.honeypot} />
+        <input type="hidden" name="978703_93916pi_978703_93916" value={formData.phone} />
+        <input type="hidden" name="_utf8" value="☃" />
+      </form>
+      <iframe
+        name="pardot-iframe"
+        id="pardot-iframe"
+        style={{ display: "none" }}
+        onLoad={handleIframeLoad}
+      />
     </div>
   );
 }
