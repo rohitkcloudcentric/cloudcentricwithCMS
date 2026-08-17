@@ -30,6 +30,7 @@ export default function SEOHead({
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="google-site-verification" content="3N0tWInkrcLcozFgDd7Dix-966xMfhlGWOcNhSUTC-4" />
       <link rel="canonical" href={canonicalUrl} />
 
       {/* Robots Directive */}
