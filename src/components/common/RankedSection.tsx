@@ -28,7 +28,7 @@ export default function RankedSection() {
   const badgeImages = [
     { name: "Ranked Badge 1", src: "/images/ranked-images/Container.png", width: 60, height: 60 },
     { name: "Ranked Badge 2", src: "/images/ranked-images/Container-1.png", width: 140, height: 48 },
-    { name: "Ranked Badge 3", src: "/images/ranked-images/container-2.png", width: 80, height: 50 },
+    // { name: "Ranked Badge 3", src: "/images/ranked-images/container-2.png", width: 80, height: 50 },
     { name: "Ranked Badge 4", src: "/images/ranked-images/container-3.png", width: 65, height: 65 },
     { name: "Ranked Badge 5", src: "/images/ranked-images/container-4.png", width: 60, height: 65 },
     { name: "Ranked Badge 6", src: "/images/ranked-images/Container-5.png", width: 65, height: 65 },
