@@ -1,4 +1,4 @@
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://cloudcentric.com";
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://cloudcentric.in";
 export const SITE_NAME = "CloudCentric";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/hero-banner.png`;
 
