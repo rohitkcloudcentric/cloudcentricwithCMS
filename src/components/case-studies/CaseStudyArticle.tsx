@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowLeft, Share2, BookOpen, ChevronRight, ArrowRight, Zap, CheckCircle2, ShieldCheck, Award, MoveRight, MessageSquare } from "lucide-react";
 import { CaseStudyPost } from "./CaseStudyCard";
 import { SAMPLE_CASE_STUDIES } from "./CaseStudyListing";
+import { CASE_STUDY_CATEGORIES } from "./CaseStudyHero";
 
 interface CaseStudyArticleProps {
   post: CaseStudyPost;
@@ -51,13 +52,11 @@ export default function CaseStudyArticle({ post }: CaseStudyArticleProps) {
     }
   };
 
-  const categories = [
-    { name: "AI & Automation", count: 5 },
-    { name: "Salesforce", count: 3 },
-    { name: "Digital Transformation", count: 4 },
-    { name: "Technology", count: 5 },
-    { name: "Product", count: 2 },
-  ];
+  // Compute actual posted case studies count per category
+  const categories = CASE_STUDY_CATEGORIES.filter((cat) => cat !== "All").map((catName) => ({
+    name: catName,
+    count: SAMPLE_CASE_STUDIES.filter((cs) => cs.category === catName).length,
+  }));
 
   const tags = ["AI Agents", "Salesforce", "Automation", "Cloud Infrastructure", "Enterprise", "Data Cloud", "LLMs", "DevOps"];
 
@@ -468,6 +467,30 @@ export default function CaseStudyArticle({ post }: CaseStudyArticleProps) {
             </div>
           </div>
 
+          {/* Categories Card Widget */}
+          <div className="p-6 sm:p-7 rounded-[22px] bg-[rgba(10,10,12,0.45)] border border-white/[0.08] space-y-4 shadow-xl flex flex-col">
+            <h3 
+              className="text-xl sm:text-2xl font-bold text-white text-center tracking-wide border-b border-white/10 pb-4"
+              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+            >
+              Categories
+            </h3>
+            <div className="space-y-1 text-xs sm:text-sm text-white/70">
+              {categories.map((cat, idx) => (
+                <Link
+                  key={idx}
+                  href={`/case-studies?category=${encodeURIComponent(cat.name)}`}
+                  className="flex items-center justify-between py-2.5 px-1 hover:text-white transition-colors border-b border-white/[0.06] last:border-0 group cursor-pointer"
+                >
+                  <span style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}>{cat.name}</span>
+                  <span className="w-5 h-5 rounded-full bg-white/[0.08] text-white/80 group-hover:bg-[#7C3AED] group-hover:text-white flex items-center justify-center text-[10px] font-mono transition-colors">
+                    {cat.count}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
           {/* Technology Section */}
           <div className="flex flex-col space-y-5">
             <h3 
@@ -548,7 +571,7 @@ export default function CaseStudyArticle({ post }: CaseStudyArticleProps) {
             <div className="absolute top-1/3 -left-10 w-48 h-48 rounded-full bg-[#2563EB]/25 blur-[50px] pointer-events-none z-0" />
             
             {/* Glowing bottom gradient lighting effect matching reference */}
-            <div className="absolute bottom-0 left-0 right-0 h-[80px] bg-gradient-to-t from-[#7C3AED]/45 via-[#3B82F6]/25 to-transparent pointer-events-none z-0" />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#7C3AED]/45 via-[#3B82F6]/25 to-transparent pointer-events-none z-0" />
 
             <span 
               className="text-xs font-intel uppercase tracking-[0.2em] text-white/50 font-bold block z-10 relative"

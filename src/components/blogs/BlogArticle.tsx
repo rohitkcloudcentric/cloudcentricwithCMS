@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, Share2, BookOpen, ChevronRight, ArrowRight } from "lucide-react";
 import { BlogPost } from "./BlogCard";
 import { SAMPLE_BLOG_POSTS } from "./BlogListing";
+import { BLOG_CATEGORIES } from "./BlogHero";
 
 interface BlogArticleProps {
   post: BlogPost;
@@ -14,13 +15,13 @@ export default function BlogArticle({ post }: BlogArticleProps) {
   // Recent posts for sidebar widget excluding current post
   const recentPosts = SAMPLE_BLOG_POSTS.filter((p) => p.id !== post.id).slice(0, 2);
 
-  const categories = [
-    { name: "AI & Automation", count: 5 },
-    { name: "Salesforce", count: 3 },
-    { name: "Digital Transformation", count: 2 },
-    { name: "Technology", count: 5 },
-    { name: "Product", count: 2 },
-  ];
+  // Compute actual posted blog posts count per category (only include categories with > 0 posts)
+  const categories = BLOG_CATEGORIES.filter((cat) => cat !== "All")
+    .map((catName) => ({
+      name: catName,
+      count: SAMPLE_BLOG_POSTS.filter((p) => p.category === catName).length,
+    }))
+    .filter((cat) => cat.count > 0);
 
   const tags = ["Corporate", "Agency", "Creative", "Startup", "App", "Business", "Software", "Landing", "Art"];
 
@@ -446,23 +447,25 @@ export default function BlogArticle({ post }: BlogArticleProps) {
             </div>
 
             {/* 2. Categories Card Widget */}
-            <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-4 shadow-xl">
-              <h3 className="text-sm sm:text-base font-medium text-white/90 text-center font-intel border-b border-white/10 pb-4">
-                Categories
-              </h3>
-              <div className="space-y-1 font-intel text-xs sm:text-sm text-white/70">
-                {categories.map((cat, idx) => (
-                  <Link
-                    key={idx}
-                    href={`/blogs?category=${encodeURIComponent(cat.name)}`}
-                    className="flex items-center justify-between py-2.5 px-1 hover:text-white transition-colors border-b border-white/[0.06] last:border-0"
-                  >
-                    <span>{cat.name}</span>
-                    <span className="w-5 h-5 rounded-full bg-white/[0.06] text-white/60 flex items-center justify-center text-[10px]">{cat.count}</span>
-                  </Link>
-                ))}
+            {categories.length > 0 && (
+              <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-4 shadow-xl">
+                <h3 className="text-sm sm:text-base font-medium text-white/90 text-center font-intel border-b border-white/10 pb-4">
+                  Categories
+                </h3>
+                <div className="space-y-1 font-intel text-xs sm:text-sm text-white/70">
+                  {categories.map((cat, idx) => (
+                    <Link
+                      key={idx}
+                      href={`/blogs?category=${encodeURIComponent(cat.name)}`}
+                      className="flex items-center justify-between py-2.5 px-1 hover:text-white transition-colors border-b border-white/[0.06] last:border-0"
+                    >
+                      <span>{cat.name}</span>
+                      <span className="w-5 h-5 rounded-full bg-white/[0.06] text-white/60 flex items-center justify-center text-[10px]">{cat.count}</span>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* 3. Recent Posts Widget */}
             <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-5 shadow-xl">
@@ -1139,23 +1142,25 @@ export default function BlogArticle({ post }: BlogArticleProps) {
             </div>
 
             {/* 2. Categories Card Widget */}
-            <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-4 shadow-xl">
-              <h3 className="text-sm sm:text-base font-medium text-white/90 text-center font-intel border-b border-white/10 pb-4">
-                Categories
-              </h3>
-              <div className="space-y-1 font-intel text-xs sm:text-sm text-white/70">
-                {categories.map((cat, idx) => (
-                  <Link
-                    key={idx}
-                    href={`/blogs?category=${encodeURIComponent(cat.name)}`}
-                    className="flex items-center justify-between py-2.5 px-1 hover:text-white transition-colors border-b border-white/[0.06] last:border-0"
-                  >
-                    <span>{cat.name}</span>
-                    <span className="w-5 h-5 rounded-full bg-white/[0.06] text-white/60 flex items-center justify-center text-[10px]">{cat.count}</span>
-                  </Link>
-                ))}
+            {categories.length > 0 && (
+              <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-4 shadow-xl">
+                <h3 className="text-sm sm:text-base font-medium text-white/90 text-center font-intel border-b border-white/10 pb-4">
+                  Categories
+                </h3>
+                <div className="space-y-1 font-intel text-xs sm:text-sm text-white/70">
+                  {categories.map((cat, idx) => (
+                    <Link
+                      key={idx}
+                      href={`/blogs?category=${encodeURIComponent(cat.name)}`}
+                      className="flex items-center justify-between py-2.5 px-1 hover:text-white transition-colors border-b border-white/[0.06] last:border-0"
+                    >
+                      <span>{cat.name}</span>
+                      <span className="w-5 h-5 rounded-full bg-white/[0.06] text-white/60 flex items-center justify-center text-[10px]">{cat.count}</span>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* 3. Recent Posts Widget */}
             <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-5 shadow-xl">
@@ -1648,23 +1653,25 @@ export default function BlogArticle({ post }: BlogArticleProps) {
             </div>
 
             {/* 2. Categories Card Widget */}
-            <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-4 shadow-xl">
-              <h3 className="text-sm sm:text-base font-medium text-white/90 text-center font-intel border-b border-white/10 pb-4">
-                Categories
-              </h3>
-              <div className="space-y-1 font-intel text-xs sm:text-sm text-white/70">
-                {categories.map((cat, idx) => (
-                  <Link
-                    key={idx}
-                    href={`/blogs?category=${encodeURIComponent(cat.name)}`}
-                    className="flex items-center justify-between py-2.5 px-1 hover:text-white transition-colors border-b border-white/[0.06] last:border-0"
-                  >
-                    <span>{cat.name}</span>
-                    <span className="w-5 h-5 rounded-full bg-white/[0.06] text-white/60 flex items-center justify-center text-[10px]">{cat.count}</span>
-                  </Link>
-                ))}
+            {categories.length > 0 && (
+              <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-4 shadow-xl">
+                <h3 className="text-sm sm:text-base font-medium text-white/90 text-center font-intel border-b border-white/10 pb-4">
+                  Categories
+                </h3>
+                <div className="space-y-1 font-intel text-xs sm:text-sm text-white/70">
+                  {categories.map((cat, idx) => (
+                    <Link
+                      key={idx}
+                      href={`/blogs?category=${encodeURIComponent(cat.name)}`}
+                      className="flex items-center justify-between py-2.5 px-1 hover:text-white transition-colors border-b border-white/[0.06] last:border-0"
+                    >
+                      <span>{cat.name}</span>
+                      <span className="w-5 h-5 rounded-full bg-white/[0.06] text-white/60 flex items-center justify-center text-[10px]">{cat.count}</span>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* 3. Recent Posts Widget */}
             <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-5 shadow-xl">
@@ -2321,23 +2328,25 @@ export default function BlogArticle({ post }: BlogArticleProps) {
             </div>
 
             {/* 2. Categories Card Widget */}
-            <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-4 shadow-xl">
-              <h3 className="text-sm sm:text-base font-medium text-white/90 text-center font-intel border-b border-white/10 pb-4">
-                Categories
-              </h3>
-              <div className="space-y-1 font-intel text-xs sm:text-sm text-white/70">
-                {categories.map((cat, idx) => (
-                  <Link
-                    key={idx}
-                    href={`/blogs?category=${encodeURIComponent(cat.name)}`}
-                    className="flex items-center justify-between py-2.5 px-1 hover:text-white transition-colors border-b border-white/[0.06] last:border-0"
-                  >
-                    <span>{cat.name}</span>
-                    <span className="text-white/40 font-mono">{cat.count}</span>
-                  </Link>
-                ))}
+            {categories.length > 0 && (
+              <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-4 shadow-xl">
+                <h3 className="text-sm sm:text-base font-medium text-white/90 text-center font-intel border-b border-white/10 pb-4">
+                  Categories
+                </h3>
+                <div className="space-y-1 font-intel text-xs sm:text-sm text-white/70">
+                  {categories.map((cat, idx) => (
+                    <Link
+                      key={idx}
+                      href={`/blogs?category=${encodeURIComponent(cat.name)}`}
+                      className="flex items-center justify-between py-2.5 px-1 hover:text-white transition-colors border-b border-white/[0.06] last:border-0"
+                    >
+                      <span>{cat.name}</span>
+                      <span className="text-white/40 font-mono">{cat.count}</span>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* 3. Recent Posts Card Widget */}
             <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-4 shadow-xl">
@@ -2645,23 +2654,25 @@ export default function BlogArticle({ post }: BlogArticleProps) {
           </div>
 
           {/* 2. Categories Card Widget */}
-          <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-4 shadow-xl">
-            <h3 className="text-sm sm:text-base font-medium text-white/90 text-center font-intel border-b border-white/10 pb-4">
-              Categories
-            </h3>
-            <div className="space-y-1 font-intel text-xs sm:text-sm text-white/70">
-              {categories.map((cat, idx) => (
-                <Link
-                  key={idx}
-                  href={`/blogs?category=${encodeURIComponent(cat.name)}`}
-                  className="flex items-center justify-between py-2.5 px-1 hover:text-white transition-colors border-b border-white/[0.06] last:border-0"
-                >
-                  <span>{cat.name}</span>
-                  <span className="text-white/40 font-mono">{cat.count}</span>
-                </Link>
-              ))}
+          {categories.length > 0 && (
+            <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-4 shadow-xl">
+              <h3 className="text-sm sm:text-base font-medium text-white/90 text-center font-intel border-b border-white/10 pb-4">
+                Categories
+              </h3>
+              <div className="space-y-1 font-intel text-xs sm:text-sm text-white/70">
+                {categories.map((cat, idx) => (
+                  <Link
+                    key={idx}
+                    href={`/blogs?category=${encodeURIComponent(cat.name)}`}
+                    className="flex items-center justify-between py-2.5 px-1 hover:text-white transition-colors border-b border-white/[0.06] last:border-0"
+                  >
+                    <span>{cat.name}</span>
+                    <span className="text-white/40 font-mono">{cat.count}</span>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* 3. Recent Posts Card Widget */}
           <div className="rounded-[22px] bg-[#07070C] border border-white/15 p-6 space-y-4 shadow-xl">

@@ -14,6 +14,7 @@ export interface CaseStudyPost {
   solution: string;
   impacts: string[];
   image: string;
+  metaDescription?: string;
   clientName?: string;
   industry?: string;
   technologies?: string[];

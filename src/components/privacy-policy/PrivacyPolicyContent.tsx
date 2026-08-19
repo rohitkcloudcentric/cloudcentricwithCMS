@@ -110,7 +110,7 @@ export default function PrivacyPolicyContent() {
         {/* Intro */}
         <PolicySection className="space-y-3 sm:space-y-4">
           <p className="text-sm sm:text-base text-[#BDBDC8] leading-relaxed font-intel">
-            At CloudCentric Infotech, we respect your privacy and are committed to protecting the personal information you share with us. This Privacy Policy explains how we collect, use, disclose, and protect information when you visit or interact with our website <Link href="https://cccinfotech.in" className="text-[#8B5CF6] hover:underline" target="_blank" rel="noopener noreferrer">cccinfotech.in</Link> and use our services.
+            At CloudCentric Infotech, we respect your privacy and are committed to protecting the personal information you share with us. This Privacy Policy explains how we collect, use, disclose, and protect information when you visit or interact with our website <Link href="https://cloudcenytric.in" className="text-[#8B5CF6] hover:underline" target="_blank" rel="noopener noreferrer">cloudcenytric.in</Link> and use our services.
           </p>
           <p className="text-sm sm:text-base text-[#BDBDC8] leading-relaxed font-intel">
             By accessing or using our website, you agree to the practices described in this Privacy Policy.
@@ -422,8 +422,8 @@ export default function PrivacyPolicyContent() {
           </p>
           <div className="bg-[#12121A]/80 border border-white/10 rounded-xl p-6 space-y-2 text-sm sm:text-base text-[#BDBDC8] font-intel backdrop-blur-md">
             <p className="font-semibold text-white">CloudCentric Infotech</p>
-            <p>Website: <Link href="https://cccinfotech.in" className="text-[#8B5CF6] hover:underline" target="_blank" rel="noopener noreferrer">cccinfotech.in</Link></p>
-            <p>Email: <a href="mailto:info@cccinfotech.in" className="text-[#8B5CF6] hover:underline">info@cccinfotech.in</a></p>
+            <p>Website: <Link href="https://cloudcenytric.in" className="text-[#8B5CF6] hover:underline" target="_blank" rel="noopener noreferrer">cloudcenytric.in</Link></p>
+            <p>Email: <a href="mailto:info@cloudcenytric.in" className="text-[#8B5CF6] hover:underline">info@cloudcenytric.in</a></p>
           </div>
         </PolicySection>
 

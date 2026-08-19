@@ -11,6 +11,7 @@ export interface BlogPost {
   slug: string;
   category: string;
   description: string;
+  metaDescription?: string;
   readTime: string;
   image: string;
   date?: string;

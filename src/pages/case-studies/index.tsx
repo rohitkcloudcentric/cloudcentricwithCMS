@@ -1,19 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import SEOHead from "@/components/seo/SEOHead";
 import { SITE_URL } from "@/config/seo.config";
 import { generateBreadcrumbSchema } from "@/lib/sitemap-helper";
 import AnnouncementBar from "@/components/common/AnnouncementBar";
 import Navbar from "@/components/common/Navbar";
-import CaseStudyHero, { CaseStudyCategory } from "@/components/case-studies/CaseStudyHero";
+import CaseStudyHero, { CASE_STUDY_CATEGORIES, CaseStudyCategory } from "@/components/case-studies/CaseStudyHero";
 import CaseStudyListing from "@/components/case-studies/CaseStudyListing";
 import RankedSection from "@/components/common/RankedSection";
 import Footer from "@/components/common/Footer";
 import FloatingButtons from "@/components/common/FloatingButtons";
 
 export default function CaseStudiesPage() {
+  const router = useRouter();
   const [activeCategory, setActiveCategory] = useState<CaseStudyCategory>("All");
+
+  useEffect(() => {
+    if (router.isReady && router.query.category) {
+      const cat = router.query.category as CaseStudyCategory;
+      if (CASE_STUDY_CATEGORIES.includes(cat)) {
+        setActiveCategory(cat);
+      }
+    }
+  }, [router.isReady, router.query.category]);
 
   const jsonLd = generateBreadcrumbSchema([
     { name: "Home", url: "/" },

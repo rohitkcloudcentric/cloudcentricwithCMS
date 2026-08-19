@@ -18,13 +18,14 @@ export default function CaseStudyDetailsPage() {
 
   // Find post matching slug, fallback to first post
   const post = SAMPLE_CASE_STUDIES.find((p) => p.slug === slug) || SAMPLE_CASE_STUDIES[0];
+  const metaDescription = post.metaDescription || post.challenge;
 
   const jsonLd = [
     {
       "@context": "https://schema.org",
       "@type": "Article",
       "headline": post.title,
-      "description": post.challenge,
+      "description": metaDescription,
       "image": post.image?.startsWith("http") ? post.image : `${SITE_URL}${post.image}`,
       "author": {
         "@type": "Organization",
@@ -55,7 +56,7 @@ export default function CaseStudyDetailsPage() {
     <>
       <SEOHead
         title={`${post.title} - Case Study | CloudCentric`}
-        description={post.challenge}
+        description={metaDescription}
         canonical={`${SITE_URL}/case-studies/${post.slug}`}
         ogType="article"
         ogImage={post.image}

@@ -110,7 +110,7 @@ export default function TermsAndConditionsContent() {
         {/* Intro */}
         <TermsSection className="space-y-3 sm:space-y-4">
           <p className="text-sm sm:text-base text-[#BDBDC8] leading-relaxed font-intel">
-            Welcome to <Link href="https://cccinfotech.in" className="text-[#8B5CF6] hover:underline" target="_blank" rel="noopener noreferrer">CCCInfotech.in</Link>, the website of CloudCentric Infotech. These Terms and Conditions (&quot;Terms&quot;) govern your access to and use of our website and the information, content, and services made available through it.
+            Welcome to <Link href="https://cloudcenytric.in" className="text-[#8B5CF6] hover:underline" target="_blank" rel="noopener noreferrer">cloudcenytric.in</Link>, the website of CloudCentric Infotech. These Terms and Conditions (&quot;Terms&quot;) govern your access to and use of our website and the information, content, and services made available through it.
           </p>
           <p className="text-sm sm:text-base text-[#BDBDC8] leading-relaxed font-intel">
             By accessing or using this website, you acknowledge that you have read, understood, and agree to be bound by these Terms. If you do not agree with any part of these Terms, please discontinue use of the website.
@@ -376,7 +376,7 @@ export default function TermsAndConditionsContent() {
             16. Entire Agreement
           </h2>
           <p className="text-sm sm:text-base text-[#BDBDC8] leading-relaxed font-intel">
-            These Terms, together with our <Link href="/privacy-policy" className="text-[#8B5CF6] hover:underline">Privacy Policy</Link> and any other policies or legal notices published on the website, constitute the general terms governing your use of CCCInfotech.in.
+            These Terms, together with our <Link href="/privacy-policy" className="text-[#8B5CF6] hover:underline">Privacy Policy</Link> and any other policies or legal notices published on the website, constitute the general terms governing your use of cloudcenytric.in.
           </p>
           <p className="text-sm sm:text-base text-[#BDBDC8] leading-relaxed font-intel">
             These Terms do not replace or modify any separate written agreement entered into between CloudCentric Infotech and its clients.
@@ -393,8 +393,8 @@ export default function TermsAndConditionsContent() {
           </p>
           <div className="bg-[#12121A]/80 border border-white/10 rounded-xl p-6 space-y-2 text-sm sm:text-base text-[#BDBDC8] font-intel backdrop-blur-md">
             <p className="font-semibold text-white">CloudCentric Infotech</p>
-            <p>Website: <Link href="https://cccinfotech.in" className="text-[#8B5CF6] hover:underline" target="_blank" rel="noopener noreferrer">cccinfotech.in</Link></p>
-            <p>Email: <a href="mailto:info@cccinfotech.in" className="text-[#8B5CF6] hover:underline">info@cccinfotech.in</a></p>
+            <p>Website: <Link href="https://cloudcenytric.in" className="text-[#8B5CF6] hover:underline" target="_blank" rel="noopener noreferrer">cloudcenytric.in</Link></p>
+            <p>Email: <a href="mailto:info@cloudcenytric.in" className="text-[#8B5CF6] hover:underline">info@cloudcenytric.in</a></p>
           </div>
           <p className="text-sm text-white/60 font-intel pt-2">
             Last Updated: August 10, 2026

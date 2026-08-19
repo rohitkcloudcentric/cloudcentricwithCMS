@@ -1,19 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import SEOHead from "@/components/seo/SEOHead";
 import { SITE_URL } from "@/config/seo.config";
 import { generateBreadcrumbSchema } from "@/lib/sitemap-helper";
 import AnnouncementBar from "@/components/common/AnnouncementBar";
 import Navbar from "@/components/common/Navbar";
-import BlogHero, { BlogCategory } from "@/components/blogs/BlogHero";
+import BlogHero, { BLOG_CATEGORIES, BlogCategory } from "@/components/blogs/BlogHero";
 import BlogListing from "@/components/blogs/BlogListing";
 import RankedSection from "@/components/common/RankedSection";
 import Footer from "@/components/common/Footer";
 import FloatingButtons from "@/components/common/FloatingButtons";
 
 export default function BlogPage() {
+  const router = useRouter();
   const [activeCategory, setActiveCategory] = useState<BlogCategory>("All");
+
+  useEffect(() => {
+    if (router.isReady && router.query.category) {
+      const cat = router.query.category as BlogCategory;
+      if (BLOG_CATEGORIES.includes(cat)) {
+        setActiveCategory(cat);
+      }
+    }
+  }, [router.isReady, router.query.category]);
 
   const jsonLd = generateBreadcrumbSchema([
     { name: "Home", url: "/" },

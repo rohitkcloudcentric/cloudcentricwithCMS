@@ -19,13 +19,14 @@ export default function BlogDetailsPage() {
 
   // Find post matching slug, fallback to first post
   const post = SAMPLE_BLOG_POSTS.find((p) => p.slug === slug) || SAMPLE_BLOG_POSTS[0];
+  const metaDescription = post.metaDescription || post.description;
 
   const jsonLd = [
     {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       "headline": post.title,
-      "description": post.description,
+      "description": metaDescription,
       "image": post.image?.startsWith("http") ? post.image : `${SITE_URL}${post.image}`,
       "datePublished": post.date ? new Date(post.date).toISOString() : "2026-08-14T00:00:00.000Z",
       "author": {
@@ -57,7 +58,7 @@ export default function BlogDetailsPage() {
     <>
       <SEOHead
         title={`${post.title} - CloudCentric Blog`}
-        description={post.description}
+        description={metaDescription}
         canonical={`${SITE_URL}/blogs/${post.slug}`}
         ogType="article"
         ogImage={post.image}
