@@ -38,7 +38,7 @@ const manrope = Manrope({
 });
 
 import SEOHead from "@/components/seo/SEOHead";
-import { ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/lib/sitemap-helper";
+import { ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, LOCAL_BUSINESS_SCHEMA } from "@/lib/sitemap-helper";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -57,7 +57,7 @@ export default function App({ Component, pageProps }: AppProps) {
         `}
       </Script>
 
-      <SEOHead jsonLd={[ORGANIZATION_SCHEMA, WEBSITE_SCHEMA]} />
+      <SEOHead jsonLd={[ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, LOCAL_BUSINESS_SCHEMA]} />
       <Preloader />
       <Component {...pageProps} />
     </div>

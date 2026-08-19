@@ -1,5 +1,6 @@
 import SEOHead from "@/components/seo/SEOHead";
 import { SITE_URL } from "@/config/seo.config";
+import { FAQ_SCHEMA } from "@/lib/sitemap-helper";
 import AnnouncementBar from "@/components/common/AnnouncementBar";
 import Navbar from "@/components/common/Navbar";
 import Hero from "@/components/home/Hero";
@@ -13,29 +14,13 @@ import FloatingButtons from "@/components/common/FloatingButtons";
 import Footer from "@/components/common/Footer";
 
 export default function Home() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "CloudCentric",
-    "url": SITE_URL,
-    "logo": `${SITE_URL}/images/Logo.svg`,
-    "description": "Where Artificial Intelligence meets business innovation. We build scalable AI solutions, Salesforce platforms, enterprise software, and digital cloud experiences.",
-    "sameAs": [
-      "https://www.youtube.com/channel/UC21Gs_6xh8PF1nc8-XIyHJg",
-      "https://www.instagram.com/cccinfotech/",
-      "https://x.com/CCCInfotech",
-      "https://www.linkedin.com/company/cccinfotech/",
-      "https://www.facebook.com/cloudcentricinfotech/"
-    ]
-  };
-
   return (
     <>
       <SEOHead
         title="CloudCentric - Where Artificial Intelligence Meets Business Innovation"
         description="CloudCentric helps modern businesses adopt AI, automate workflows, optimize customer experiences, and build scalable digital ecosystems."
         canonical={SITE_URL}
-        jsonLd={jsonLd}
+        jsonLd={[FAQ_SCHEMA]}
       />
       <main className="min-h-screen bg-[#050505] text-white flex flex-col overflow-x-clip selection:bg-[#7C3AED] selection:text-white relative">
         {/* Background Radial Glow Layer */}

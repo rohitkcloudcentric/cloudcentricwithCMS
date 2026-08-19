@@ -176,31 +176,252 @@ ${xmlUrls}
 export const ORGANIZATION_SCHEMA = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": SITE_NAME,
-  "url": SITE_URL,
-  "logo": `${SITE_URL}/images/Logo.svg`,
+  "name": "CloudCentric Infotech",
+  "alternateName": "CloudCentric AI",
+  "url": "https://cloudcentric.in/",
+  "logo": "https://cloudcentric.in/logo.svg",
   "sameAs": [
-    "https://twitter.com/CloudCentric",
-    "https://linkedin.com/company/cloudcentric"
-  ],
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "contactType": "customer service",
-    "email": "contact@cloudcentric.com"
-  }
+    "https://www.facebook.com/cloudcentricinfotech/",
+    "https://x.com/CCCInfotech",
+    "https://www.instagram.com/cccinfotech/",
+    "https://www.youtube.com/channel/UC21Gs_6xh8PF1nc8-XIyHJg",
+    "https://www.linkedin.com/company/cccinfotech/",
+    "https://cccinfotech.com/"
+  ]
 };
 
 // Global Website Schema
 export const WEBSITE_SCHEMA = {
-  "@context": "https://schema.org",
+  "@context": "https://schema.org/",
   "@type": "WebSite",
-  "name": SITE_NAME,
-  "url": SITE_URL,
+  "name": "CloudCentric Infotech",
+  "url": "https://cloudcentric.in/",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": `${SITE_URL}/blogs?q={search_term_string}`,
+    "target": "https://cloudcentric.in/blogs?q={search_term_string}",
     "query-input": "required name=search_term_string"
   }
+};
+
+// LocalBusiness Schema
+export const LOCAL_BUSINESS_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "CloudCentric Infotech",
+  "image": "https://cloudcentric.in/",
+  "url": "https://cloudcentric.in/",
+  "telephone": "9971126721",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "H-146 & 147, H Block, Sector 63",
+    "addressLocality": "Noida",
+    "postalCode": "201301",
+    "addressCountry": "IN"
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "opens": "10:00",
+    "closes": "18:00"
+  }
+};
+
+// Products Schema
+export const PRODUCT_SCHEMAS = [
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "FlyBlaze",
+    "image": "https://flyblaze.com/wp-content/uploads/2025/04/FlyBlaze-Logo.svg",
+    "description": "FlyBlaze is a travel technology / SaaS platform that helps travel businesses launch and operate their own branded online booking platforms.",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cloudcentric Infotech"
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "FieldBlaze",
+    "image": "https://fieldblaze.com/wp-content/uploads/2024/01/fieldblaze-header-logo.png.webp",
+    "description": "FieldBlaze helps businesses track, manage, and coordinate their field sales teams from one platform.",
+    "brand": {
+      "@type": "Brand",
+      "name": "CloudCentric Infotech"
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "HoopMein",
+    "image": "https://hoopmein.com/assets/images/uploads/2024/02/3169599.png",
+    "description": "HoopMein is a mobile app focused on location-based field activity and Salesforce-connected CRM operations. It appears to be particularly useful for field sales/service teams that need to manage customer interactions while working outside the office.",
+    "brand": {
+      "@type": "Brand",
+      "name": "CloudCentric Infotech"
+    }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "Messagify",
+    "image": "https://www.messagify.net/img/messagify-logo.svg",
+    "description": "Messagify is a business messaging and communication platform that helps companies send bulk and transactional messages through channels such as WhatsApp and SMS, with APIs and integrations for CRM/helpdesk platforms.",
+    "brand": {
+      "@type": "Brand",
+      "name": "CloudCentric Infotech"
+    }
+  }
+];
+
+// FAQ Schema
+export const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What services does CloudCentric Infotech offer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We help businesses build AI strategy roadmaps, deploy custom AI agents, implement intelligent automation, integrate generative AI into customer service, connect AI models with existing systems (CRM, cloud platforms, APIs), and develop bespoke AI solutions tailored to specific industries."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between AI automation and AI agents?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Automation connects and streamlines existing workflows and systems. AI agents go further — they're autonomous, can make decisions, and actively complete multi-step tasks such as resolving customer queries or managing operational bottlenecks without constant human input."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you build custom AI models, or use existing ones like GPT or Claude?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both, depending on your needs. For most businesses, we integrate and fine-tune leading models (OpenAI, Anthropic, Llama, Gemini, and others) rather than training from scratch — this is faster and more cost-effective. For specialized use cases with unique compliance or performance requirements, we design and train bespoke models."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does an AI implementation typically take?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This depends on scope — a focused AI agent deployment might take a few weeks, while a full AI strategy-to-integration engagement across multiple systems can take a few months. We start every engagement with a strategy session to scope this accurately for your case."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does an AI project cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cost depends on scope, complexity, and the systems involved. Budget bands typically range from $5k–$10k, $10k–$25k, $25k–$50k, and $50k+ tiers depending on requirements."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the average cost of building a custom AI agent?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A custom AI agent generally falls in the $10,000–$25,000 range depending on complexity — simple task-based agents cost less, while agents that integrate with multiple systems or handle nuanced decision-making cost more."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is AI implementation worth it for small and mid-sized businesses?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, when scoped correctly — the highest ROI usually comes from automating repetitive, high-volume tasks (support tickets, data entry, scheduling) rather than attempting a full AI overhaul. Starting with a focused pilot is the most cost-effective way to validate ROI before scaling."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I choose the right AI development company?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Look for a vendor with a clear strategy-first approach (not just implementation), experience across multiple AI models rather than a single vendor lock-in, transparent pricing, and existing case studies or client references in your industry."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the best AI company in India for enterprise AI solutions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This depends on your specific needs — Salesforce-integrated AI, standalone automation, or industry-specific solutions each favor different specialists. Look for Great Place to Work-certified companies with verified client reviews (Clutch, G2) and a track record across multiple AI models rather than a single-platform focus."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which AI model is best for business — GPT, Claude, or Gemini?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There's no universal \"best\" — GPT models are strong for general-purpose tasks, Claude tends to excel at nuanced reasoning and longer documents, and Gemini integrates tightly with Google Workspace. The right choice depends on your specific use case, existing tech stack, and data requirements — many businesses use more than one model for different tasks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Generative AI vs traditional automation — what's the difference?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Traditional automation follows fixed rules for repetitive tasks (if X happens, do Y). Generative AI understands context and unstructured input, generating human-like responses — useful when tasks require judgment or natural language understanding rather than a fixed script."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "AI agents vs chatbots — what's the difference?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Chatbots typically follow scripted decision trees and handle a narrow set of predefined questions. AI agents are autonomous — they can make decisions, take multi-step actions, and complete tasks (like resolving a support ticket end-to-end) rather than just answering FAQs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it safe to connect company data to AI models like ChatGPT or Claude?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It can be, with the right safeguards — this includes controlling what data is sent to third-party AI providers, using enterprise-tier API agreements (which typically don't train on your data), and keeping sensitive data within your own infrastructure where possible."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What compliance standards should an AI vendor follow?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This varies by industry — healthcare typically requires HIPAA-aligned handling, finance often requires SOC 2 or similar controls, and general data protection should align with regulations like GDPR where applicable. Ask any AI vendor directly which certifications and data-handling practices they follow."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I integrate AI into my existing CRM or ERP system?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Integration typically happens through APIs connecting your CRM/ERP to the AI model or automation layer — this lets AI agents read and act on your existing data without requiring a system migration."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does it take to implement an AI agent for customer service?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A focused customer-service AI agent typically takes 4–8 weeks from strategy to launch, depending on integration complexity with existing support systems."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I start using AI in my business with no technical team?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Start with an AI strategy session to identify high-impact, low-complexity opportunities. Most AI vendors handle the technical implementation, and solutions can be designed for non-technical teams to operate day-to-day."
+      }
+    }
+  ]
 };
 
 // Breadcrumb generator helper

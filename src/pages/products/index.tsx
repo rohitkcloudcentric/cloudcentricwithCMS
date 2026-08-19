@@ -1,6 +1,6 @@
 import SEOHead from "@/components/seo/SEOHead";
 import { SITE_URL } from "@/config/seo.config";
-import { generateBreadcrumbSchema } from "@/lib/sitemap-helper";
+import { generateBreadcrumbSchema, PRODUCT_SCHEMAS } from "@/lib/sitemap-helper";
 import AnnouncementBar from "@/components/common/AnnouncementBar";
 import Navbar from "@/components/common/Navbar";
 import RankedSection from "@/components/common/RankedSection";
@@ -12,10 +12,13 @@ import ProductsHero from "@/components/products/ProductsHero";
 // Reusable ProductCard is imported from "@/components/products/ProductCard"
 
 export default function ProductsPage() {
-  const jsonLd = generateBreadcrumbSchema([
-    { name: "Home", url: "/" },
-    { name: "Products", url: "/products" }
-  ]);
+  const jsonLd = [
+    generateBreadcrumbSchema([
+      { name: "Home", url: "/" },
+      { name: "Products", url: "/products" }
+    ]),
+    ...PRODUCT_SCHEMAS
+  ];
 
   return (
     <>
