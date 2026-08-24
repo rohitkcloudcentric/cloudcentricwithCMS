@@ -18,6 +18,7 @@ export function getStaticRoutes(): SitemapLocation[] {
     { url: `${SITE_URL}`, lastmod: now, changefreq: "daily", priority: 1.0 },
     { url: `${SITE_URL}/who-we-are`, lastmod: now, changefreq: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/what-we-do`, lastmod: now, changefreq: "monthly", priority: 0.9 },
+    { url: `${SITE_URL}/services`, lastmod: now, changefreq: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/our-clients`, lastmod: now, changefreq: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/contact-us`, lastmod: now, changefreq: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/privacy-policy`, lastmod: now, changefreq: "yearly", priority: 0.3 },

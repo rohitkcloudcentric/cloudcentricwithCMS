@@ -10,6 +10,7 @@ export default function Footer() {
     { name: "Careers", href: "/contact-us" },
     { name: "Our Clients", href: "/our-clients" },
     { name: "Contact Us", href: "/contact-us" },
+    { name: "Services", href: "/services" },
   ];
 
   const aiSalesforceLinks = [

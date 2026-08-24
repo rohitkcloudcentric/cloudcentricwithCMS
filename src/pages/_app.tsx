@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import { Geist, Geist_Mono, Duru_Sans, Intel_One_Mono, Manrope } from "next/font/google";
+import { Geist, Geist_Mono, Duru_Sans, Intel_One_Mono, Manrope, Caveat } from "next/font/google";
 import Script from "next/script";
 import Preloader from "@/components/common/Preloader";
 import "../pages/globals.css";
@@ -37,12 +37,19 @@ const manrope = Manrope({
   display: "swap",
 });
 
+const caveat = Caveat({
+  weight: ["400", "600", "700"],
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 import SEOHead from "@/components/seo/SEOHead";
 import { ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, LOCAL_BUSINESS_SCHEMA } from "@/lib/sitemap-helper";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div className={`${geistSans.variable} ${geistMono.variable} ${duruSans.variable} ${intelOneMono.variable} ${manrope.variable} h-full antialiased dark`}>
+    <div className={`${geistSans.variable} ${geistMono.variable} ${duruSans.variable} ${intelOneMono.variable} ${manrope.variable} ${caveat.variable} h-full antialiased dark`}>
       {/* Google Analytics Script */}
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-6LZ0CMGG00"

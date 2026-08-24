@@ -68,6 +68,10 @@ input[type="reset"] {
   font-family: var(--font-manrope), sans-serif;
 }
 
+.font-caveat {
+  font-family: var(--font-caveat), 'Caveat', cursive;
+}
+
 /* Focus Ring Accessibility */
 :focus-visible {
   outline: none;
