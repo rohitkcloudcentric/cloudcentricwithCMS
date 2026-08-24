@@ -127,15 +127,19 @@ export default function SalesforceProductsClouds() {
           isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-10 scale-[0.99]"
         }`}>
           {/* Left Sidebar Tabs (First Card) */}
-          <div className="w-full lg:w-[380px] xl:w-[420px] bg-[#121214] p-6 sm:p-8 lg:p-10 flex flex-col justify-start space-y-3 shrink-0">
+          <div role="tablist" aria-label="Salesforce Specializations" className="w-full lg:w-[380px] xl:w-[420px] bg-[#121214] p-6 sm:p-8 lg:p-10 flex flex-col justify-start space-y-3 shrink-0">
             {SPECIALIZATION_DATA.map((cat) => {
               const isActive = cat.id === activeCategoryId;
               return (
                 <button
                   key={cat.id}
+                  id={`sp-tab-${cat.id}`}
                   type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`sp-panel-${cat.id}`}
                   onClick={() => setActiveCategoryId(cat.id)}
-                  className={`w-full text-left font-intel transition-all duration-200 cursor-pointer px-5 py-3.5 rounded-[10px] flex items-center justify-between ${
+                  className={`w-full text-left font-intel transition-all duration-200 cursor-pointer px-5 py-3.5 rounded-[10px] flex items-center justify-between focus-visible:ring-2 focus-visible:ring-[#2F89FF] focus-visible:outline-none ${
                     isActive
                       ? "bg-white text-[#111113] font-semibold shadow-md"
                       : "text-white/70 hover:text-white hover:bg-white/5 font-semibold"
@@ -157,7 +161,12 @@ export default function SalesforceProductsClouds() {
           </div>
 
           {/* Right Content Box */}
-          <div className="bg-white p-6 sm:p-8 lg:p-10 flex-1 flex flex-col space-y-5 rounded-b-[18px] lg:rounded-b-none lg:rounded-r-[18px]">
+          <div 
+            id={`sp-panel-${activeCategoryId}`}
+            role="tabpanel"
+            aria-labelledby={`sp-tab-${activeCategoryId}`}
+            className="bg-white p-6 sm:p-8 lg:p-10 flex-1 flex flex-col space-y-5 rounded-b-[18px] lg:rounded-b-none lg:rounded-r-[18px]"
+          >
             <h3 className="font-intel font-semibold text-xl sm:text-[22px] text-[#111113]">
               {currentCategory.label}
             </h3>

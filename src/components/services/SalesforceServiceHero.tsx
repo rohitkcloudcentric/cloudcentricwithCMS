@@ -138,6 +138,7 @@ export default function SalesforceServiceHero() {
                 width={800}
                 height={600}
                 priority
+                sizes="(max-width: 1024px) 100vw, 45vw"
                 className="w-full h-auto object-contain transition-transform duration-700 hover:scale-[1.02]"
               />
             </div>

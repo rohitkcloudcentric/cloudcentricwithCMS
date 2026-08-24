@@ -73,7 +73,7 @@ export default function TrustedClients() {
               fill
               sizes="(max-width: 1024px) 100vw, 42vw"
               className="object-cover object-center"
-              priority
+              loading="lazy"
             />
           </div>
 

@@ -63,6 +63,7 @@ export default function RankedSection() {
                 alt={badge.name}
                 width={badge.width}
                 height={badge.height}
+                loading="lazy"
                 className="h-10 sm:h-12 md:h-14 w-auto object-contain image-render-crisp"
                 unoptimized
               />

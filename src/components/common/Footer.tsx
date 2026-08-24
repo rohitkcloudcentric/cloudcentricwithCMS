@@ -22,8 +22,8 @@ export default function Footer() {
   ];
 
   const productLinks = [
-    { name: "FieldBlaze", href: "http://fieldblaze.com/", external: true },
-    { name: "FlyBlaze", href: "http://flyblaze.com/", external: true },
+    { name: "FieldBlaze", href: "https://fieldblaze.com/", external: true },
+    { name: "FlyBlaze", href: "https://flyblaze.com/", external: true },
     { name: "Messagify", href: "https://messagify.net/", external: true },
     { name: "Hoopmein", href: "https://hoopmein.com/", external: true },
     { name: "C3IM", href: "https://appexchange.salesforce.com/appxListingDetail?listingId=a0N3A00000FvKpqUAF", external: true },

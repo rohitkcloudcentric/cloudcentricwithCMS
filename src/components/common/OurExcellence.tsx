@@ -101,6 +101,7 @@ export default function OurExcellence() {
                     alt={cert.name}
                     width={64}
                     height={64}
+                    loading="lazy"
                     className="w-full h-full object-contain rounded-md"
                   />
                 </div>

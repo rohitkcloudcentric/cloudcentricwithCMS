@@ -326,15 +326,19 @@ export default function LeadToCustomerJourney() {
         <div className={`w-full border-b border-white/15 relative transition-all duration-1000 delay-150 ease-out transform ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}>
-          <div className="flex items-center justify-between overflow-x-auto no-scrollbar gap-6 lg:gap-8 pt-2">
+          <div role="tablist" aria-label="Customer Journey Steps" className="flex items-center justify-between overflow-x-auto no-scrollbar gap-6 lg:gap-8 pt-2">
             {JOURNEY_TABS.map((tab) => {
               const isActive = tab.id === activeTabId;
               return (
                 <button
                   key={tab.id}
+                  id={`tab-${tab.id}`}
                   type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`tabpanel-${tab.id}`}
                   onClick={() => setActiveTabId(tab.id)}
-                  className={`relative text-left font-intel transition-all duration-200 cursor-pointer pb-4 shrink-0 flex flex-col justify-end min-w-max ${
+                  className={`relative text-left font-intel transition-all duration-200 cursor-pointer pb-4 shrink-0 flex flex-col justify-end min-w-max focus-visible:ring-2 focus-visible:ring-[#2F89FF] focus-visible:outline-none ${
                     isActive ? "text-white opacity-100" : "text-white/50 hover:text-white/80"
                   }`}
                 >
@@ -358,6 +362,9 @@ export default function LeadToCustomerJourney() {
         {/* ── Cards Grid (3 Cards) ── */}
         <div 
           key={activeTabId}
+          id={`tabpanel-${activeTabId}`}
+          role="tabpanel"
+          aria-labelledby={`tab-${activeTabId}`}
           className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-[26px] transition-all duration-700 ease-out transform ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}

@@ -40,13 +40,13 @@ export default function ContactUs() {
         <div className={`text-center space-y-2 pt-4 transition-all duration-800 transform ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}>
-          <h1
+          <h2
             className="text-4xl sm:text-6xl lg:text-[72px] font-black uppercase text-white leading-tight"
             style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
           >
             READY TO BUILD <br className="hidden sm:inline" />
             SOMETHING INTELLIGENT?
-          </h1>
+          </h2>
         </div>
 
         {/* Form and Right Hologram Card Grid */}
