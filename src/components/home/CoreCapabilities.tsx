@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export interface CapabilityItem {
   id: string;
@@ -9,6 +10,7 @@ export interface CapabilityItem {
   title: string;
   technologies: string;
   description: string;
+  link?: string;
 }
 
 export const capabilitiesData: CapabilityItem[] = [
@@ -19,6 +21,7 @@ export const capabilitiesData: CapabilityItem[] = [
     technologies: "Consulting • Development • Agentforce",
     description:
       "Maximize Salesforce with consulting, implementation, customization, integrations, and managed services.",
+    link: "/salesforce/services",
   },
   {
     id: "enterprise-software",
@@ -27,6 +30,7 @@ export const capabilitiesData: CapabilityItem[] = [
     technologies: "Custom Software • ERP • Business Applications",
     description:
       "Build scalable enterprise software designed around your workflows, operations, and long-term business goals.",
+    link: "/what-we-do",
   },
   {
     id: "digital-engineering",
@@ -35,6 +39,7 @@ export const capabilitiesData: CapabilityItem[] = [
     technologies: "Web • Mobile • Cloud Applications",
     description:
       "Design and develop modern web, mobile, and cloud-native applications with exceptional user experiences.",
+    link: "/what-we-do",
   },
   {
     id: "cloud-integration",
@@ -43,6 +48,7 @@ export const capabilitiesData: CapabilityItem[] = [
     technologies: "AWS • Azure • APIs • DevOps",
     description:
       "Connect systems, migrate workloads, and build secure cloud infrastructure that grows with your business.",
+    link: "/what-we-do",
   },
   {
     id: "data-analytics",
@@ -51,6 +57,7 @@ export const capabilitiesData: CapabilityItem[] = [
     technologies: "Business Intelligence • Predictive Analytics",
     description:
       "Transform business data into actionable insights with intelligent dashboards and AI-powered decision making.",
+    link: "/what-we-do",
   },
   {
     id: "growth-digital-experience",
@@ -59,6 +66,7 @@ export const capabilitiesData: CapabilityItem[] = [
     technologies: "Branding • UI/UX • SEO • Digital Marketing",
     description:
       "Create exceptional digital experiences that increase visibility, engage customers, and accelerate business growth.",
+    link: "/what-we-do",
   },
 ];
 
@@ -69,7 +77,7 @@ interface CapabilityCardProps {
 }
 
 export const CapabilityCard: React.FC<CapabilityCardProps> = ({ capability, index, isVisible }) => {
-  return (
+  const cardContent = (
     <article 
       className={`group relative flex flex-col sm:flex-row items-center gap-6 pb-7 transition-all duration-700 transform hover:-translate-y-1.5 cursor-pointer ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -136,6 +144,16 @@ export const CapabilityCard: React.FC<CapabilityCardProps> = ({ capability, inde
       <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-transparent group-hover:bg-gradient-to-r group-hover:from-[#A855F7] group-hover:to-[#3B82F6] transition-all duration-300" />
     </article>
   );
+
+  if (capability.link) {
+    return (
+      <Link href={capability.link} className="block">
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return cardContent;
 };
 
 export default function CoreCapabilities() {

@@ -10,13 +10,13 @@ export default function Footer() {
     { name: "Careers", href: "/contact-us" },
     { name: "Our Clients", href: "/our-clients" },
     { name: "Contact Us", href: "/contact-us" },
-    { name: "Services", href: "/services" },
+    // { name: "Services", href: "/services" },
   ];
 
   const aiSalesforceLinks = [
-    { name: "AI Solutions", href: "/what-we-do" },
-    { name: "Salesforce & Agentforce", href: "/what-we-do" },
-    { name: "Custom Development", href: "/what-we-do" },
+    { name: "AI Solutions", href: "/salesforce/ai-solutions" },
+    { name: "Salesforce & Agentforce", href: "/salesforce/services" },
+    { name: "Custom Development", href: "/salesforce/custom-development" },
     { name: "Cloud Solutions", href: "/what-we-do" },
     { name: "Implementation & Support", href: "/contact-us" },
   ];

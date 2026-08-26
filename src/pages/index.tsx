@@ -5,7 +5,7 @@ import AnnouncementBar from "@/components/common/AnnouncementBar";
 import Navbar from "@/components/common/Navbar";
 import Hero from "@/components/home/Hero";
 import BuildingIntelligent from "@/components/home/BuildingIntelligent";
-import HowWeBuild from "@/components/home/HowWeBuild";
+import HowWeBuild from "@/components/common/HowWeBuild";
 import AIEcosystem from "@/components/home/AIEcosystem";
 import TrustedClients from "@/components/common/TrustedClients";
 import RankedSection from "@/components/common/RankedSection";
