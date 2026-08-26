@@ -82,8 +82,8 @@ export default function WhyCloudCentricAI() {
             return (
               <div
                 key={item.id}
-                className={`group relative rounded-[20px] bg-[#0C0C10] border border-white/[0.08] p-7 sm:p-8 flex items-start space-x-5 transition-all duration-500 hover:border-[#7C3AED]/40 hover:bg-[#111118] hover:-translate-y-1 cursor-pointer shadow-lg transform ${
-                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                className={`group relative rounded-[20px] bg-[#0C0C10] border border-white/[0.08] p-7 sm:p-8 flex items-start space-x-5 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-[#7C3AED]/40 hover:bg-[#111118] hover:-translate-y-1.5 hover:shadow-[0_0_35px_rgba(124,58,237,0.18)] cursor-pointer shadow-lg transform ${
+                  isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-10 scale-[0.98]"
                 }`}
                 style={{ transitionDelay: `${250 + idx * 100}ms` }}
               >

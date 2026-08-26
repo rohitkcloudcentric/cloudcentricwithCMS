@@ -105,8 +105,8 @@ export default function FromIdeaToImpactProcess() {
           {ideaToImpactSteps.map((item, idx) => (
             <div
               key={item.id}
-              className={`group relative rounded-[20px] bg-[#0C0C10] border border-white/[0.08] p-7 sm:p-8 flex flex-col justify-between space-y-5 transition-all duration-500 hover:border-white/20 hover:bg-[#111116] hover:-translate-y-1 cursor-pointer shadow-lg transform ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              className={`group relative rounded-[20px] bg-[#0C0C10] border border-white/[0.08] p-7 sm:p-8 flex flex-col justify-between space-y-5 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-[#A78BFA]/40 hover:bg-[#111116] hover:-translate-y-1.5 hover:shadow-[0_0_35px_rgba(167,139,250,0.18)] cursor-pointer shadow-lg transform ${
+                isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-10 scale-[0.98]"
               }`}
               style={{ transitionDelay: `${250 + idx * 90}ms` }}
             >

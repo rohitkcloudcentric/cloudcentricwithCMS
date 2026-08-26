@@ -10,7 +10,6 @@ import AIEcosystem from "@/components/home/AIEcosystem";
 import TrustedClients from "@/components/common/TrustedClients";
 import RankedSection from "@/components/common/RankedSection";
 import ContactUs from "@/components/contact/ContactUs";
-import FloatingButtons from "@/components/common/FloatingButtons";
 import Footer from "@/components/common/Footer";
 
 export default function Home() {
@@ -57,7 +56,6 @@ export default function Home() {
             <ContactUs />
           </section>
         <Footer />
-          <FloatingButtons />
         </div>
       </main>
     </>

@@ -7,6 +7,7 @@ export interface SpecializationItem {
   id: string;
   name: string;
   icon?: string;
+  link?: string;
 }
 
 export interface SpecializationCategory {
@@ -20,52 +21,52 @@ const SPECIALIZATION_DATA: SpecializationCategory[] = [
     id: "services",
     label: "Salesforce Services",
     items: [
-      { id: "s-1", name: "Salesforce Consulting" },
-      { id: "s-2", name: "Salesforce Implementation" },
-      { id: "s-3", name: "Salesforce Development" },
-      { id: "s-4", name: "Salesforce Integration" },
-      { id: "s-5", name: "Salesforce Data Migration" },
-      { id: "s-6", name: "Salesforce Training" },
-      { id: "s-7", name: "Salesforce AppExchange" },
-      { id: "s-8", name: "Hire salesforce Consultant" },
-      { id: "s-9", name: "Salesforce Reseller" },
-      { id: "s-10", name: "Salesforce Mobile SDK Development" },
-      { id: "s-11", name: "Salesforce Support" },
+      { id: "s-1", name: "Salesforce Consulting", link: "https://cccinfotech.com/services/salesforce-consulting/" },
+      { id: "s-2", name: "Salesforce Implementation", link: "https://cccinfotech.com/services/salesforce-implementation/" },
+      { id: "s-3", name: "Salesforce Development", link: "https://cccinfotech.com/services/salesforce-development/" },
+      { id: "s-4", name: "Salesforce Integration", link: "https://cccinfotech.com/services/salesforce-integration/" },
+      { id: "s-5", name: "Salesforce Data Migration", link: "https://cccinfotech.com/services/salesforce-data-migration/" },
+      { id: "s-6", name: "Salesforce Training", link: "https://cccinfotech.com/services/salesforce-training/" },
+      { id: "s-7", name: "Salesforce AppExchange", link: "https://cccinfotech.com/services/salesforce-appexchange/" },
+      { id: "s-8", name: "Hire salesforce Consultant", link: "https://cccinfotech.com/services/hire-salesforce-consultant/" },
+      { id: "s-9", name: "Salesforce Reseller", link: "https://cccinfotech.com/services/salesforce-reseller/" },
+      { id: "s-10", name: "Salesforce Mobile SDK Development", link: "https://cccinfotech.com/services/salesforce-mobile-sdk-development/" },
+      { id: "s-11", name: "Salesforce Support", link: "#" },
     ],
   },
   {
     id: "clouds",
     label: "Salesforce Clouds",
     items: [
-      { id: "c-1", name: "Sales Cloud", icon: "/images/services/salesforce-cloud-icons/sales-cloud.svg" },
-      { id: "c-2", name: "Service Cloud", icon: "/images/services/salesforce-cloud-icons/service-cloud.svg" },
-      { id: "c-3", name: "Marketing Cloud", icon: "/images/services/salesforce-cloud-icons/marketing-cloud.svg" },
-      { id: "c-4", name: "Data Cloud", icon: "/images/services/salesforce-cloud-icons/data-cloud.svg" },
-      { id: "c-5", name: "Commerce Cloud", icon: "/images/services/salesforce-cloud-icons/commerce-cloud.svg" },
-      { id: "c-6", name: "Health Cloud", icon: "/images/services/salesforce-cloud-icons/health-cloud.svg" },
-      { id: "c-7", name: "Experience Cloud", icon: "/images/services/salesforce-cloud-icons/experience-cloud.svg" },
-      { id: "c-8", name: "Education Cloud", icon: "/images/services/salesforce-cloud-icons/education-cloud.svg" },
-      { id: "c-9", name: "Manufacturing Cloud", icon: "/images/services/salesforce-cloud-icons/manufacturing-cloud.svg" },
-      { id: "c-10", name: "Financial Cloud", icon: "/images/services/salesforce-cloud-icons/financial-cloud.svg" },
-      { id: "c-11", name: "Net Zero Cloud", icon: "/images/services/salesforce-cloud-icons/net-zero-cloud.svg" },
-      { id: "c-12", name: "Nonprofit Cloud", icon: "/images/services/salesforce-cloud-icons/nonprofit-cloud.svg" },
+      { id: "c-1", name: "Sales Cloud", icon: "/images/services/salesforce-cloud-icons/sales-cloud.svg", link: "https://cccinfotech.com/services/sales-cloud/" },
+      { id: "c-2", name: "Service Cloud", icon: "/images/services/salesforce-cloud-icons/service-cloud.svg", link: "https://cccinfotech.com/services/service-cloud/" },
+      { id: "c-3", name: "Marketing Cloud", icon: "/images/services/salesforce-cloud-icons/marketing-cloud.svg", link: "https://cccinfotech.com/services/marketing-cloud/" },
+      { id: "c-4", name: "Data Cloud", icon: "/images/services/salesforce-cloud-icons/data-cloud.svg", link: "https://cccinfotech.com/services/data-cloud/" },
+      { id: "c-5", name: "Commerce Cloud", icon: "/images/services/salesforce-cloud-icons/commerce-cloud.svg", link: "https://cccinfotech.com/services/commerce-cloud/" },
+      { id: "c-6", name: "Health Cloud", icon: "/images/services/salesforce-cloud-icons/health-cloud.svg", link: "https://cccinfotech.com/services/health-cloud/" },
+      { id: "c-7", name: "Experience Cloud", icon: "/images/services/salesforce-cloud-icons/experience-cloud.svg", link: "https://cccinfotech.com/services/experience-cloud/" },
+      { id: "c-8", name: "Education Cloud", icon: "/images/services/salesforce-cloud-icons/education-cloud.svg", link: "https://cccinfotech.com/services/education-cloud/" },
+      { id: "c-9", name: "Manufacturing Cloud", icon: "/images/services/salesforce-cloud-icons/manufacturing-cloud.svg", link: "https://cccinfotech.com/services/manufacturing-cloud/" },
+      { id: "c-10", name: "Financial Cloud", icon: "/images/services/salesforce-cloud-icons/financial-cloud.svg", link: "https://cccinfotech.com/services/financial-services-cloud/" },
+      { id: "c-11", name: "Net Zero Cloud", icon: "/images/services/salesforce-cloud-icons/net-zero-cloud.svg", link: "#" },
+      { id: "c-12", name: "Nonprofit Cloud", icon: "/images/services/salesforce-cloud-icons/nonprofit-cloud.svg", link: "#" },
     ],
   },
   {
     id: "products",
     label: "Salesforce Products",
     items: [
-      { id: "p-1", name: "AgentForce", icon: "/images/services/salesforce-product-icons/agentforce.svg" },
-      { id: "p-2", name: "Einstein Ai", icon: "/images/services/salesforce-product-icons/einstein-ai.svg" },
-      { id: "p-3", name: "Heroku", icon: "/images/services/salesforce-product-icons/heroku.svg" },
-      { id: "p-4", name: "MuleSoft", icon: "/images/services/salesforce-product-icons/mulesoft.svg" },
-      { id: "p-5", name: "Pardot", icon: "/images/services/salesforce-product-icons/pardot.svg" },
-      { id: "p-6", name: "Tableau", icon: "/images/services/salesforce-product-icons/tableau.svg" },
-      { id: "p-7", name: "Slack", icon: "/images/services/salesforce-product-icons/slack.svg" },
-      { id: "p-8", name: "Field Service Lightning", icon: "/images/services/salesforce-product-icons/field-service-lightning.svg" },
-      { id: "p-9", name: "Analytics", icon: "/images/services/salesforce-product-icons/analytics.svg" },
-      { id: "p-10", name: "Consumer Goods", icon: "/images/services/salesforce-product-icons/consumer-goods.svg" },
-      { id: "p-11", name: "Lightning Platform", icon: "/images/services/salesforce-product-icons/lightning-platform.svg" },
+      { id: "p-1", name: "AgentForce", icon: "/images/services/salesforce-product-icons/agentforce.svg", link: "https://cccinfotech.com/services/artificial-intelligence/" },
+      { id: "p-2", name: "Einstein Ai", icon: "/images/services/salesforce-product-icons/einstein-ai.svg", link: "https://cccinfotech.com/services/artificial-intelligence/" },
+      { id: "p-3", name: "Heroku", icon: "/images/services/salesforce-product-icons/heroku.svg", link: "https://cccinfotech.com/services/heroku/" },
+      { id: "p-4", name: "MuleSoft", icon: "/images/services/salesforce-product-icons/mulesoft.svg", link: "https://cccinfotech.com/services/mulesoft/" },
+      { id: "p-5", name: "Pardot", icon: "/images/services/salesforce-product-icons/pardot.svg", link: "https://cccinfotech.com/services/marketing-cloud-account-engagement/" },
+      { id: "p-6", name: "Tableau", icon: "/images/services/salesforce-product-icons/tableau.svg", link: "https://cccinfotech.com/services/tableau/" },
+      { id: "p-7", name: "Slack", icon: "/images/services/salesforce-product-icons/slack.svg", link: "https://cccinfotech.com/services/slack/" },
+      { id: "p-8", name: "Field Service Lightning", icon: "/images/services/salesforce-product-icons/field-service-lightning.svg", link: "https://cccinfotech.com/services/field-service-lightning/" },
+      { id: "p-9", name: "Analytics", icon: "/images/services/salesforce-product-icons/analytics.svg", link: "https://cccinfotech.com/services/analytics/" },
+      { id: "p-10", name: "Consumer Goods", icon: "/images/services/salesforce-product-icons/consumer-goods.svg", link: "https://cccinfotech.com/services/consumer/" },
+      { id: "p-11", name: "Lightning Platform", icon: "/images/services/salesforce-product-icons/lightning-platform.svg", link: "#" },
     ],
   },
 ];
@@ -114,12 +115,14 @@ export default function SalesforceProductsClouds() {
             </span>
           </div>
 
-          <button
-            type="button"
-            className="bg-gradient-to-r from-[#2F89FF] to-[#B021F0] text-white font-intel font-semibold text-sm px-6 py-3 rounded-lg shadow-lg hover:opacity-90 transition-all duration-200 cursor-pointer shrink-0 self-start sm:self-end"
+          <a
+            href="https://cccinfotech.com/services/salesforce-development/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-gradient-to-r from-[#2F89FF] to-[#B021F0] text-white font-intel font-semibold text-sm px-6 py-3 rounded-lg shadow-lg hover:opacity-90 transition-all duration-200 cursor-pointer shrink-0 self-start sm:self-end inline-flex items-center justify-center"
           >
             Talk to Salesforce Expert
-          </button>
+          </a>
         </div>
 
         {/* ── Main Split Container ── */}
@@ -173,9 +176,12 @@ export default function SalesforceProductsClouds() {
 
             <div className="flex flex-wrap gap-2.5 sm:gap-3 items-center">
               {currentCategory.items.map((item) => (
-                <div
+                <a
                   key={item.id}
-                  className="bg-[#F4F4F6] hover:bg-[#EAEAEF] border border-gray-200/50 rounded-[8px] px-3.5 py-2 sm:px-4 sm:py-2.5 flex items-center space-x-2.5 transition-all duration-200 shadow-sm"
+                  href={item.link || "https://cccinfotech.com/services/salesforce-development/"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#F4F4F6] hover:bg-[#EAEAEF] hover:border-[#2F89FF]/40 border border-gray-200/50 rounded-[8px] px-3.5 py-2 sm:px-4 sm:py-2.5 flex items-center space-x-2.5 transition-all duration-200 shadow-sm cursor-pointer hover:shadow-md hover:-translate-y-0.5 group focus-visible:ring-2 focus-visible:ring-[#2F89FF] focus-visible:outline-none"
                 >
                   {item.icon && (
                     <div className="w-4 h-4 sm:w-[18px] sm:h-[18px] relative shrink-0 flex items-center justify-center">
@@ -188,10 +194,10 @@ export default function SalesforceProductsClouds() {
                       />
                     </div>
                   )}
-                  <span className="font-intel font-semibold text-xs sm:text-[13px] text-[#2d2d32] whitespace-nowrap">
+                  <span className="font-intel font-semibold text-xs sm:text-[13px] text-[#2d2d32] group-hover:text-[#2F89FF] transition-colors whitespace-nowrap">
                     {item.name}
                   </span>
-                </div>
+                </a>
               ))}
             </div>
           </div>

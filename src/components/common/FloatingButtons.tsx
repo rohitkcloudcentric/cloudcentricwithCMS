@@ -36,7 +36,7 @@ export default function FloatingButtons() {
   return (
     <>
       {/* Right Side Rotated Vertical Action Tabs */}
-      <div className="fixed right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col space-x-3 items-center">
+      <div className="fixed right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col  items-center gap-8">
       
         <Link
           href="/contact-us"

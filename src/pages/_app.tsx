@@ -45,6 +45,7 @@ const caveat = Caveat({
 });
 
 import SEOHead from "@/components/seo/SEOHead";
+import FloatingButtons from "@/components/common/FloatingButtons";
 import { ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, LOCAL_BUSINESS_SCHEMA } from "@/lib/sitemap-helper";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -67,6 +68,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <SEOHead jsonLd={[ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, LOCAL_BUSINESS_SCHEMA]} />
       <Preloader />
       <Component {...pageProps} />
+      <FloatingButtons />
     </div>
   );
 }
