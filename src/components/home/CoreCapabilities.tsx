@@ -26,21 +26,21 @@ export const capabilitiesData: CapabilityItem[] = [
   {
     id: "enterprise-software",
     iconSrc: "/images/what we-do/enterprise-software.svg",
-    title: "Enterprise Software Development",
+    title: "Custom Software Development",
     technologies: "Custom Software • ERP • Business Applications",
     description:
-      "Build scalable enterprise software designed around your workflows, operations, and long-term business goals.",
+      "Build scalable custom software designed around your workflows, operations, and long-term business goals.",
     link: "/what-we-do",
   },
-  {
-    id: "digital-engineering",
-    iconSrc: "/images/what we-do/digital-engineering.svg",
-    title: "Digital Engineering",
-    technologies: "Web • Mobile • Cloud Applications",
-    description:
-      "Design and develop modern web, mobile, and cloud-native applications with exceptional user experiences.",
-    link: "/what-we-do",
-  },
+  // {
+  //   id: "digital-engineering",
+  //   iconSrc: "/images/what we-do/digital-engineering.svg",
+  //   title: "Digital Engineering",
+  //   technologies: "Web • Mobile • Cloud Applications",
+  //   description:
+  //     "Design and develop modern web, mobile, and cloud-native applications with exceptional user experiences.",
+  //   link: "/what-we-do",
+  // },
   {
     id: "cloud-integration",
     iconSrc: "/images/what we-do/cloud-integration.svg",
@@ -48,17 +48,17 @@ export const capabilitiesData: CapabilityItem[] = [
     technologies: "AWS • Azure • APIs • DevOps",
     description:
       "Connect systems, migrate workloads, and build secure cloud infrastructure that grows with your business.",
-    link: "/what-we-do",
+    link: "/salesforce/cloud-integration",
   },
-  {
-    id: "data-analytics",
-    iconSrc: "/images/what we-do/data-analytics-intelligence.svg",
-    title: "Data, Analytics & Intelligence",
-    technologies: "Business Intelligence • Predictive Analytics",
-    description:
-      "Transform business data into actionable insights with intelligent dashboards and AI-powered decision making.",
-    link: "/what-we-do",
-  },
+  // {
+  //   id: "data-analytics",
+  //   iconSrc: "/images/what we-do/data-analytics-intelligence.svg",
+  //   title: "Data, Analytics & Intelligence",
+  //   technologies: "Business Intelligence • Predictive Analytics",
+  //   description:
+  //     "Transform business data into actionable insights with intelligent dashboards and AI-powered decision making.",
+  //   link: "/what-we-do",
+  // },
   {
     id: "growth-digital-experience",
     iconSrc: "/images/what we-do/growth-digital-experience.svg",
@@ -66,7 +66,7 @@ export const capabilitiesData: CapabilityItem[] = [
     technologies: "Branding • UI/UX • SEO • Digital Marketing",
     description:
       "Create exceptional digital experiences that increase visibility, engage customers, and accelerate business growth.",
-    link: "/what-we-do",
+    link: "/growth-digital-experience",
   },
 ];
 

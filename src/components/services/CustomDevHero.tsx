@@ -29,7 +29,6 @@ export default function CustomDevHero() {
         />
         {/* Dark Overlays & Ambient Glowing Orbs */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/50 via-transparent to-[#050505]" />
-        <div className="absolute top-1/3 left-1/4 w-[450px] h-[450px] bg-blue-600/15 rounded-full blur-[120px] pointer-events-none animate-pulse-glow" />
         <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-purple-600/15 rounded-full blur-[120px] pointer-events-none animate-float-slow" />
       </div>
 
