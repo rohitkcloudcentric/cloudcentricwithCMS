@@ -28,12 +28,7 @@ function CloudIntegrationHero() {
         href: "#solutions",
         ariaLabel: "Explore Cloud & Integration Solutions",
       }}
-      showcaseImage={{
-        src: "/images/services/salesforce-landing-page_hero-image-1-1.png",
-        alt: "Cloud & Integration Services Platform Showcase",
-        width: 800,
-        height: 600,
-      }}
+
       bullets={[
         { title: "Cloud Expertise", subtitle: "AWS • Azure • Cloud Platforms", dotColor: "#38BDF8" },
         { title: "Connected Systems", subtitle: "APIs • Integrations • Data", dotColor: "#38BDF8" },

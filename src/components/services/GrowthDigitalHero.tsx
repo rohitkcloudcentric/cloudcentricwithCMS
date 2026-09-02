@@ -28,12 +28,7 @@ function GrowthDigitalHero() {
         href: "/contact-us",
         ariaLabel: "Talk to a Growth Expert",
       }}
-      showcaseImage={{
-        src: "/images/services/salesforce-landing-page_hero-image-1-1.png",
-        alt: "Growth & Digital Experience Platform Showcase",
-        width: 800,
-        height: 600,
-      }}
+
       bullets={[
         { title: "Strategy + Creative", subtitle: "Built Around Your Business", dotColor: "#E11D48" },
         { title: "Digital Experience", subtitle: "Designed For People", dotColor: "#818CF8" },

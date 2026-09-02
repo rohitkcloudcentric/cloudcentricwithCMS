@@ -26,7 +26,7 @@ export const capabilitiesData: CapabilityItem[] = [
   {
     id: "enterprise-software",
     iconSrc: "/images/what we-do/enterprise-software.svg",
-    title: "Custom Development",
+    title: "Custom Software Development",
     technologies: "Custom Software • ERP • Business Applications",
     description:
       "Build scalable custom software designed around your workflows, operations, and long-term business goals.",

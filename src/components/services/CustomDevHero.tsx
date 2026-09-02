@@ -25,12 +25,7 @@ function CustomDevHero() {
         text: "Talk to an Expert",
         href: "/contact-us",
       }}
-      showcaseImage={{
-        src: "/images/services/salesforce-landing-page_hero-image-1-1.png",
-        alt: "Custom Development Platform Showcase",
-        width: 800,
-        height: 600,
-      }}
+
       sectionAriaLabel="Custom Development Hero Section"
     />
   );

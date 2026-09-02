@@ -29,7 +29,6 @@ export default function SalesforceServiceHero() {
         />
         {/* Top, Bottom & Radial Glow Overlays */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/50 via-transparent to-[#050505]" />
-        <div className="absolute top-1/3 left-1/4 w-[450px] h-[450px] bg-blue-600/15 rounded-full blur-[120px] pointer-events-none animate-pulse-glow" />
         <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-purple-600/15 rounded-full blur-[120px] pointer-events-none animate-float-slow" />
       </div>
 
@@ -131,7 +130,7 @@ export default function SalesforceServiceHero() {
           <div className="relative w-full max-w-[580px] lg:max-w-none group animate-float">
           
             {/* Salesforce UI Image Graphic */}
-            <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 hover:shadow-[0_0_50px_rgba(47,137,255,0.3)]">
+            <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl transition-all duration-500">
               <Image
                 src="/images/services/salesforce-landing-page_hero-image-1 1.png"
                 alt="Salesforce Platform and Ecosystem Showcase"

@@ -31,7 +31,7 @@ export interface CommonServiceHeroProps {
     alt: string;
     width?: number;
     height?: number;
-  };
+  } | null;
   bullets?: ServiceHeroBullet[] | string[];
   bulletsGridCols?: string;
   bgImage?: string;
@@ -50,12 +50,7 @@ export default function CommonServiceHero({
     href: "/contact-us",
   },
   secondaryCta,
-  showcaseImage = {
-    src: "/images/services/salesforce-landing-page_hero-image-1-1.png",
-    alt: "Service Platform Showcase",
-    width: 800,
-    height: 600,
-  },
+  showcaseImage,
   bullets,
   bulletsGridCols,
   bgImage = "/images/blogs/blog-hero-bg.png",
@@ -94,11 +89,12 @@ export default function CommonServiceHero({
         <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-purple-600/15 rounded-full blur-[120px] pointer-events-none animate-float-slow" />
       </div>
 
-      {/* ── Main Content Grid (2 Columns: Left Text, Right Showcase Image) ── */}
+      {/* ── Main Content Grid ── */}
       <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center py-6">
         
-        {/* ── Left Column: Text & CTAs (7 Cols) ── */}
-        <div className="lg:col-span-7 flex flex-col space-y-6 sm:space-y-7">
+        {/* ── Left Column: Text & CTAs ── */}
+        <div className={showcaseImage ? "lg:col-span-7 flex flex-col space-y-6 sm:space-y-7" : "lg:col-span-12 flex flex-col space-y-6 sm:space-y-7 max-w-4xl"}>
+
           
           {/* Eyebrow / Sub-label */}
           <div

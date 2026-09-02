@@ -34,12 +34,7 @@ function AISolutionsHero() {
         text: "Explore AI Capabilities",
         href: "#ai-capabilities",
       }}
-      showcaseImage={{
-        src: "/images/services/salesforce-landing-page_hero-image-1-1.png",
-        alt: "AI Solutions & Salesforce Platform Showcase",
-        width: 800,
-        height: 600,
-      }}
+
       bullets={[
         "10+ Years Technology Experience",
         "400+ Projects Delivered",
