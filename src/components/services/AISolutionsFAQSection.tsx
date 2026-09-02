@@ -1,11 +1,19 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, ReactNode } from "react";
 
-interface FAQItem {
+export interface FAQItem {
   id: number;
   question: string;
   answer: string;
+}
+
+export interface AISolutionsFAQSectionProps {
+  eyebrow?: string;
+  title?: ReactNode;
+  description?: string;
+  faqs?: FAQItem[];
+  ariaLabel?: string;
 }
 
 const AI_SOLUTIONS_FAQS: FAQItem[] = [
@@ -105,7 +113,20 @@ function AccordionItem({
   );
 }
 
-export default function AISolutionsFAQSection() {
+function AISolutionsFAQSection({
+  eyebrow = "Frequently Asked Questions",
+  title = (
+    <>
+      Questions Before You Start Your <br className="hidden sm:inline" />
+      <span className="bg-gradient-to-r from-[#2563EB] to-[#A855F7] bg-clip-text text-transparent">
+        Salesforce Journey?
+      </span>
+    </>
+  ),
+  description = "Get clear answers about our Salesforce expertise, implementation approach, integrations, support, and how we help businesses get more value from Salesforce.",
+  faqs = AI_SOLUTIONS_FAQS,
+  ariaLabel = "Frequently Asked Questions",
+}: AISolutionsFAQSectionProps) {
   /* Second item (index 1 / id 2) open by default matching screenshot */
   const [openId, setOpenId] = useState<number>(2);
 
@@ -136,7 +157,7 @@ export default function AISolutionsFAQSection() {
     <section
       ref={sectionRef}
       className="w-full bg-[#050505] text-white px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-14 overflow-hidden z-10"
-      aria-label="AI Solutions Frequently Asked Questions"
+      aria-label={ariaLabel}
     >
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
@@ -149,20 +170,17 @@ export default function AISolutionsFAQSection() {
         >
           {/* Subtitle */}
           <p className="text-xs font-normal uppercase tracking-widest text-white/80 font-intel">
-            Frequently Asked Questions
+            {eyebrow}
           </p>
 
           {/* Heading */}
           <h2 className="text-3xl sm:text-4xl font-normal leading-tight text-white font-duru">
-            Questions Before You Start Your <br className="hidden sm:inline" />
-            <span className="bg-gradient-to-r from-[#2563EB] to-[#A855F7] bg-clip-text text-transparent">
-              Salesforce Journey?
-            </span>
+            {title}
           </h2>
 
           {/* Description */}
           <p className="text-sm sm:text-base text-white/70 leading-relaxed font-intel max-w-lg">
-            Get clear answers about our Salesforce expertise, implementation approach, integrations, support, and how we help businesses get more value from Salesforce.
+            {description}
           </p>
         </div>
 
@@ -172,7 +190,7 @@ export default function AISolutionsFAQSection() {
           role="list"
           aria-label="FAQ accordion"
         >
-          {AI_SOLUTIONS_FAQS.map((item, idx) => (
+          {faqs.map((item, idx) => (
             <AccordionItem
               key={item.id}
               item={item}
@@ -188,3 +206,7 @@ export default function AISolutionsFAQSection() {
     </section>
   );
 }
+
+export default AISolutionsFAQSection;
+
+

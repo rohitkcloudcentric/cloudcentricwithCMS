@@ -82,26 +82,6 @@ export const cloudPlatformsData: CloudPlatformItem[] = [
     linkText: "Google Cloud Services",
     linkHref: "/contact-us",
   },
-  {
-    id: "salesforce",
-    badge: "CRM & DATA CLOUD",
-    badgeBg: "rgba(0, 161, 224, 0.07)",
-    badgeBorder: "rgba(0, 161, 224, 0.25)",
-    accentColor: "#00A1E0",
-    logoSrc: "/images/salesforce-logo.svg",
-    logoAlt: "Salesforce Cloud Logo",
-    title: "Salesforce Cloud",
-    subHeading: "Unified CRM & Data Architecture",
-    description: "Connect customer touchpoints, automate workflows, and unify business data across Salesforce Data Cloud.",
-    features: [
-      "Salesforce Data Cloud & Zero-Copy",
-      "MuleSoft Anypoint Integration",
-      "Heroku Enterprise Applications",
-      "Einstein 1 & Agentforce AI",
-    ],
-    linkText: "Salesforce Cloud Services",
-    linkHref: "/contact-us",
-  },
 ];
 
 export default function CloudFoundationSection() {

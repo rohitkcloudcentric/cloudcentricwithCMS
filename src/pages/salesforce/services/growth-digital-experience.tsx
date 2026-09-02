@@ -1,3 +1,4 @@
-import GrowthDigitalExperiencePage from "@/pages/growth-digital-experience";
+import GrowthDigitalExperiencePage from "@/pages/salesforce/growth-digital-experience";
 
 export default GrowthDigitalExperiencePage;
+

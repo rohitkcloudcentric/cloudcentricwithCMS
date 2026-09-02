@@ -1,183 +1,50 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { Sparkles } from "lucide-react";
+import React from "react";
+import CommonServiceHero from "@/components/common/CommonServiceHero";
 
-export default function GrowthDigitalHero() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 50);
-    return () => clearTimeout(timer);
-  }, []);
-
+function GrowthDigitalHero() {
   return (
-    <section 
-      className="relative w-full min-h-[600px] sm:min-h-[660px] lg:min-h-[720px] flex flex-col justify-center -mt-[96px] sm:-mt-[104px] pt-[140px] sm:pt-[155px] lg:pt-[165px] pb-12 px-6 sm:px-10 lg:px-16 bg-[#030306] text-white overflow-hidden z-0"
-      aria-label="Growth & Digital Experience Services Hero Section"
-    >
-      
-      {/* ── Background Hero Image & Ambient Glowing Gradients ── */}
-      <div className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none z-0" aria-hidden="true">
-        <Image
-          src="/images/blogs/blog-hero-bg.png"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className={`object-cover object-center transition-all duration-1000 ease-out ${
-            mounted ? "opacity-95 scale-100" : "opacity-0 scale-105"
-          }`}
-        />
-
-        {/* Dark Overlays & Ambient Glowing Orbs */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/50 via-transparent to-[#050505]" />
-        <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-purple-600/15 rounded-full blur-[120px] pointer-events-none animate-float-slow" />
-      </div>
-
-      {/* ── Main Content Grid (2 Columns: Left Text, Right Showcase Image) ── */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center py-6">
-        
-        {/* ── Left Column: Text & CTAs (7 Cols) ── */}
-        <div className="lg:col-span-7 flex flex-col space-y-6 sm:space-y-7">
-          
-          {/* Eyebrow / Sub-label */}
-          <div 
-            className={`transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"
-            }`}
-          >
-            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] text-[#38BDF8] font-mono flex items-center space-x-2">
-              <span className="text-[#38BDF8]">/</span>
-              <span>GROWTH & DIGITAL EXPERIENCE</span>
-            </p>
-          </div>
-
-          {/* Main Title */}
-          <div 
-            className={`flex flex-col space-y-2 transition-all duration-1000 delay-100 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-14"
-            }`}
-          >
-            <h1 className="text-2xl sm:text-4xl lg:text-[46px] xl:text-[54px] font-medium leading-[1.12] text-white tracking-tight font-duru">
-              Build Experiences That Get<br />
-              <span className="bg-gradient-to-r from-[#60A5FA] via-[#A78BFA] to-[#C084FC] bg-clip-text text-transparent">
-                Seen, Chosen & Remembered
-              </span>
-            </h1>
-          </div>
-
-          {/* Tagline Sub-heading */}
-          <div
-            className={`transition-all duration-1000 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-14"
-            }`}
-          >
-            <p className="text-sm sm:text-base lg:text-lg font-semibold text-slate-200 tracking-wide font-mono">
-              Strategy. Experience. Growth.
-            </p>
-          </div>
-
-          {/* Body Paragraph */}
-          <p 
-            className={`text-xs sm:text-sm lg:text-base text-[#94A3B8] leading-relaxed max-w-2xl font-intel font-light transition-all duration-1000 delay-200 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-14"
-            }`}
-          >
-            We combine brand, design, digital experience, and performance marketing to help businesses attract the right audience, create meaningful experiences, and turn attention into growth.
-          </p>
-
-          {/* Action Buttons Row */}
-          <div 
-            className={`pt-2 flex flex-wrap items-center gap-4 sm:gap-5 transition-all duration-1000 delay-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-14"
-            }`}
-          >
-            {/* Primary Action: Start Your Project */}
-            <Link
-              href="/contact-us"
-              aria-label="Start Your Project - Contact CloudCentric"
-              className="inline-flex items-center space-x-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#3B82F6] via-[#6366F1] to-[#A855F7] hover:from-[#2563EB] hover:to-[#9333EA] text-white text-xs sm:text-sm font-semibold tracking-wide shadow-[0_0_25px_rgba(99,102,241,0.45)] hover:shadow-[0_0_35px_rgba(168,85,247,0.6)] hover:-translate-y-0.5 transition-all duration-300 active:scale-95 font-intel cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C3AED]"
-            >
-              <Sparkles className="w-4 h-4 text-cyan-200" aria-hidden="true" />
-              <span>Start Your Project</span>
-            </Link>
-
-            {/* Secondary Action: Talk to a Growth Expert */}
-            <Link
-              href="/contact-us"
-              aria-label="Talk to a Growth Expert"
-              className="inline-flex items-center space-x-2 px-6 py-3.5 rounded-xl bg-white hover:bg-white/95 text-[#6366F1] text-xs sm:text-sm font-medium tracking-wide shadow-lg hover:-translate-y-0.5 transition-all duration-300 active:scale-95 font-intel cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C3AED]"
-            >
-              <span className="bg-gradient-to-r from-[#2563EB] to-[#7C3AED] bg-clip-text text-transparent font-semibold">
-                Talk to a Growth Expert
-              </span>
-            </Link>
-          </div>
-
-        </div>
-
-        {/* ── Right Column: Showcase Graphic (5 Cols, Same as AI & Custom Dev) ── */}
-        <div 
-          className={`lg:col-span-5 relative w-full flex justify-center lg:justify-end transition-all duration-1000 delay-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            mounted ? "opacity-100 translate-x-0 scale-100" : "opacity-0 translate-x-16 scale-95"
-          }`}
-        >
-          <div className="relative w-full max-w-[580px] lg:max-w-none group animate-float">
-            <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 hover:shadow-[0_0_50px_rgba(47,137,255,0.3)]">
-              <Image
-                src="/images/services/salesforce-landing-page_hero-image-1-1.png"
-                alt="Growth & Digital Experience Platform Showcase"
-                width={800}
-                height={600}
-                priority
-                sizes="(max-width: 1024px) 100vw, 45vw"
-                className="w-full h-auto object-contain transition-transform duration-700 hover:scale-[1.02]"
-              />
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      {/* ── Bottom Feature Bullets (3 Columns) ── */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full pt-4">
-        <div 
-          className={`grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl border-t border-white/10 pt-6 transition-all duration-1000 delay-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          {/* Bullet 1 */}
-          <div className="flex flex-col space-y-1">
-            <div className="flex items-center space-x-2">
-              <span className="w-2 h-2 rounded-full bg-[#E11D48] shadow-[0_0_8px_#F43F5E]" aria-hidden="true" />
-              <h3 className="text-xs sm:text-sm font-semibold text-white font-intel">Strategy + Creative</h3>
-            </div>
-            <p className="text-[11px] sm:text-xs text-[#94A3B8] font-mono pl-4">Built Around Your Business</p>
-          </div>
-
-          {/* Bullet 2 */}
-          <div className="flex flex-col space-y-1">
-            <div className="flex items-center space-x-2">
-              <span className="w-2 h-2 rounded-full bg-[#818CF8] shadow-[0_0_8px_#818CF8]" aria-hidden="true" />
-              <h3 className="text-xs sm:text-sm font-semibold text-white font-intel">Digital Experience</h3>
-            </div>
-            <p className="text-[11px] sm:text-xs text-[#94A3B8] font-mono pl-4">Designed For People</p>
-          </div>
-
-          {/* Bullet 3 */}
-          <div className="flex flex-col space-y-1">
-            <div className="flex items-center space-x-2">
-              <span className="w-2 h-2 rounded-full bg-[#C084FC] shadow-[0_0_8px_#C084FC]" aria-hidden="true" />
-              <h3 className="text-xs sm:text-sm font-semibold text-white font-intel">Performance</h3>
-            </div>
-            <p className="text-[11px] sm:text-xs text-[#94A3B8] font-mono pl-4">Focused on Growth</p>
-          </div>
-        </div>
-      </div>
-
-    </section>
+    <CommonServiceHero
+      eyebrow="GROWTH & DIGITAL EXPERIENCE"
+      eyebrowColor="#38BDF8"
+      title={
+        <>
+          Build Experiences That Get<br />
+          <span className="bg-gradient-to-r from-[#60A5FA] via-[#A78BFA] to-[#C084FC] bg-clip-text text-transparent">
+            Seen, Chosen & Remembered
+          </span>
+        </>
+      }
+      tagline="Strategy. Experience. Growth."
+      description="We combine brand, design, digital experience, and performance marketing to help businesses attract the right audience, create meaningful experiences, and turn attention into growth."
+      primaryCta={{
+        text: "Start Your Project",
+        href: "/contact-us",
+        ariaLabel: "Start Your Project - Contact CloudCentric",
+      }}
+      secondaryCta={{
+        text: "Talk to a Growth Expert",
+        href: "/contact-us",
+        ariaLabel: "Talk to a Growth Expert",
+      }}
+      showcaseImage={{
+        src: "/images/services/salesforce-landing-page_hero-image-1-1.png",
+        alt: "Growth & Digital Experience Platform Showcase",
+        width: 800,
+        height: 600,
+      }}
+      bullets={[
+        { title: "Strategy + Creative", subtitle: "Built Around Your Business", dotColor: "#E11D48" },
+        { title: "Digital Experience", subtitle: "Designed For People", dotColor: "#818CF8" },
+        { title: "Performance", subtitle: "Focused on Growth", dotColor: "#C084FC" },
+      ]}
+      sectionAriaLabel="Growth & Digital Experience Services Hero Section"
+      minHeightClass="min-h-[600px] sm:min-h-[660px] lg:min-h-[720px]"
+    />
   );
 }
+
+export default GrowthDigitalHero;
+
+

@@ -12,9 +12,6 @@ const CloudTechForBusinessNeed = dynamic(() => import("@/components/services/Clo
 const CloudFoundationSection = dynamic(() => import("@/components/services/CloudFoundationSection"));
 const MoveBeyondLegacySection = dynamic(() => import("@/components/services/MoveBeyondLegacySection"));
 const TechEcosystemSection = dynamic(() => import("@/components/services/TechEcosystemSection"));
-const IdeaToProductionProduct = dynamic(() => import("@/components/services/IdeaToProductionProduct"));
-const FromIdeaToImpactProcess = dynamic(() => import("@/components/services/FromIdeaToImpactProcess"));
-const BuiltWithTechThatScale = dynamic(() => import("@/components/services/BuiltWithTechThatScale"));
 const AISolutionsFAQSection = dynamic(() => import("@/components/services/AISolutionsFAQSection"));
 const RankedSection = dynamic(() => import("@/components/common/RankedSection"));
 const ContactUs = dynamic(() => import("@/components/contact/ContactUs"));
@@ -87,7 +84,49 @@ export default function CloudIntegrationPage() {
           <TechEcosystemSection />
           
           {/* FAQ Section */}
-          <AISolutionsFAQSection />
+          <AISolutionsFAQSection
+            title={
+              <>
+                Questions Before You Start Your <br className="hidden sm:inline" />
+                <span className="bg-gradient-to-r from-[#2563EB] to-[#A855F7] bg-clip-text text-transparent">
+                  Cloud & Integration?
+                </span>
+              </>
+            }
+            description="Find answers to common questions about cloud migration, API development, system integration, and infrastructure management."
+            faqs={[
+              {
+                id: 1,
+                question: "01. Can you migrate our existing applications to the cloud?",
+                answer:
+                  "Yes. We specialize in migrating legacy software, databases, and enterprise applications to public or hybrid clouds like AWS and Azure with minimal downtime and data integrity.",
+              },
+              {
+                id: 2,
+                question: "02. Do you work with AWS and Azure?",
+                answer:
+                  "Yes. We help businesses design, migrate, develop, integrate, and optimize solutions across leading cloud platforms including AWS and Microsoft Azure.",
+              },
+              {
+                id: 3,
+                question: "03. Can you integrate our existing business systems?",
+                answer:
+                  "Yes. We connect your enterprise software, CRM platforms, databases, and third-party tools via custom REST APIs, GraphQL, and secure middleware.",
+              },
+              {
+                id: 4,
+                question: "04. Can you manage our DevOps and deployment processes?",
+                answer:
+                  "Yes. We set up automated CI/CD pipelines, containerized environments using Docker and Kubernetes, and infrastructure-as-code to streamline deployments.",
+              },
+              {
+                id: 5,
+                question: "05. Can you optimize our existing cloud infrastructure?",
+                answer:
+                  "Yes. We audit your current cloud setups to enhance security, improve resource performance, eliminate inefficiencies, and lower operational costs.",
+              },
+            ]}
+          />
 
           {/* Ranked Section */}
           <RankedSection />

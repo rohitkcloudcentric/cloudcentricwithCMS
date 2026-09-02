@@ -26,11 +26,11 @@ export const capabilitiesData: CapabilityItem[] = [
   {
     id: "enterprise-software",
     iconSrc: "/images/what we-do/enterprise-software.svg",
-    title: "Custom Software Development",
+    title: "Custom Development",
     technologies: "Custom Software • ERP • Business Applications",
     description:
       "Build scalable custom software designed around your workflows, operations, and long-term business goals.",
-    link: "/what-we-do",
+    link: "/salesforce/custom-development",
   },
   // {
   //   id: "digital-engineering",
@@ -66,8 +66,9 @@ export const capabilitiesData: CapabilityItem[] = [
     technologies: "Branding • UI/UX • SEO • Digital Marketing",
     description:
       "Create exceptional digital experiences that increase visibility, engage customers, and accelerate business growth.",
-    link: "/growth-digital-experience",
+    link: "/salesforce/growth-digital-experience",
   },
+
 ];
 
 interface CapabilityCardProps {
@@ -181,7 +182,7 @@ export default function CoreCapabilities() {
   return (
     <section
       ref={sectionRef}
-      className="w-full bg-[#050505] text-white py-16 sm:py-20 lg:py-[120px] px-5 sm:px-8 z-10"
+      className="w-full bg-[#000000] text-white py-16 sm:py-20 lg:py-[120px] px-5 sm:px-8 z-10"
       aria-label="Core Capabilities"
     >
       <div className="max-w-[1280px] mx-auto flex flex-col space-y-12 lg:space-y-16">

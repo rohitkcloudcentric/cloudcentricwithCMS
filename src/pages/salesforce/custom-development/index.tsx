@@ -75,7 +75,50 @@ export default function CustomDevelopmentPage() {
           <BuiltWithTechThatScale />
 
           {/* FAQ Section */}
-          <AISolutionsFAQSection />
+          <AISolutionsFAQSection
+            title={
+              <>
+                Questions Before You Start Your <br className="hidden sm:inline" />
+                <span className="bg-gradient-to-r from-[#2563EB] to-[#A855F7] bg-clip-text text-transparent">
+                  Software Journey?
+                </span>
+              </>
+            }
+            description="Get clear answers about our custom software expertise, implementation approach, integrations, support, and how we help businesses build scalable solutions."
+            faqs={[
+              {
+                id: 1,
+                question: "Where should our business start with AI?",
+                answer:
+                  "We recommend starting with an AI readiness assessment and a high-impact proof of concept. We help identify manual bottlenecks, high-value data opportunities, and quick wins to build momentum and prove ROI.",
+              },
+              {
+                id: 2,
+                question: "Can you integrate AI with our existing systems?",
+                answer:
+                  "Yes. We can connect AI with Salesforce, CRM platforms, databases, cloud applications, APIs, communication platforms, and other enterprise systems.",
+              },
+              {
+                id: 3,
+                question: "Do you build custom AI agents?",
+                answer:
+                  "Yes. We build autonomous AI agents tailored to your business workflows. These agents can understand context, reason through multi-step decisions, connect to your APIs, and execute tasks automatically.",
+              },
+              {
+                id: 4,
+                question: "Can we start with a small AI proof of concept?",
+                answer:
+                  "Absolutely. We frequently build small-scale, rapid AI proofs of concept (POCs) so you can validate value, test accuracy, and demonstrate feasibility before rolling out enterprise-wide solutions.",
+              },
+              {
+                id: 5,
+                question: "How do you keep enterprise AI secure?",
+                answer:
+                  "We follow strict enterprise security standards including data encryption, role-based access control, secure API gateways, and private cloud deployment to ensure your proprietary business data remains safe and confidential.",
+              },
+            ]}
+          />
+
 
           {/* Ranked Section */}
           <RankedSection />
