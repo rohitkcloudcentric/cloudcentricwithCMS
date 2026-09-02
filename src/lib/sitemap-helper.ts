@@ -19,12 +19,19 @@ export function getStaticRoutes(): SitemapLocation[] {
     { url: `${SITE_URL}/who-we-are`, lastmod: now, changefreq: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/what-we-do`, lastmod: now, changefreq: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/services`, lastmod: now, changefreq: "monthly", priority: 0.9 },
+    { url: `${SITE_URL}/salesforce/services`, lastmod: now, changefreq: "monthly", priority: 0.9 },
+    { url: `${SITE_URL}/salesforce/ai-solutions`, lastmod: now, changefreq: "monthly", priority: 0.9 },
+    { url: `${SITE_URL}/salesforce/cloud-integration`, lastmod: now, changefreq: "monthly", priority: 0.9 },
+    { url: `${SITE_URL}/salesforce/custom-development`, lastmod: now, changefreq: "monthly", priority: 0.9 },
+    { url: `${SITE_URL}/salesforce/growth-digital-experience`, lastmod: now, changefreq: "monthly", priority: 0.9 },
+    { url: `${SITE_URL}/growth-digital-experience`, lastmod: now, changefreq: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/our-clients`, lastmod: now, changefreq: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/contact-us`, lastmod: now, changefreq: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/privacy-policy`, lastmod: now, changefreq: "yearly", priority: 0.3 },
     { url: `${SITE_URL}/terms-and-conditions`, lastmod: now, changefreq: "yearly", priority: 0.3 },
   ];
 }
+
 
 export function getBlogSitemapRoutes(): SitemapLocation[] {
   const now = new Date().toISOString();
