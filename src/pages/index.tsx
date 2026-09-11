@@ -9,6 +9,7 @@ import HowWeBuild from "@/components/common/HowWeBuild";
 import AIEcosystem from "@/components/home/AIEcosystem";
 import TrustedClients from "@/components/common/TrustedClients";
 import RankedSection from "@/components/common/RankedSection";
+import OurExcellence from "@/components/common/OurExcellence";
 import ContactUs from "@/components/contact/ContactUs";
 import Footer from "@/components/common/Footer";
 
@@ -50,7 +51,7 @@ export default function Home() {
           <HowWeBuild />
           <AIEcosystem />
           <TrustedClients />
-          <RankedSection />
+          <OurExcellence />
 
           <section id="contact">
             <ContactUs />

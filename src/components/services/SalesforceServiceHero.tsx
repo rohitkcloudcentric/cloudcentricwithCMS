@@ -14,7 +14,7 @@ export default function SalesforceServiceHero() {
   }, []);
 
   return (
-    <section className="relative w-full min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] flex flex-col justify-center -mt-[96px] sm:-mt-[104px] pt-[130px] sm:pt-[150px] lg:pt-[160px] pb-16 px-6 sm:px-10 lg:px-16 bg-[#050505] text-white overflow-hidden z-0">
+    <section className="relative w-full min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] flex flex-col justify-center -mt-[96px] sm:-mt-[104px] pt-[130px] sm:pt-[150px] lg:pt-[160px] pb-16 px-6 sm:px-10  bg-[#050505] text-white overflow-hidden z-0">
       {/* ── Background Hero Image & Gradient Treatment (Matches Blog Hero BG) ── */}
       <div className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none z-0">
         <Image

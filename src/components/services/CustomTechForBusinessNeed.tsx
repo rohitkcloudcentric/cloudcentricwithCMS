@@ -59,7 +59,7 @@ export const customTechCardsData: CustomTechCardItem[] = [
     title: "AI-Powered Applications",
     description: "Bring intelligence into your software with AI agents, Generative AI, automation, analytics, and intelligent workflows.",
     linkText: "Explore AI Solutions",
-    href: "/salesforce/ai-solutions",
+    href: "/service/ai-solutions",
   },
 ];
 

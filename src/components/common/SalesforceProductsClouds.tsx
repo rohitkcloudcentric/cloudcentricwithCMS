@@ -99,7 +99,7 @@ export default function SalesforceProductsClouds() {
     SPECIALIZATION_DATA[0];
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#050505] text-white py-16 sm:py-24 px-6 sm:px-10 lg:px-16 z-10 relative">
+    <section ref={sectionRef} className="w-full bg-[#050505] text-white py-16 sm:py-24 px-6 sm:px-10  z-10 relative">
       <div className="max-w-7xl mx-auto flex flex-col space-y-10 sm:space-y-12">
         
         {/* ── Section Header ── */}

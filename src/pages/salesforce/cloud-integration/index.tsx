@@ -42,8 +42,8 @@ export default function CloudIntegrationPage() {
     },
     generateBreadcrumbSchema([
       { name: "Home", url: "/" },
-      { name: "Salesforce", url: "/salesforce/services" },
-      { name: "Cloud & Integration", url: "/salesforce/cloud-integration" }
+      { name: "Salesforce", url: "/services" },
+      { name: "Cloud & Integration", url: "/service/cloud-integration" }
     ])
   ];
 

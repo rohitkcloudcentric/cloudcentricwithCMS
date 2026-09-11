@@ -30,7 +30,7 @@ const getSubtags = (post: CaseStudyPost) => {
 
 export default function CaseStudyDetailsHero({ post }: CaseStudyDetailsHeroProps) {
   return (
-    <section className="relative w-full min-h-[580px] sm:min-h-[660px] flex items-center justify-center -mt-[96px] sm:-mt-[104px] pt-[130px] sm:pt-[150px] pb-12 px-6 sm:px-10 lg:px-16 bg-[#050505] text-white overflow-hidden z-0">
+    <section className="relative w-full min-h-[580px] sm:min-h-[660px] flex items-center justify-center -mt-[96px] sm:-mt-[104px] pt-[130px] sm:pt-[150px] pb-12 px-6 sm:px-10  bg-[#050505] text-white overflow-hidden z-0">
       {/* ── Soft Purple Radial Spotlight Glow (Bottom-Left) ── */}
       <div 
         className="absolute bottom-0 left-0 w-[600px] h-[500px] pointer-events-none z-0 opacity-70"

@@ -41,8 +41,8 @@ export default function CustomDevelopmentPage() {
     },
     generateBreadcrumbSchema([
       { name: "Home", url: "/" },
-      { name: "Salesforce", url: "/salesforce/services" },
-      { name: "Custom Development", url: "/salesforce/custom-development" }
+      { name: "Salesforce", url: "/services" },
+      { name: "Custom Development", url: "/service/custom-development" }
     ])
   ];
 

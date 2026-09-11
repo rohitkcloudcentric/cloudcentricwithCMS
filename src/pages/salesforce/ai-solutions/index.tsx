@@ -42,8 +42,8 @@ export default function AISolutionsPage() {
     },
     generateBreadcrumbSchema([
       { name: "Home", url: "/" },
-      { name: "Salesforce", url: "/salesforce/services" },
-      { name: "AI Solutions", url: "/salesforce/ai-solutions" }
+      { name: "Salesforce", url: "/service/services" },
+      { name: "AI Solutions", url: "/service/ai-solutions" }
     ])
   ];
 
@@ -52,7 +52,7 @@ export default function AISolutionsPage() {
       <SEOHead
         title="Salesforce AI Solutions & Agentforce Services - CloudCentric"
         description="Deploy Salesforce Agentforce autonomous AI agents, Einstein AI, and custom AI solutions integrated seamlessly into your Salesforce Data Cloud."
-        canonical={`${SITE_URL}/salesforce/ai-solutions`}
+        canonical={`${SITE_URL}/service/ai-solutions`}
         jsonLd={jsonLd}
       />
       <main className="min-h-screen bg-[#050505] text-white flex flex-col overflow-x-clip relative">

@@ -68,7 +68,7 @@ export default function MoveBeyondLegacySection() {
   return (
     <section
       ref={sectionRef}
-      className="w-full bg-[#050505] text-white py-12 sm:py-16 lg:py-20 px-6 sm:px-10 lg:px-16 relative overflow-hidden z-10"
+      className="w-full bg-[#050505] text-white py-12 sm:py-16 lg:py-20 px-6 sm:px-10  relative overflow-hidden z-10"
       aria-label="Move Beyond Legacy Infrastructure Section"
     >
       <div className="max-w-7xl mx-auto flex flex-col space-y-10 lg:space-y-12">

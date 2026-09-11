@@ -66,7 +66,7 @@ export default function CommonTechGridSection({
     <section
       ref={sectionRef}
       id={sectionId}
-      className="w-full bg-[#050505] text-white py-12 sm:py-16 lg:py-20 px-6 sm:px-10 lg:px-16 z-10 relative overflow-hidden"
+      className="w-full bg-[#050505] text-white py-12 sm:py-16 lg:py-20 px-6 sm:px-10  z-10 relative overflow-hidden"
       aria-label={ariaLabel}
     >
       <div className="max-w-7xl mx-auto flex flex-col space-y-10 lg:space-y-12">

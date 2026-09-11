@@ -21,7 +21,7 @@ export const capabilitiesData: CapabilityItem[] = [
     technologies: "Consulting • Development • Agentforce",
     description:
       "Maximize Salesforce with consulting, implementation, customization, integrations, and managed services.",
-    link: "/salesforce/services",
+    link: "/services",
   },
   {
     id: "enterprise-software",

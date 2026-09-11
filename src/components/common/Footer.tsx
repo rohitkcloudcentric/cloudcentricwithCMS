@@ -14,12 +14,10 @@ export default function Footer() {
   ];
 
   const aiSalesforceLinks = [
-    { name: "AI Solutions", href: "/salesforce/ai-solutions" },
-    // { name: "Salesforce & Agentforce", href: "/salesforce/services" },
-    { name: "Custom Development", href: "/salesforce/custom-development" },
-    { name: "Cloud Solutions", href: "/salesforce/cloud-integration" },
-    { name: "Growth & Digital Experience", href: "/growth-digital-experience" },
-    // { name: "Implementation & Support", href: "/contact-us" },
+    { name: "AI Solutions", href: "/service/ai-solutions" },
+    { name: "Custom Development", href: "/service/custom-development" },
+    { name: "Cloud Solutions", href: "/service/cloud-integration" },
+    { name: "Growth & Digital Experience", href: "/service/growth-digital-experience" },
   ];
 
   const productLinks = [
@@ -42,7 +40,7 @@ export default function Footer() {
       className="w-full border-t border-white/[0.08] pt-12 pb-6 space-y-12 bg-cover bg-center bg-no-repeat relative"
       style={{ backgroundImage: "url('/images/footer-bg.png')" }}
     >
-      <div className="w-[95%] max-w-7xl mx-auto px-6 lg:px-8 space-y-12">
+      <div className="w-[95%] max-w-7xl mx-auto space-y-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left Column */}
           <div className="lg:col-span-5 flex flex-col space-y-5">

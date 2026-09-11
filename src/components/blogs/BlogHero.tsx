@@ -29,7 +29,7 @@ export default function BlogHero({ activeCategory, onSelectCategory }: BlogHeroP
   }, []);
 
   return (
-    <section className="relative w-full min-h-[480px] sm:min-h-[540px] flex flex-col justify-between -mt-[96px] sm:-mt-[104px] pt-[120px] sm:pt-[140px] pb-8 px-6 sm:px-10 lg:px-16 bg-[#050505] text-white overflow-hidden z-0">
+    <section className="relative w-full min-h-[480px] sm:min-h-[540px] flex flex-col justify-between -mt-[96px] sm:-mt-[104px] pt-[120px] sm:pt-[140px] pb-8 px-6 sm:px-10  bg-[#050505] text-white overflow-hidden z-0">
       {/* ── Background Hero Image & Gradient Treatment ── */}
       <div className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none z-0">
         <Image

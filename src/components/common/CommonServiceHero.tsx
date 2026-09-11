@@ -68,7 +68,7 @@ export default function CommonServiceHero({
 
   return (
     <section
-      className={`relative w-full ${minHeightClass} flex flex-col justify-center -mt-[96px] sm:-mt-[104px] pt-[135px] sm:pt-[150px] lg:pt-[160px] pb-8 sm:pb-12 px-6 sm:px-10 lg:px-16 bg-[#030306] text-white overflow-hidden z-0`}
+      className={`relative w-full ${minHeightClass} flex flex-col justify-center -mt-[96px] sm:-mt-[104px] pt-[135px] sm:pt-[150px] lg:pt-[160px] pb-8 sm:pb-12 px-6 sm:px-10  bg-[#030306] text-white overflow-hidden z-0`}
       aria-label={sectionAriaLabel}
     >
       {/* ── Background Hero Image & Ambient Glowing Gradients ── */}

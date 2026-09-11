@@ -82,7 +82,7 @@ export default function BlogListing({ activeCategory = "All", posts = SAMPLE_BLO
   );
 
   return (
-    <section className="w-full bg-[#050505] text-white py-10 sm:py-14 px-6 sm:px-10 lg:px-16 z-10 relative">
+    <section className="w-full bg-[#050505] text-white py-10 sm:py-14 px-6 sm:px-10  z-10 relative">
       <div className="max-w-7xl mx-auto space-y-6 sm:space-y-10">
         {currentPosts.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-7 items-stretch">

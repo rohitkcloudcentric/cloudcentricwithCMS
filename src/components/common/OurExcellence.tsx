@@ -70,7 +70,7 @@ export default function OurExcellence() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#050505] text-white py-8 sm:py-12 px-6 sm:px-10 lg:px-16 z-10 relative">
+    <section ref={sectionRef} className="w-full bg-[#050505] text-white py-8 sm:py-12 px-6 sm:px-10  z-10 relative">
       <div className="max-w-7xl mx-auto">
         {/* Gradient Border Card Wrapper */}
         <div className={`relative rounded-[18px] p-[1.5px] bg-gradient-to-r from-[#2F89FF] via-[#7C3AED] to-[#B021F0] shadow-xl transition-all duration-1000 ease-out transform ${

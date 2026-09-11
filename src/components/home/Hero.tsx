@@ -14,6 +14,7 @@ export default function Hero() {
   }, []);
 
   const expertiseItems = [
+    "SALESFORCE SOLUTIONS",
     "AI STRATEGY",
     "AI AGENTS",
     "INTELLIGENT AUTOMATION",
@@ -24,7 +25,7 @@ export default function Hero() {
 
   return (
     <section 
-      className="relative min-h-[calc(100vh-80px)] w-full overflow-hidden flex flex-col justify-around pt-8 pb-16 px-6 md:px-12 lg:px-20 bg-transparent"
+      className="relative min-h-[calc(100vh-80px)] w-full overflow-hidden flex flex-col justify-around pt-8 pb-16 px-6 md:px-8 bg-transparent"
     >
       {/* Main Content Area */}
       <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-4">

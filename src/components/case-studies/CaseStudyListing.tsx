@@ -98,7 +98,7 @@ export default function CaseStudyListing({ activeCategory = "All", posts = SAMPL
   );
 
   return (
-    <section className="w-full bg-[#050505] text-white py-12 sm:py-16 px-6 sm:px-10 lg:px-16 z-10 relative">
+    <section className="w-full bg-[#050505] text-white py-12 sm:py-16 px-6 sm:px-10  z-10 relative">
       <div className="max-w-7xl mx-auto space-y-6 sm:space-y-12">
         {currentPosts.length > 0 ? (
           <div className="flex flex-col space-y-10">

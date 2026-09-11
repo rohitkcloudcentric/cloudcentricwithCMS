@@ -5,6 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 const slides = [
+   {
+    image: "/images/build-the-right.png",
+    title: "Transform Your Business with Salesforce Solutions",
+    description: "Transform your business with Salesforce solutions built to connect teams, automate workflows, and deliver smarter customer experiences.",
+    btnText: "Explore Salesforce Solutions",
+  },
   {
     image: "/images/build-the-right.png",
     title: "Build the Right AI Strategy Before You Build AI",

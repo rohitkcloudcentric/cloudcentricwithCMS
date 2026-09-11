@@ -28,7 +28,7 @@ export default function ContactUs() {
   }, []);
 
   return (
-    <div ref={sectionRef} className="relative min-h-screen w-full bg-[#050505] text-white pt-8 pb-16 px-4 md:px-8 lg:px-16 overflow-hidden">
+    <div ref={sectionRef} className="relative min-h-screen w-full bg-[#050505] text-white pt-8 pb-16 px-4 md:px-8  overflow-hidden">
       {/* Background Lighting Effects */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute top-[10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-radial from-[#8B3DFF]/20 via-[#4F8BFF]/10 to-transparent blur-[140px]" />

@@ -73,7 +73,7 @@ export default function AIGrowthExperienceSection() {
   return (
     <section
       ref={sectionRef}
-      className="w-full bg-[#050505] text-white py-12 sm:py-16 lg:py-20 px-6 sm:px-10 lg:px-16 relative overflow-hidden z-10"
+      className="w-full bg-[#050505] text-white py-12 sm:py-16 lg:py-20 px-6 sm:px-10  relative overflow-hidden z-10"
       aria-label="Make Your Growth Smarter With AI"
     >
       <div className="max-w-7xl mx-auto flex flex-col space-y-10 lg:space-y-12">
@@ -148,7 +148,7 @@ export default function AIGrowthExperienceSection() {
         {/* Bottom Link Row: Explore AI Solutions */}
         <div className="pt-2">
           <Link
-            href="/salesforce/ai-solutions"
+            href="/service/ai-solutions"
             aria-label="Explore AI Solutions - CloudCentric AI Services"
             className="inline-flex items-center space-x-2 font-mono font-semibold text-sm text-[#C084FC] hover:text-[#D8B4FE] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7C3AED] rounded-md"
           >

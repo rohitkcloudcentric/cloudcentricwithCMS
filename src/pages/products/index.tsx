@@ -37,7 +37,7 @@ export default function ProductsPage() {
           <ProductsHero />
 
           {/* ── Product List Cards Section (Matching Case Study Card UI) ── */}
-          <section className="w-full bg-[#050505] text-white py-16 sm:py-24 px-6 sm:px-10 lg:px-16 z-10 relative">
+          <section className="w-full bg-[#050505] text-white py-16 sm:py-24 px-6 sm:px-10  z-10 relative">
             <div className="max-w-7xl mx-auto space-y-12 sm:space-y-16">
               {PRODUCTS.map((product, index) => (
                 <ProductCard key={product.id} product={product} index={index} />

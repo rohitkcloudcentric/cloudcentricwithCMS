@@ -300,7 +300,7 @@ export default function LeadToCustomerJourney() {
     JOURNEY_TABS.find((t) => t.id === activeTabId) || JOURNEY_TABS[0];
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#050505] text-white py-16 sm:py-24 px-6 sm:px-10 lg:px-16 z-10 relative overflow-hidden">
+    <section ref={sectionRef} className="w-full bg-[#050505] text-white py-16 sm:py-24 px-6 sm:px-10  z-10 relative overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col space-y-12 sm:space-y-14">
         
         {/* ── Section Header Frame ── */}
