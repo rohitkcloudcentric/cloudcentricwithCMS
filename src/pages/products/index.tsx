@@ -3,7 +3,7 @@ import { SITE_URL } from "@/config/seo.config";
 import { generateBreadcrumbSchema, PRODUCT_SCHEMAS } from "@/lib/sitemap-helper";
 import AnnouncementBar from "@/components/common/AnnouncementBar";
 import Navbar from "@/components/common/Navbar";
-import RankedSection from "@/components/common/RankedSection";
+import OurExcellence from "@/components/common/OurExcellence";
 import Footer from "@/components/common/Footer";
 import FloatingButtons from "@/components/common/FloatingButtons";
 import ProductCard, { ProductSection, PRODUCTS } from "@/components/products/ProductCard";
@@ -45,7 +45,8 @@ export default function ProductsPage() {
             </div>
           </section>
 
-          <RankedSection />
+          {/* <RankedSection /> */}
+          <OurExcellence />
           <Footer />
           <FloatingButtons />
         </div>

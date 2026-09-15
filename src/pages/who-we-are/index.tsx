@@ -10,7 +10,7 @@ import WhoWeAreHero from "@/components/who-we-are/WhoWeAreHero";
 import OurFoundation from "@/components/home/OurFoundation";
 import OurValues from "@/components/who-we-are/OurValues";
 import TrustedClients from "@/components/common/TrustedClients";
-import RankedSection from "@/components/common/RankedSection";
+import OurExcellence from "@/components/common/OurExcellence";
 import WhoWeAreCTA from "@/components/home/CTA";
 
 export default function WhoWeAre() {
@@ -70,7 +70,8 @@ export default function WhoWeAre() {
           <WhoWeAreCTA />
 
           {/* Ranked Section */}
-          <RankedSection />
+          {/* <RankedSection /> */}
+          <OurExcellence />
 
           {/* Footer */}
           <Footer />

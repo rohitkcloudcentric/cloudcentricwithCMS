@@ -120,9 +120,9 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
         return undefined;
 
       case "budget":
-        if (typeof value === "string" && (!value || value === "")) {
-          return "Please select your budget.";
-        }
+        // if (typeof value === "string" && (!value || value === "")) {
+        //   return "Please select your budget.";
+        // }
         return undefined;
 
       case "file":
@@ -179,7 +179,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
       phone: validateField("phone", formData.phone),
       location: validateField("location", formData.location),
       description: validateField("description", formData.description),
-      budget: validateField("budget", formData.budget),
+      // budget: validateField("budget", formData.budget),
       file: validateField("file", selectedFile),
     };
 
@@ -414,7 +414,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
             <input
               id="field-location"
               type="text"
-              placeholder="e.g. London, UK"
+              placeholder="e.g. New York, USA"
               value={formData.location}
               onChange={(e) => handleChange("location", e.target.value)}
               onBlur={() => handleBlur("location")}
@@ -467,7 +467,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
 
         {/* Budget & How Did You Hear About Us */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="flex flex-col space-y-2">
+          {/* <div className="flex flex-col space-y-2">
             <label
               htmlFor="field-budget"
               className="text-[11px] font-bold tracking-widest text-white/90 uppercase flex items-center"
@@ -502,7 +502,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
                 {errors.budget}
               </span>
             )}
-          </div>
+          </div> */}
 
           <div className="flex flex-col space-y-2">
             <label
@@ -531,7 +531,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
         </div>
 
         {/* File Upload Drag & Drop Box */}
-        <div className="flex flex-col space-y-2">
+        {/* <div className="flex flex-col space-y-2">
           <div
             className={`relative border border-dashed rounded-xl p-6 text-center bg-[#111116] transition-all cursor-pointer group ${
               errors.file ? "border-red-500" : "border-white/15 hover:border-white/30"
@@ -571,7 +571,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
               {errors.file}
             </span>
           )}
-        </div>
+        </div> */}
 
         {/* Honeypot field for spam prevention */}
         <p style={{ position: "absolute", width: "190px", left: "-9999px", top: "-9999px", opacity: 0, pointerEvents: "none" }} aria-hidden="true">

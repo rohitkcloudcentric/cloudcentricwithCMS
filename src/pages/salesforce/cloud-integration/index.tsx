@@ -13,7 +13,8 @@ const CloudFoundationSection = dynamic(() => import("@/components/services/Cloud
 const MoveBeyondLegacySection = dynamic(() => import("@/components/services/MoveBeyondLegacySection"));
 const TechEcosystemSection = dynamic(() => import("@/components/services/TechEcosystemSection"));
 const AISolutionsFAQSection = dynamic(() => import("@/components/services/AISolutionsFAQSection"));
-const RankedSection = dynamic(() => import("@/components/common/RankedSection"));
+const OurExcellence = dynamic(() => import("@/components/common/OurExcellence"));
+// const RankedSection = dynamic(() => import("@/components/common/RankedSection"));
 const ContactUs = dynamic(() => import("@/components/contact/ContactUs"));
 
 export default function CloudIntegrationPage() {
@@ -129,7 +130,8 @@ export default function CloudIntegrationPage() {
           />
 
           {/* Ranked Section */}
-          <RankedSection />
+          {/* <RankedSection /> */}
+          <OurExcellence />
 
           {/* Contact Section */}
           <ContactUs />

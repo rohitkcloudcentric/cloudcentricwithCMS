@@ -13,7 +13,8 @@ const IdeaToProductionProduct = dynamic(() => import("@/components/services/Idea
 const FromIdeaToImpactProcess = dynamic(() => import("@/components/services/FromIdeaToImpactProcess"));
 const BuiltWithTechThatScale = dynamic(() => import("@/components/services/BuiltWithTechThatScale"));
 const AISolutionsFAQSection = dynamic(() => import("@/components/services/AISolutionsFAQSection"));
-const RankedSection = dynamic(() => import("@/components/common/RankedSection"));
+const OurExcellence = dynamic(() => import("@/components/common/OurExcellence"));
+// const RankedSection = dynamic(() => import("@/components/common/RankedSection"));
 const ContactUs = dynamic(() => import("@/components/contact/ContactUs"));
 
 export default function CustomDevelopmentPage() {
@@ -121,7 +122,8 @@ export default function CustomDevelopmentPage() {
 
 
           {/* Ranked Section */}
-          <RankedSection />
+          {/* <RankedSection /> */}
+          <OurExcellence />
 
           {/* Contact Section */}
           <ContactUs />

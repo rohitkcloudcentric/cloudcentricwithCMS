@@ -13,7 +13,8 @@ const AgenticAIAgentsSection = dynamic(() => import("@/components/services/Agent
 const HowWeBuild = dynamic(() => import("@/components/common/HowWeBuild"));
 const WhyCloudCentricAI = dynamic(() => import("@/components/services/WhyCloudCentricAI"));
 const AISolutionsFAQSection = dynamic(() => import("@/components/services/AISolutionsFAQSection"));
-const RankedSection = dynamic(() => import("@/components/common/RankedSection"));
+const OurExcellence = dynamic(() => import("@/components/common/OurExcellence"));
+// const RankedSection = dynamic(() => import("@/components/common/RankedSection"));
 const ContactUs = dynamic(() => import("@/components/contact/ContactUs"));
 
 export default function AISolutionsPage() {
@@ -79,7 +80,8 @@ export default function AISolutionsPage() {
           <AISolutionsFAQSection />
 
           {/* Ranked Section */}
-          <RankedSection />
+          {/* <RankedSection /> */}
+          <OurExcellence />
 
           {/* Contact Section */}
           <ContactUs />

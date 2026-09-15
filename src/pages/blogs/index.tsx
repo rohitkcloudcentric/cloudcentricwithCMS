@@ -9,7 +9,7 @@ import AnnouncementBar from "@/components/common/AnnouncementBar";
 import Navbar from "@/components/common/Navbar";
 import BlogHero, { BLOG_CATEGORIES, BlogCategory } from "@/components/blogs/BlogHero";
 import BlogListing from "@/components/blogs/BlogListing";
-import RankedSection from "@/components/common/RankedSection";
+import OurExcellence from "@/components/common/OurExcellence";
 import Footer from "@/components/common/Footer";
 import FloatingButtons from "@/components/common/FloatingButtons";
 
@@ -55,7 +55,8 @@ export default function BlogPage() {
           <BlogListing activeCategory={activeCategory} />
 
           {/* Ranked Section */}
-          <RankedSection />
+          {/* <RankedSection /> */}
+          <OurExcellence />
 
           <Footer />
           <FloatingButtons />

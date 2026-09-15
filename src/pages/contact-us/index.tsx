@@ -6,7 +6,7 @@ import Navbar from "@/components/common/Navbar";
 import ContactHero from "@/components/contact/ContactHero";
 import TrustedClients from "@/components/common/TrustedClients";
 import FAQSection from "@/components/home/FAQSection";
-import RankedSection from "@/components/common/RankedSection";
+import OurExcellence from "@/components/common/OurExcellence";
 import ContactCTA from "@/components/home/CTA";
 import FloatingButtons from "@/components/common/FloatingButtons";
 import Footer from "@/components/common/Footer";
@@ -42,7 +42,8 @@ export default function ContactUsPage() {
           <ContactHero />
           <TrustedClients />
           <FAQSection />
-          <RankedSection />
+          {/* <RankedSection /> */}
+          <OurExcellence />
           <ContactCTA />
 
           <FloatingButtons />

@@ -343,7 +343,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
         if (typeof value === "string" && !value.trim()) return "Please describe your idea.";
         return undefined;
       case "budget":
-        if (typeof value === "string" && (!value || value === "")) return "Please select your budget.";
+        // if (typeof value === "string" && (!value || value === "")) return "Please select your budget.";
         return undefined;
       case "file":
         if (value && value instanceof File) {
@@ -386,7 +386,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
       phone: validateField("phone", formData.phone),
       location: validateField("location", formData.location),
       description: validateField("description", formData.description),
-      budget: validateField("budget", formData.budget),
+      // budget: validateField("budget", formData.budget),
       file: validateField("file", selectedFile),
     };
 
@@ -592,7 +592,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
             <input
               id="hero-field-location"
               type="text"
-              placeholder="e.g. London, UK"
+              placeholder="e.g. New York, USA"
               value={formData.location}
               onChange={(e) => handleChange("location", e.target.value)}
               onBlur={() => handleBlur("location")}
@@ -640,7 +640,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
 
         {/* Row 4: Budget & Referral */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="flex flex-col space-y-2">
+          {/* <div className="flex flex-col space-y-2">
             <label
               htmlFor="hero-field-budget"
               className="text-[12px] font-semibold tracking-[2px] text-white/90 uppercase font-intel"
@@ -669,7 +669,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
                 {errors.budget}
               </span>
             )}
-          </div>
+          </div> */}
 
           <div className="flex flex-col space-y-2">
             <label
@@ -694,7 +694,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
         </div>
 
         {/* Upload File Area */}
-        <UploadField
+        {/* <UploadField
           onFileSelect={(file) => {
             setSelectedFile(file);
             setTouched((prev) => ({ ...prev, file: true }));
@@ -706,7 +706,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
           <span id="hero-error-file" className="text-red-400 text-[11px] font-medium font-intel -mt-4">
             {errors.file}
           </span>
-        )}
+        )} */}
 
         {/* Honeypot field for spam prevention */}
         <p style={{ position: "absolute", width: "190px", left: "-9999px", top: "-9999px", opacity: 0, pointerEvents: "none" }} aria-hidden="true">

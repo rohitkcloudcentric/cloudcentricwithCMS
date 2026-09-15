@@ -8,7 +8,7 @@ import FloatingButtons from "@/components/common/FloatingButtons";
 import OurClientsHero from "@/components/our-clients/OurClientsHero";
 import TrustedClients from "@/components/common/TrustedClients";
 import FAQSection from "@/components/home/FAQSection";
-import RankedSection from "@/components/common/RankedSection";
+import OurExcellence from "@/components/common/OurExcellence";
 import WhoWeAreCTA from "@/components/home/CTA";
 
 export default function OurClients() {
@@ -42,7 +42,8 @@ export default function OurClients() {
           <OurClientsHero />
           <TrustedClients />
           <FAQSection />
-          <RankedSection />
+          {/* <RankedSection /> */}
+          <OurExcellence />
           <WhoWeAreCTA />
 
           <FloatingButtons />

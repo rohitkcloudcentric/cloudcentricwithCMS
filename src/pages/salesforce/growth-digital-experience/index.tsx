@@ -12,7 +12,8 @@ const GrowthTechForBusinessNeed = dynamic(() => import("@/components/services/Gr
 const PerformanceGrowthSection = dynamic(() => import("@/components/services/PerformanceGrowthSection"));
 const AIGrowthExperienceSection = dynamic(() => import("@/components/services/AIGrowthExperienceSection"));
 const AISolutionsFAQSection = dynamic(() => import("@/components/services/AISolutionsFAQSection"));
-const RankedSection = dynamic(() => import("@/components/common/RankedSection"));
+const OurExcellence = dynamic(() => import("@/components/common/OurExcellence"));
+// const RankedSection = dynamic(() => import("@/components/common/RankedSection"));
 const ContactUs = dynamic(() => import("@/components/contact/ContactUs"));
 
 export default function GrowthDigitalExperiencePage() {
@@ -125,7 +126,8 @@ export default function GrowthDigitalExperiencePage() {
 
 
           {/* Ranked Section */}
-          <RankedSection />
+          {/* <RankedSection /> */}
+          <OurExcellence />
 
           {/* Contact Section */}
           <ContactUs />

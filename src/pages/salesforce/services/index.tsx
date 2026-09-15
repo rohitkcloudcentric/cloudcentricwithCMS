@@ -13,7 +13,7 @@ const SalesforceProductsClouds = dynamic(() => import("@/components/common/Sales
 const OurExcellence = dynamic(() => import("@/components/common/OurExcellence"));
 const FAQSection = dynamic(() => import("@/components/home/FAQSection"));
 const TrustedClients = dynamic(() => import("@/components/common/TrustedClients"));
-const RankedSection = dynamic(() => import("@/components/common/RankedSection"));
+// const RankedSection = dynamic(() => import("@/components/common/RankedSection"));
 const ContactUs = dynamic(() => import("@/components/contact/ContactUs"));
 
 export default function ServicesPage() {
@@ -79,7 +79,7 @@ export default function ServicesPage() {
           <TrustedClients />
 
           {/* Ranked Section */}
-          <RankedSection />
+          {/* <RankedSection /> */}
 
           {/* Ready to Build Something Intelligent Contact Section */}
           <ContactUs />

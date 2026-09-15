@@ -6,7 +6,7 @@ import Navbar from "@/components/common/Navbar";
 import WhatWeDoHero from "@/components/home/WhatWeDoHero";
 import OurAICapabilities from "@/components/home/OurAICapabilities";
 import CoreCapabilities from "@/components/home/CoreCapabilities";
-import RankedSection from "@/components/common/RankedSection";
+import OurExcellence from "@/components/common/OurExcellence";
 import FloatingButtons from "@/components/common/FloatingButtons";
 import Footer from "@/components/common/Footer";
 
@@ -45,7 +45,8 @@ export default function WhatWeDo() {
           <WhatWeDoHero />
           <OurAICapabilities />
           <CoreCapabilities />
-          <RankedSection />
+          {/* <RankedSection /> */}
+          <OurExcellence />
 
           <FloatingButtons />
         </div>

@@ -9,7 +9,7 @@ import AnnouncementBar from "@/components/common/AnnouncementBar";
 import Navbar from "@/components/common/Navbar";
 import CaseStudyHero, { CASE_STUDY_CATEGORIES, CaseStudyCategory } from "@/components/case-studies/CaseStudyHero";
 import CaseStudyListing from "@/components/case-studies/CaseStudyListing";
-import RankedSection from "@/components/common/RankedSection";
+import OurExcellence from "@/components/common/OurExcellence";
 import Footer from "@/components/common/Footer";
 import FloatingButtons from "@/components/common/FloatingButtons";
 
@@ -55,7 +55,8 @@ export default function CaseStudiesPage() {
           <CaseStudyListing activeCategory={activeCategory} />
 
           {/* Ranked Section */}
-          <RankedSection />
+          {/* <RankedSection /> */}
+          <OurExcellence />
 
           <Footer />
           <FloatingButtons />
