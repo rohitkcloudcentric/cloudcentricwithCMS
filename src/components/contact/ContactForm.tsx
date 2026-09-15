@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { Upload, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { isSpamSubmission } from "@/lib/spam-detector";
@@ -41,7 +41,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile] = useState<File | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const fallbackTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -60,21 +60,20 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
   };
 
   useEffect(() => {
-    // Get page name dynamically
-    const currentPage = router?.pathname || window.location.pathname || "unknown";
-    const displayName = currentPage === "/" ? "Home Page" : currentPage;
-    setFormData((prev) => ({ ...prev, pageName: displayName }));
-
-    // Fetch user IP address dynamically
+    // Fetch user IP address and dynamic page name asynchronously
     fetch("https://api.ipify.org?format=json")
       .then((res) => res.json())
       .then((data) => {
+        const currentPage = router?.pathname || (typeof window !== "undefined" ? window.location.pathname : "") || "unknown";
+        const displayName = currentPage === "/" ? "Home Page" : currentPage;
         if (data && data.ip) {
-          setFormData((prev) => ({ ...prev, ipAddress: data.ip }));
+          setFormData((prev) => ({ ...prev, ipAddress: data.ip, pageName: prev.pageName || displayName }));
         }
       })
       .catch(() => {
-        setFormData((prev) => ({ ...prev, ipAddress: "Blocked or Unavailable" }));
+        const currentPage = router?.pathname || (typeof window !== "undefined" ? window.location.pathname : "") || "unknown";
+        const displayName = currentPage === "/" ? "Home Page" : currentPage;
+        setFormData((prev) => ({ ...prev, ipAddress: "Blocked or Unavailable", pageName: prev.pageName || displayName }));
       });
 
     return () => {
@@ -157,6 +156,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
     }
   };
 
+  /*
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     setSelectedFile(file);
@@ -164,6 +164,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
     const err = validateField("file", file);
     setErrors((prev) => ({ ...prev, file: err }));
   };
+  */
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -237,7 +238,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
           return;
         }
       }
-    } catch (err) {
+    } catch {
       // Ignore localStorage errors
     }
 
@@ -260,7 +261,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
         "cc_last_submission",
         JSON.stringify({ email: formData.email, time: Date.now() })
       );
-    } catch (err) {
+    } catch {
       // Ignore localStorage
     }
 
@@ -277,10 +278,10 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
 
   return (
     <div
-      className={`relative lg:col-span-7 rounded-[20px] border border-white/[0.1] p-6 sm:p-8 overflow-visible ${
+      className={`relative lg:col-span-7 rounded-[20px] border border-white/10 p-6 sm:p-8 overflow-visible ${
         isContactPage
           ? "bg-transparent shadow-none backdrop-blur-none"
-          : "bg-[rgba(14,14,20,0.72)] backdrop-blur-[40px] shadow-[0_20px_60px_rgba(0,0,0,0.65)]"
+          : "bg-[rgba(14,14,20,0.72)] backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.65)]"
       }`}
     >
       {/* Floating Bottom Left Metallic Flower Image */}
@@ -454,7 +455,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
             aria-invalid={!!errors.description}
             aria-describedby={errors.description ? "error-description" : undefined}
             className={`w-full bg-[#111115] border rounded-xl p-4 text-white/90 placeholder-[#666677] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none transition-all resize-none text-sm font-normal ${
-              errors.description ? "border-red-500 focus:border-red-500" : "border-white/[0.08] focus:border-[#A855F7]/60"
+              errors.description ? "border-red-500 focus:border-red-500" : "border-white/8 focus:border-[#A855F7]/60"
             }`}
             style={{ fontFamily: "var(--font-manrope), sans-serif" }}
           />
@@ -517,7 +518,7 @@ export default function ContactForm({ isContactUsPage }: { isContactUsPage?: boo
                 id="field-referralSource"
                 value={formData.referralSource}
                 onChange={(e) => handleChange("referralSource", e.target.value)}
-                className="w-full bg-[#111115] border border-white/[0.08] rounded-xl px-4 py-3.5 text-[#666677] focus:text-white outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus:border-[#A855F7]/60 transition-all text-sm font-normal appearance-none cursor-pointer pr-10"
+                className="w-full bg-[#111115] border border-white/8 rounded-xl px-4 py-3.5 text-[#666677] focus:text-white outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus:border-[#A855F7]/60 transition-all text-sm font-normal appearance-none cursor-pointer pr-10"
                 style={{ fontFamily: "var(--font-manrope), sans-serif" }}
               >
                 <option value="">Choose an option here</option>

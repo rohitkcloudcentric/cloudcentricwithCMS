@@ -38,7 +38,7 @@ export default function WhoWeAre() {
       />
       <main className="min-h-screen bg-[#050505] text-white flex flex-col justify-between overflow-x-clip relative">
         {/* Background Image & Glow for the Hero Area */}
-        <div className="absolute top-0 left-0 right-0 h-[850px] md:h-[950px] lg:h-[1050px] pointer-events-none z-0">
+        <div className="absolute top-0 left-0 right-0 h-212.5 md:h-237.5 lg:h-262.5 pointer-events-none z-0">
           <Image
             src="/images/how-we-are/how-we-hero-bg.png"
             alt="Who We Are Background"
@@ -46,7 +46,7 @@ export default function WhoWeAre() {
             className="object-cover object-top opacity-90"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#050505]" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/40 via-transparent to-[#050505]" />
         </div>
 
         <div className="relative z-10 flex flex-col w-full min-h-screen justify-between">

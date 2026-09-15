@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import SEOHead from "@/components/seo/SEOHead";
 import { SITE_URL } from "@/config/seo.config";
@@ -15,16 +15,13 @@ import FloatingButtons from "@/components/common/FloatingButtons";
 
 export default function BlogPage() {
   const router = useRouter();
-  const [activeCategory, setActiveCategory] = useState<BlogCategory>("All");
+  const [selectedCategory, setSelectedCategory] = useState<BlogCategory | null>(null);
 
-  useEffect(() => {
-    if (router.isReady && router.query.category) {
-      const cat = router.query.category as BlogCategory;
-      if (BLOG_CATEGORIES.includes(cat)) {
-        setActiveCategory(cat);
-      }
-    }
-  }, [router.isReady, router.query.category]);
+  const queryCategory = router.isReady && typeof router.query.category === "string" && BLOG_CATEGORIES.includes(router.query.category as BlogCategory)
+    ? (router.query.category as BlogCategory)
+    : null;
+
+  const activeCategory = selectedCategory ?? queryCategory ?? "All";
 
   const jsonLd = generateBreadcrumbSchema([
     { name: "Home", url: "/" },
@@ -48,7 +45,7 @@ export default function BlogPage() {
           {/* Blog Hero Section */}
           <BlogHero
             activeCategory={activeCategory}
-            onSelectCategory={setActiveCategory}
+            onSelectCategory={setSelectedCategory}
           />
 
           {/* Blog Articles Listing Section */}

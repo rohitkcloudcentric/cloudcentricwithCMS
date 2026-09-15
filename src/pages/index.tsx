@@ -25,7 +25,7 @@ export default function Home() {
       <main className="min-h-screen bg-[#050505] text-white flex flex-col overflow-x-clip selection:bg-[#7C3AED] selection:text-white relative">
         {/* Background Radial Glow Layer */}
         <div 
-          className="absolute top-0 left-0 right-0 h-[1000px] pointer-events-none z-0"
+          className="absolute top-0 left-0 right-0 h-250 pointer-events-none z-0"
           style={{
             backgroundImage: "url('/images/hero-bg-1.png')",
             backgroundSize: "cover",
@@ -34,7 +34,7 @@ export default function Home() {
         />
         {/* Background Ribbon Flow Layer */}
         <div 
-          className="absolute top-0 left-0 right-0 h-[1000px] pointer-events-none z-0 mix-blend-screen opacity-85"
+          className="absolute top-0 left-0 right-0 h-250 pointer-events-none z-0 mix-blend-screen opacity-85"
           style={{
             backgroundImage: "url('/images/hero-bg.png')",
             backgroundSize: "cover",

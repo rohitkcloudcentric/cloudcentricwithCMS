@@ -163,7 +163,7 @@ export const ContactInfo: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={item.name}
-                  className="w-10 h-10 rounded-full bg-white/[0.05] border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-[#A855F7]/20 hover:border-[#A855F7]/50 hover:shadow-[0_0_15px_rgba(168,85,247,0.5)] hover:scale-110 transition-all duration-300"
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-[#A855F7]/20 hover:border-[#A855F7]/50 hover:shadow-[0_0_15px_rgba(168,85,247,0.5)] hover:scale-110 transition-all duration-300"
                 >
                   <IconComp className="w-4 h-4" />
                 </a>
@@ -219,10 +219,10 @@ export const UploadField: React.FC<UploadFieldProps> = ({ onFileSelect }) => {
       onDragOver={handleDrag}
       onDragLeave={handleDrag}
       onDrop={handleDrop}
-      className={`relative w-full rounded-2xl border border-dashed transition-all duration-300 p-6 flex items-center space-x-4 cursor-pointer bg-white/[0.02] backdrop-blur-md ${
+      className={`relative w-full rounded-2xl border border-dashed transition-all duration-300 p-6 flex items-center space-x-4 cursor-pointer bg-white/2 backdrop-blur-md ${
         dragActive
           ? "border-[#A855F7] bg-[#A855F7]/10 shadow-[0_0_20px_rgba(168,85,247,0.3)]"
-          : "border-white/15 hover:border-[#A855F7]/60 hover:bg-white/[0.04]"
+          : "border-white/15 hover:border-[#A855F7]/60 hover:bg-white/4"
       }`}
     >
       <input
@@ -232,7 +232,7 @@ export const UploadField: React.FC<UploadFieldProps> = ({ onFileSelect }) => {
         onChange={handleChange}
         accept=".zip,.pdf,.fig,.doc,.docx"
       />
-      <div className="w-12 h-12 rounded-xl bg-white/[0.05] border border-white/10 flex items-center justify-center shrink-0 text-white/70">
+      <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 text-white/70">
         <Upload className="w-5 h-5" />
       </div>
       <div className="flex flex-col">
@@ -277,7 +277,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
 
   const [errors, setErrors] = useState<Record<string, string | undefined>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile] = useState<File | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const fallbackTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -296,21 +296,20 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
   };
 
   useEffect(() => {
-    // Get page name dynamically
-    const currentPage = router?.pathname || window.location.pathname || "unknown";
-    const displayName = currentPage === "/" ? "Home Page" : currentPage;
-    setFormData((prev) => ({ ...prev, pageName: displayName }));
-
-    // Fetch user IP address dynamically
+    // Fetch user IP address and dynamic page name asynchronously
     fetch("https://api.ipify.org?format=json")
       .then((res) => res.json())
       .then((data) => {
+        const currentPage = router?.pathname || (typeof window !== "undefined" ? window.location.pathname : "") || "unknown";
+        const displayName = currentPage === "/" ? "Home Page" : currentPage;
         if (data && data.ip) {
-          setFormData((prev) => ({ ...prev, ipAddress: data.ip }));
+          setFormData((prev) => ({ ...prev, ipAddress: data.ip, pageName: prev.pageName || displayName }));
         }
       })
       .catch(() => {
-        setFormData((prev) => ({ ...prev, ipAddress: "Blocked or Unavailable" }));
+        const currentPage = router?.pathname || (typeof window !== "undefined" ? window.location.pathname : "") || "unknown";
+        const displayName = currentPage === "/" ? "Home Page" : currentPage;
+        setFormData((prev) => ({ ...prev, ipAddress: "Blocked or Unavailable", pageName: prev.pageName || displayName }));
       });
 
     return () => {
@@ -391,7 +390,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
     };
 
     const activeErrors = Object.fromEntries(
-      Object.entries(newErrors).filter(([_, v]) => v !== undefined)
+      Object.entries(newErrors).filter(([, v]) => v !== undefined)
     );
 
     setErrors(activeErrors);
@@ -440,7 +439,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
           return;
         }
       }
-    } catch (err) {}
+    } catch {}
 
     console.log("Submitting form data to Pardot:", {
       name: formData.name,
@@ -461,7 +460,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
         "cc_last_submission",
         JSON.stringify({ email: formData.email, time: Date.now() })
       );
-    } catch (err) {}
+    } catch {}
 
     if (hiddenFormRef.current) {
       hiddenFormRef.current.submit();
@@ -476,10 +475,10 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
 
   return (
     <div
-      className={`relative w-full rounded-[24px] border border-white/[0.08] p-6 sm:p-10 overflow-hidden ${
+      className={`relative w-full rounded-3xl border border-white/8 p-6 sm:p-10 overflow-hidden ${
         isContactPage
           ? "bg-transparent shadow-none backdrop-blur-none"
-          : "bg-[rgba(255,255,255,0.04)] backdrop-blur-[16px] shadow-[0_20px_60px_rgba(124,58,237,0.15)]"
+          : "bg-[rgba(255,255,255,0.04)] backdrop-blur-lg shadow-[0_20px_60px_rgba(124,58,237,0.15)]"
       }`}
     >
       <form onSubmit={handleSubmit} noValidate className="flex flex-col space-y-6">
@@ -501,7 +500,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
               onBlur={() => handleBlur("name")}
               aria-invalid={!!errors.name}
               aria-describedby={errors.name ? "hero-error-name" : undefined}
-              className={`w-full h-[56px] bg-transparent border-b text-white placeholder-[#8B8B95] outline-none transition-all text-sm font-intel ${
+              className={`w-full h-14 bg-transparent border-b text-white placeholder-[#8B8B95] outline-none transition-all text-sm font-intel ${
                 errors.name ? "border-red-500 focus:border-red-500" : "border-white/12 focus:border-[#A855F7]"
               }`}
             />
@@ -528,7 +527,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
               onBlur={() => handleBlur("email")}
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? "hero-error-email" : undefined}
-              className={`w-full h-[56px] bg-transparent border-b text-white placeholder-[#8B8B95] outline-none transition-all text-sm font-intel ${
+              className={`w-full h-14 bg-transparent border-b text-white placeholder-[#8B8B95] outline-none transition-all text-sm font-intel ${
                 errors.email ? "border-red-500 focus:border-red-500" : "border-white/12 focus:border-[#A855F7]"
               }`}
             />
@@ -550,7 +549,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
               PHONE NUMBER <span className="text-[#A855F7]">*</span>
             </label>
             <div
-              className={`relative border-b transition-all custom-phone-container h-[56px] flex items-center ${
+              className={`relative border-b transition-all custom-phone-container h-14 flex items-center ${
                 errors.phone ? "border-red-500 focus-within:border-red-500" : "border-white/12 focus-within:border-[#A855F7]"
               }`}
             >
@@ -598,7 +597,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
               onBlur={() => handleBlur("location")}
               aria-invalid={!!errors.location}
               aria-describedby={errors.location ? "hero-error-location" : undefined}
-              className={`w-full h-[56px] bg-transparent border-b text-white placeholder-[#8B8B95] outline-none transition-all text-sm font-intel ${
+              className={`w-full h-14 bg-transparent border-b text-white placeholder-[#8B8B95] outline-none transition-all text-sm font-intel ${
                 errors.location ? "border-red-500 focus:border-red-500" : "border-white/12 focus:border-[#A855F7]"
               }`}
             />
@@ -627,7 +626,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
             onBlur={() => handleBlur("description")}
             aria-invalid={!!errors.description}
             aria-describedby={errors.description ? "hero-error-description" : undefined}
-            className={`w-full min-h-[130px] bg-transparent border rounded-xl p-4 text-white placeholder-[#8B8B95] outline-none transition-all text-sm resize-none font-intel ${
+            className={`w-full min-h-32.5 bg-transparent border rounded-xl p-4 text-white placeholder-[#8B8B95] outline-none transition-all text-sm resize-none font-intel ${
               errors.description ? "border-red-500 focus:border-red-500" : "border-white/12 focus:border-[#A855F7]"
             }`}
           />
@@ -682,7 +681,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
               id="hero-field-referralSource"
               value={formData.referralSource}
               onChange={(e) => setFormData({ ...formData, referralSource: e.target.value })}
-              className="w-full h-[56px] bg-[#0E0E12]/90 border border-white/12 rounded-xl px-4 text-white/80 outline-none focus:border-[#A855F7] transition-all text-sm appearance-none cursor-pointer font-intel"
+              className="w-full h-14 bg-[#0E0E12]/90 border border-white/12 rounded-xl px-4 text-white/80 outline-none focus:border-[#A855F7] transition-all text-sm appearance-none cursor-pointer font-intel"
             >
               <option value="">Choose an option here</option>
               <option value="google">Search Engine (Google)</option>
@@ -726,7 +725,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
         <button
           type="submit"
           disabled={submitting || submitted}
-          className="w-full h-[58px] rounded-full bg-gradient-to-r from-[#4F7CFF] to-[#B624FF] text-white text-[13px] font-bold tracking-[2px] uppercase shadow-[0_0_30px_rgba(182,36,255,0.4)] hover:shadow-[0_0_40px_rgba(182,36,255,0.6)] hover:-translate-y-0.5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-80 disabled:cursor-not-allowed disabled:pointer-events-none"
+          className="w-full h-14.5 rounded-full bg-linear-to-r from-[#4F7CFF] to-[#B624FF] text-white text-[13px] font-bold tracking-[2px] uppercase shadow-[0_0_30px_rgba(182,36,255,0.4)] hover:shadow-[0_0_40px_rgba(182,36,255,0.6)] hover:-translate-y-0.5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-80 disabled:cursor-not-allowed disabled:pointer-events-none"
           style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
         >
           <span>{submitted ? "REQUEST SENT SUCCESSFULLY!" : submitting ? "SUBMITTING..." : "SCHEDULE A FREE CONSULTATION"}</span>
@@ -796,7 +795,7 @@ export default function ContactHero() {
   return (
     <section 
       ref={sectionRef}
-      className="relative w-full bg-[#050505] text-white py-[70px] sm:py-[90px] lg:py-[120px] px-5 sm:px-8 overflow-hidden z-10"
+      className="relative w-full bg-[#050505] text-white py-17.5 sm:py-22.5 lg:py-30 px-5 sm:px-8 overflow-hidden z-10"
     >
       {/* Background Image */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -809,10 +808,10 @@ export default function ContactHero() {
         />
         <div className="absolute inset-0 bg-[#050505]/72" />
         {/* Curved Glow Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 h-[350px] bg-gradient-to-t from-[#B624FF]/15 via-[#4F7CFF]/10 to-transparent pointer-events-none blur-3xl" />
+        <div className="absolute bottom-0 left-0 right-0 h-87.5 bg-linear-to-t from-[#B624FF]/15 via-[#4F7CFF]/10 to-transparent pointer-events-none blur-3xl" />
       </div>
 
-      <div className="relative z-10 max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-[70px] items-start">
+      <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-17.5 items-start">
         {/* Left Column (45% on lg = 5 cols) — Comes from Left */}
         <div 
           className={`lg:col-span-5 transition-all duration-800 ease-out transform ${

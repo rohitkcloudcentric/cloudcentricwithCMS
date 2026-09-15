@@ -6,7 +6,7 @@ import Navbar from "@/components/common/Navbar";
 import OurExcellence from "@/components/common/OurExcellence";
 import Footer from "@/components/common/Footer";
 import FloatingButtons from "@/components/common/FloatingButtons";
-import ProductCard, { ProductSection, PRODUCTS } from "@/components/products/ProductCard";
+import ProductCard, { PRODUCTS } from "@/components/products/ProductCard";
 import ProductsHero from "@/components/products/ProductsHero";
 
 // Reusable ProductCard is imported from "@/components/products/ProductCard"

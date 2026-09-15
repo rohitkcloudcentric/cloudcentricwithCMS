@@ -84,7 +84,7 @@ export default function GrowthDigitalExperiencePage() {
             title={
               <>
                 Questions Before You Start Your <br className="hidden sm:inline" />
-                <span className="bg-gradient-to-r from-[#2563EB] to-[#A855F7] bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-[#2563EB] to-[#A855F7] bg-clip-text text-transparent">
                   Digital Growth?
                 </span>
               </>
