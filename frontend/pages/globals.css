@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+:root {
+  --background: #050505;
+  --foreground: #ffffff;
+
+  --color-bg-dark: #050505;
+  --color-bg-card: #0e0e12;
+  --color-purple-primary: #7c3aed;
+  --color-purple-accent: #a855f7;
+  --color-blue-accent: #2563eb;
+  --color-blue-light: #4f8bff;
+  --color-text-muted: #a1a1aa;
+  --color-text-body: #b6b6c2;
+
+  --footer-bg: #050505;
+  --footer-bg-secondary: #0b0b10;
+  --footer-purple: #8b3dff;
+  --footer-purple-light: #a855f7;
+  --footer-blue: #4f8bff;
+  --footer-white: #ffffff;
+  --footer-paragraph: #c6c6d1;
+  --footer-muted: #9a9aaa;
+  --footer-link: #b8b8c3;
+  --footer-border: rgba(255, 255, 255, 0.08);
+  --footer-glass: rgba(255, 255, 255, 0.04);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-inter: var(--font-inter);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Ensure cursor pointer on all buttons, links and clickable elements */
+button,
+a,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  cursor: pointer;
+}
+
+/* Custom Font Utilities */
+.font-intel {
+  font-family: var(--font-intel-one-mono), monospace;
+}
+
+.font-duru {
+  font-family: var(--font-duru-sans), sans-serif;
+}
+
+.font-manrope {
+  font-family: var(--font-manrope), sans-serif;
+}
+
+.font-caveat {
+  font-family: var(--font-caveat), 'Caveat', cursive;
+}
+
+/* Focus Ring Accessibility */
+:focus-visible {
+  outline: none;
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 15px rgba(124, 58, 237, 0.4));
+  }
+  50% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 25px rgba(168, 85, 247, 0.7));
+  }
+}
+
+@keyframes slowPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.04);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 20s linear infinite;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: floatSlow 3.5s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3.5s ease-in-out infinite;
+}
+
+.animate-slow-pulse {
+  animation: slowPulse 4s ease-in-out infinite;
+}
+
+/* react-phone-input-2 Dark Theme Overrides */
+.custom-phone-container .react-tel-input .selected-flag {
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 6px !important;
+}
+.custom-phone-container .react-tel-input .selected-flag:hover,
+.custom-phone-container .react-tel-input .selected-flag:focus {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+.custom-phone-container .react-tel-input .country-list {
+  background-color: #111116 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 12px !important;
+  margin-top: 6px !important;
+}
+.custom-phone-container .react-tel-input .country-list .country:hover,
+.custom-phone-container .react-tel-input .country-list .country.highlight {
+  background-color: rgba(168, 85, 247, 0.2) !important;
+}
+.custom-phone-container .react-tel-input .country-list .country .dial-code {
+  color: #a855f7 !important;
+}
+.custom-phone-container .react-tel-input .search-box {
+  background-color: #181820 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 8px !important;
+  margin: 8px !important;
+  padding-left: 10px !important;
+  width: calc(100% - 16px) !important;
+  outline: none !important;
+}
+.custom-phone-container .react-tel-input .search-emoji {
+  display: none !important;
+}
+.custom-phone-container .react-tel-input .search-box::placeholder {
+  color: #77778b !important;
+}
+

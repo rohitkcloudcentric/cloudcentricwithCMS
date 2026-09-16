@@ -61,9 +61,37 @@ interface BlogListingProps {
   posts?: BlogPost[];
 }
 
-export default function BlogListing({ activeCategory = "All", posts = SAMPLE_BLOG_POSTS }: BlogListingProps) {
+export default function BlogListing({ activeCategory = "All", posts }: BlogListingProps) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [dynamicPosts, setDynamicPosts] = useState<BlogPost[]>(posts || SAMPLE_BLOG_POSTS);
   const postsPerPage = 10;
+
+  useEffect(() => {
+    if (!posts) {
+      fetch("/api/v1/articles?status=PUBLISHED")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success && data.data && data.data.length > 0) {
+            const mapped: BlogPost[] = data.data.map((item: any) => ({
+              id: item.id,
+              title: item.title,
+              slug: item.slug,
+              category: item.category?.name || "AI & Automation",
+              description: item.excerpt || "",
+              metaDescription: item.seoDescription || item.excerpt || "",
+              readTime: item.readTime || "5 MIN READ",
+              image: item.featuredImage || "/images/blogs/how-ai-agents-are-changing-business-automation.png",
+              date: item.publishedAt ? new Date(item.publishedAt).toISOString().split("T")[0] : "2026-08-14",
+              author: item.author?.name || "CloudCentric",
+            }));
+            setDynamicPosts(mapped);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [posts]);
+
+  const activePostsList = posts || dynamicPosts;
 
   // Reset to first page when category changes
   useEffect(() => {
@@ -72,8 +100,8 @@ export default function BlogListing({ activeCategory = "All", posts = SAMPLE_BLO
 
   // Filter posts based on selected category
   const filteredPosts = activeCategory === "All"
-    ? posts
-    : posts.filter((post) => post.category === activeCategory);
+    ? activePostsList
+    : activePostsList.filter((post) => post.category === activeCategory);
 
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage) || 1;
   const currentPosts = filteredPosts.slice(
