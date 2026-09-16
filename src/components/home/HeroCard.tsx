@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const slides = [
    {
-    image: "/images/build-the-right.png",
+    image: "/images/salesforce-logo.svg",
     title: "Transform Your Business with Salesforce Solutions",
     description: "Transform your business with Salesforce solutions built to connect teams, automate workflows, and deliver smarter customer experiences.",
     btnText: "Explore Salesforce Solutions",
@@ -18,7 +18,7 @@ const slides = [
     btnText: "Start Your AI Journey",
   },
   {
-    image: "/images/build-the-right.png",
+    image: "/images/agentforce-image.webp",
     title: "Deploy Custom AI Agents to Automate Operations",
     description: "Deploy autonomous intelligent agents that automate workflows, eliminate bottlenecks, and scale operations.",
     btnText: "Explore AI Agents",
@@ -99,48 +99,54 @@ export default function HeroCard({ activeIdx, setActiveIdx }: HeroCardProps) {
           className={`flex ${isTransitioning ? "transition-transform duration-500 ease-in-out" : ""}`}
           style={{ transform: `translateX(-${activeIdx * 100}%)` }}
         >
-          {extendedSlides.map((slide, idx) => (
-            <div key={idx} className="w-full flex-shrink-0 flex items-center space-x-6">
-              {/* Left Phone / Robot Visual */}
-              <div className="hidden lg:flex relative w-[150px] h-[160px] rounded-2xl overflow-hidden shrink-0 border border-white/10 items-center justify-center bg-black/20">
-                <Image
-                  src={slide.image}
-                  alt={slide.title}
-                  width={150}
-                  height={160}
-                  className="object-cover w-full h-full transform group-hover:scale-[1.03] transition-transform duration-500"
-                  priority={idx === 0}
-                />
-              </div>
+          {extendedSlides.map((slide, idx) => {
+            const isLogo = slide.image.endsWith(".svg") || slide.image.includes("logo");
 
-              {/* Right content details */}
-              <div className="flex flex-col justify-between flex-1 py-1 space-y-4">
-                <div className="space-y-2">
-                  <h3 
-                    className="text-base md:text-3xl font-normal text-white leading-snug tracking-tight"
-                    style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
-                  >
-                    {slide.title}
-                  </h3>
-                  <p 
-                    className="text-md text-[#C6C6D1] leading-relaxed font-light"
-                    style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
-                  >
-                    {slide.description}
-                  </p>
+            return (
+              <div key={idx} className="w-full flex-shrink-0 flex items-center space-x-6">
+                {/* Left Phone / Robot Visual */}
+                <div className="hidden lg:flex relative w-[150px] h-[160px] rounded-2xl overflow-hidden shrink-0 border border-white/10 items-center justify-center bg-black/20">
+                  <Image
+                    src={slide.image}
+                    alt={slide.title}
+                    width={150}
+                    height={160}
+                    className={`${
+                      isLogo ? "object-contain p-3" : "object-cover"
+                    } w-full h-full transform group-hover:scale-[1.03] transition-transform duration-500`}
+                    priority={idx === 0}
+                  />
                 </div>
-                <div>
-                  <Link 
-                    href="/contact-us"
-                    className="inline-block px-5 py-2 rounded-lg bg-white/[0.03] border border-white/10 text-white text-sm font-semibold hover:bg-white/[0.08] hover:border-white/20 transition-all active:scale-95 cursor-pointer"
-                    style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
-                  >
-                    {slide.btnText}
-                  </Link>
+
+                {/* Right content details */}
+                <div className="flex flex-col justify-between flex-1 py-1 space-y-4">
+                  <div className="space-y-2">
+                    <h3 
+                      className="text-base md:text-3xl font-normal text-white leading-snug tracking-tight"
+                      style={{ fontFamily: "var(--font-duru-sans), sans-serif" }}
+                    >
+                      {slide.title}
+                    </h3>
+                    <p 
+                      className="text-md text-[#C6C6D1] leading-relaxed font-light"
+                      style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                    >
+                      {slide.description}
+                    </p>
+                  </div>
+                  <div>
+                    <Link 
+                      href="/contact-us"
+                      className="inline-block px-5 py-2 rounded-lg bg-white/[0.03] border border-white/10 text-white text-sm font-semibold hover:bg-white/[0.08] hover:border-white/20 transition-all active:scale-95 cursor-pointer"
+                      style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+                    >
+                      {slide.btnText}
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
