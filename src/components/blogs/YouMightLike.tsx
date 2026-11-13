@@ -3,17 +3,20 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import BlogCard, { BlogPost } from "./BlogCard";
-import { SAMPLE_BLOG_POSTS } from "./BlogListing";
 
 interface YouMightLikeProps {
   currentPostId?: string;
+  /** Published CMS posts to recommend from */
+  posts: BlogPost[];
 }
 
-export default function YouMightLike({ currentPostId }: YouMightLikeProps) {
+export default function YouMightLike({ currentPostId, posts }: YouMightLikeProps) {
   // Filter out the current active post and take the first 2 posts
-  const recommendedPosts = SAMPLE_BLOG_POSTS.filter(
-    (post) => post.id !== currentPostId
-  ).slice(0, 2);
+  const recommendedPosts = posts
+    .filter((post) => post.id !== currentPostId)
+    .slice(0, 2);
+
+  if (recommendedPosts.length === 0) return null;
 
   return (
     <section className="w-full bg-[#050505] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-12 z-10 relative border-t border-white/10">

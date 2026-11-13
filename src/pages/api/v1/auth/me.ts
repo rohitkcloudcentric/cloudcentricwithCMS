@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getAuthenticatedUser } from "@/lib/auth";
+import { hasFullAccess, permissionKeys } from "@/lib/rbac";
 
+/** The signed-in user with their role and effective permissions (loaded fresh from the DB). */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
     res.setHeader("Allow", ["GET"]);
@@ -13,11 +15,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(401).json({ success: false, error: "Not authenticated" });
     }
 
-    const permissions = (user.role.permissions || []).map((rp: any) => ({
-      module: rp.permission.module,
-      action: rp.permission.action,
-    }));
+    // Never cache: permissions can change at any time from User Roles & RBAC
+    res.setHeader("Cache-Control", "no-store");
 
+    const keys = permissionKeys(user);
     return res.status(200).json({
       success: true,
       user: {
@@ -25,12 +26,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         name: user.name,
         email: user.email,
         role: user.role.name,
+        roleId: user.roleId,
+        fullAccess: hasFullAccess(user),
+        username: user.username,
+        phone: user.phone,
+        createdAt: user.createdAt,
         avatarUrl: user.avatarUrl,
-        permissions,
+        permissionKeys: keys,
+        // Backwards-compatible shape
+        permissions: keys.map((k) => {
+          const [module, action] = k.split(":");
+          return { module, action };
+        }),
       },
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Auth Me API Error:", error);
-    return res.status(500).json({ success: false, error: error.message || "Internal server error" });
+    return res.status(500).json({ success: false, error: "Internal server error" });
   }
 }

@@ -10,6 +10,9 @@ import {
   SitemapLocation,
   SITEMAP_LIMIT,
 } from "@/lib/sitemap-helper";
+import { getPublishedBlogSlugs } from "@/lib/blog-data";
+import { getPublishedCaseStudySlugs } from "@/lib/case-study-data";
+import { getPublishedProductSlugs } from "@/lib/product-data";
 
 export default function Sitemap() {
   // Server-side response will handle serving XML directly
@@ -31,7 +34,12 @@ export const getServerSideProps: GetServerSideProps = async ({ params, res }) =>
 
   // 1. Main Sitemap Index
   if (sitemap === "sitemap") {
-    const childSitemaps = getChildSitemaps();
+    const [blogSlugs, caseStudySlugs, productSlugs] = await Promise.all([
+      getPublishedBlogSlugs(),
+      getPublishedCaseStudySlugs(),
+      getPublishedProductSlugs(),
+    ]);
+    const childSitemaps = getChildSitemaps(blogSlugs, caseStudySlugs, productSlugs);
     xmlContent = generateSitemapIndexXml(childSitemaps);
   } else {
     // 2. Child Sitemap Pages
@@ -52,13 +60,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params, res }) =>
         allRoutes = getStaticRoutes();
         break;
       case "blog-sitemap":
-        allRoutes = getBlogSitemapRoutes();
+        allRoutes = getBlogSitemapRoutes(await getPublishedBlogSlugs());
         break;
       case "case-study-sitemap":
-        allRoutes = getCaseStudySitemapRoutes();
+        allRoutes = getCaseStudySitemapRoutes(await getPublishedCaseStudySlugs());
         break;
       case "product-sitemap":
-        allRoutes = getProductSitemapRoutes();
+        allRoutes = getProductSitemapRoutes(await getPublishedProductSlugs());
         break;
       default:
         res.statusCode = 404;

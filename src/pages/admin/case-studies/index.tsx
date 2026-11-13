@@ -1,6 +1,9 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { Plus, Search, Edit3, Trash2, Briefcase, CheckCircle2, Clock, ExternalLink } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { Plus, Edit3, Trash2, X } from "lucide-react";
+import CaseStudyAdminTabs from "@/components/admin/CaseStudyAdminTabs";
+import { useAdminAuth } from "@/components/admin/AdminAuthContext";
 
 interface CaseStudyItem {
   id: string;
@@ -8,426 +11,244 @@ interface CaseStudyItem {
   slug: string;
   clientName: string;
   industry: string;
-  summary: string;
-  challenge?: string | null;
-  solution?: string | null;
-  results?: string | null;
+  thumbnailImage?: string | null;
   featuredImage?: string | null;
   status: string;
+  displayOrder: number;
+  publishedAt?: string | null;
+  createdAt: string;
+  category?: { name: string } | null;
 }
 
 export default function CaseStudiesAdmin() {
-  const [caseStudies, setCaseStudies] = useState<CaseStudyItem[]>([]);
+  const [items, setItems] = useState<CaseStudyItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<CaseStudyItem | null>(null);
-
-  // Form State
-  const [title, setTitle] = useState("");
-  const [slug, setSlug] = useState("");
-  const [clientName, setClientName] = useState("");
-  const [industry, setIndustry] = useState("");
-  const [summary, setSummary] = useState("");
-  const [challenge, setChallenge] = useState("");
-  const [solution, setSolution] = useState("");
-  const [results, setResults] = useState("");
-  const [featuredImage, setFeaturedImage] = useState("");
-  const [status, setStatus] = useState("DRAFT");
-  const [submitting, setSubmitting] = useState(false);
-  const [formError, setFormError] = useState("");
-
-  const fetchCaseStudies = useCallback(async () => {
-    try {
-      const res = await fetch("/api/v1/case-studies");
-      const data = await res.json();
-      if (data.success) {
-        setCaseStudies(data.data || []);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const [search, setSearch] = useState("");
+  const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("ALL");
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [error, setError] = useState("");
+  // Actions follow the role permissions (the API enforces the same rules)
+  const { can } = useAdminAuth();
+  const canCreate = can("case_studies", "create");
+  const canEdit = can("case_studies", "update");
+  const canDelete = can("case_studies", "delete");
 
   useEffect(() => {
-    let active = true;
-    const load = async () => {
-      try {
-        const res = await fetch("/api/v1/case-studies");
-        const data = await res.json();
-        if (active && data.success) {
-          setCaseStudies(data.data || []);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        if (active) setLoading(false);
-      }
-    };
-    load();
+    let alive = true;
+    const params = new URLSearchParams();
+    if (statusFilter !== "ALL") params.set("status", statusFilter);
+    if (query) params.set("search", query);
+
+    fetch(`/api/v1/case-studies?${params.toString()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!alive) return;
+        if (data.success) setItems(data.data || []);
+        else setError(data.error || "Failed to load case studies");
+      })
+      .catch(() => alive && setError("Failed to load case studies"))
+      .finally(() => alive && setLoading(false));
+
     return () => {
-      active = false;
+      alive = false;
     };
-  }, []);
+  }, [statusFilter, query]);
 
-  const openModal = (item?: CaseStudyItem) => {
-    setFormError("");
-    if (item) {
-      setEditingItem(item);
-      setTitle(item.title || "");
-      setSlug(item.slug || "");
-      setClientName(item.clientName || "");
-      setIndustry(item.industry || "");
-      setSummary(item.summary || "");
-      setChallenge(item.challenge || "");
-      setSolution(item.solution || "");
-      setResults(item.results || "");
-      setFeaturedImage(item.featuredImage || "");
-      setStatus(item.status || "DRAFT");
-    } else {
-      setEditingItem(null);
-      setTitle("");
-      setSlug("");
-      setClientName("");
-      setIndustry("");
-      setSummary("");
-      setChallenge("");
-      setSolution("");
-      setResults("");
-      setFeaturedImage("");
-      setStatus("DRAFT");
-    }
-    setIsModalOpen(true);
-  };
-
-  const handleTitleChange = (val: string) => {
-    setTitle(val);
-    if (!editingItem) {
-      setSlug(
-        val
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/(^-|-$)+/g, "")
-      );
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormError("");
-
-    const trimmedTitle = title.trim();
-    const trimmedSlug = slug.trim();
-    const trimmedClient = clientName.trim();
-    const trimmedIndustry = industry.trim();
-    const trimmedSummary = summary.trim();
-
-    if (!trimmedTitle) {
-      setFormError("Case Study Title is required.");
-      return;
-    }
-    if (!trimmedSlug) {
-      setFormError("URL Slug is required.");
-      return;
-    }
-    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(trimmedSlug)) {
-      setFormError("URL Slug must contain only lowercase letters, numbers, and hyphens.");
-      return;
-    }
-    if (!trimmedClient) {
-      setFormError("Client Name is required.");
-      return;
-    }
-    if (!trimmedIndustry) {
-      setFormError("Industry is required.");
-      return;
-    }
-    if (!trimmedSummary) {
-      setFormError("Summary is required.");
-      return;
-    }
-
-    setSubmitting(true);
-
-    const payload = {
-      title: trimmedTitle,
-      slug: trimmedSlug,
-      clientName: trimmedClient,
-      industry: trimmedIndustry,
-      summary: trimmedSummary,
-      challenge: challenge.trim(),
-      solution: solution.trim(),
-      results: results.trim(),
-      featuredImage: featuredImage.trim(),
-      status,
-    };
-
+  const handleDelete = async (item: CaseStudyItem) => {
+    if (!confirm(`Delete "${item.title}"? This cannot be undone.`)) return;
+    setDeletingId(item.id);
+    setError("");
     try {
-      const url = editingItem ? `/api/v1/case-studies/${editingItem.id}` : "/api/v1/case-studies";
-      const method = editingItem ? "PUT" : "POST";
-
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
+      const res = await fetch(`/api/v1/case-studies/${item.id}`, { method: "DELETE" });
       const data = await res.json();
-      if (data.success) {
-        setIsModalOpen(false);
-        fetchCaseStudies();
-      } else {
-        setFormError(data.error || "Operation failed. Please check inputs.");
-      }
+      if (data.success) setItems((prev) => prev.filter((i) => i.id !== item.id));
+      else setError(data.error || "Failed to delete case study");
     } catch {
-      setFormError("An unexpected server error occurred while saving.");
+      setError("Failed to delete case study");
     } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleDelete = async (id: string, itemTitle: string) => {
-    if (!confirm(`Delete case study "${itemTitle}"?`)) return;
-
-    try {
-      const res = await fetch(`/api/v1/case-studies/${id}`, { method: "DELETE" });
-      const data = await res.json();
-      if (data.success) {
-        setCaseStudies(caseStudies.filter((c) => c.id !== id));
-      } else {
-        alert(data.error || "Failed to delete");
-      }
-    } catch {
-      alert("Error deleting item");
+      setDeletingId(null);
     }
   };
 
   return (
-    <AdminLayout title="Case Studies Manager">
-      <div className="space-y-6">
-        {/* Header Action */}
-        <div className="flex items-center justify-between">
-          <p className="text-xs text-gray-400">Manage client success stories and enterprise transformation impact.</p>
-          <button
-            onClick={() => openModal()}
-            className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-lg shadow-emerald-600/20 transition-all"
+    <AdminLayout title="Case Study Manager">
+      <div className="space-y-6 w-full mx-auto">
+        <CaseStudyAdminTabs />
+
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-intel">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setLoading(true);
+              setQuery(search.trim());
+            }}
+            className="relative flex-1 max-w-md"
           >
-            <Plus className="w-4 h-4" />
-            <span>Add Case Study</span>
-          </button>
+            <Search className="w-4 h-4 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2" aria-hidden="true" />
+            <label htmlFor="cs-search" className="sr-only">Search case studies</label>
+            <input
+              id="cs-search"
+              type="text"
+              placeholder="Search by title, client, or industry..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-11 pr-4 py-2.5 bg-[#0e0e12] border border-white/10 rounded-2xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#a855f7]"
+            />
+          </form>
+
+          <div className="flex items-center gap-3">
+            <label htmlFor="cs-status-filter" className="sr-only">Filter by status</label>
+            <select
+              id="cs-status-filter"
+              value={statusFilter}
+              onChange={(e) => {
+                setLoading(true);
+                setStatusFilter(e.target.value);
+              }}
+              className="bg-[#0e0e12] border border-white/10 text-xs text-gray-300 rounded-2xl px-3.5 py-2.5 focus:outline-none focus:border-[#a855f7]"
+            >
+              <option value="ALL">All Statuses</option>
+              <option value="PUBLISHED">Published</option>
+              <option value="DRAFT">Drafts</option>
+              <option value="ARCHIVED">Archived</option>
+            </select>
+
+            {canCreate && (
+              <Link
+                href="/admin/case-studies/editor"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-linear-to-r from-[#7c3aed] to-[#4f8bff] hover:opacity-90 text-white text-xs font-bold shadow-[0_0_20px_rgba(124,58,237,0.3)]"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Create Case Study</span>
+              </Link>
+            )}
+          </div>
         </div>
 
-        {/* Case Studies Table */}
-        <div className="bg-[#0B0F17] border border-gray-800/80 rounded-2xl overflow-hidden shadow-xl">
+        {error && <p className="text-xs text-red-400 font-intel" role="alert">{error}</p>}
+
+        <div className="bg-[#0e0e12] border border-white/10 rounded-3xl overflow-hidden shadow-xl">
           {loading ? (
-            <div className="p-12 text-center text-sm text-gray-500">Loading case studies...</div>
-          ) : caseStudies.length > 0 ? (
-            <table className="w-full text-left text-sm text-gray-300">
-              <thead className="bg-gray-900/60 border-b border-gray-800 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                <tr>
-                  <th className="px-6 py-4">Title & Client</th>
-                  <th className="px-6 py-4">Industry</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4">Impact / Results</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-800/60">
-                {caseStudies.map((item) => (
-                  <tr key={item.id} className="hover:bg-gray-900/30 transition-colors">
-                    <td className="px-6 py-4">
-                      <p className="font-semibold text-white">{item.title}</p>
-                      <p className="text-xs text-emerald-400 font-medium">{item.clientName}</p>
-                    </td>
-                    <td className="px-6 py-4 text-xs text-gray-400">{item.industry}</td>
-                    <td className="px-6 py-4">
-                      <span
-                        className={`px-2.5 py-1 rounded-full text-xs font-medium border ${
-                          item.status === "PUBLISHED"
-                            ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
-                            : "bg-amber-500/10 border-amber-500/30 text-amber-400"
-                        }`}
-                      >
-                        {item.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-xs text-gray-400 max-w-xs truncate">{item.results}</td>
-                    <td className="px-6 py-4 text-right space-x-2">
-                      <button
-                        onClick={() => openModal(item)}
-                        className="p-1.5 text-gray-400 hover:text-blue-400 transition-colors"
-                      >
-                        <Edit3 className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(item.id, item.title)}
-                        className="p-1.5 text-gray-400 hover:text-red-400 transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </td>
+            <div className="p-12 text-center text-xs font-intel text-gray-500">Loading case studies...</div>
+          ) : items.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm text-gray-300">
+                <thead className="bg-[#14141a] border-b border-white/10 text-[11px] font-intel font-semibold text-[#a1a1aa] uppercase tracking-wider">
+                  <tr>
+                    <th scope="col" className="px-6 py-4">Case Study</th>
+                    <th scope="col" className="px-6 py-4">Client / Industry</th>
+                    <th scope="col" className="px-6 py-4">Category</th>
+                    <th scope="col" className="px-6 py-4">Status</th>
+                    <th scope="col" className="px-6 py-4">Order</th>
+                    <th scope="col" className="px-6 py-4">Published</th>
+                    <th scope="col" className="px-6 py-4 text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {items.map((item) => {
+                    const thumb = item.thumbnailImage || item.featuredImage;
+                    return (
+                      <tr key={item.id} className="hover:bg-white/5 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3.5 max-w-md">
+                            {thumb ? (
+                              /* eslint-disable-next-line @next/next/no-img-element */
+                              <img src={thumb} alt="" className="w-10 h-10 rounded-xl object-cover bg-gray-800 shrink-0 border border-white/10" />
+                            ) : (
+                              <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center shrink-0 border border-white/10">
+                                <Briefcase className="w-5 h-5 text-[#a855f7]" aria-hidden="true" />
+                              </div>
+                            )}
+                            <div className="truncate">
+                              <p className="font-semibold text-white truncate font-manrope">{item.title}</p>
+                              <p className="text-xs text-gray-500 font-intel truncate">/{item.slug}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-xs font-intel">
+                          <p className="text-gray-200">{item.clientName}</p>
+                          <p className="text-gray-500">{item.industry}</p>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className="px-3 py-1 rounded-xl bg-[#7c3aed]/15 border border-[#a855f7]/30 text-[#a855f7] text-xs font-intel font-medium">
+                            {item.category?.name || "Uncategorized"}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span
+                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-intel font-medium border ${
+                              item.status === "PUBLISHED"
+                                ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                                : item.status === "DRAFT"
+                                ? "bg-amber-500/10 border-amber-500/30 text-amber-400"
+                                : "bg-gray-500/10 border-gray-500/30 text-gray-400"
+                            }`}
+                          >
+                            {item.status === "PUBLISHED" ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
+                            <span>{item.status}</span>
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-xs font-intel text-gray-400">{item.displayOrder}</td>
+                        <td className="px-6 py-4 text-xs font-intel text-gray-400">
+                          {item.publishedAt ? new Date(item.publishedAt).toLocaleDateString() : "—"}
+                        </td>
+                        <td className="px-6 py-4 text-right whitespace-nowrap">
+                          {item.status === "PUBLISHED" && (
+                            <Link
+                              href={`/case-studies/${item.slug}`}
+                              target="_blank"
+                              title="View live"
+                              aria-label={`View ${item.title} live`}
+                              className="p-2 inline-block"
+                            >
+                              <ExternalLink className="w-4 h-4 text-[#a855f7]" />
+                            </Link>
+                          )}
+                          {canEdit && (
+                          <Link
+                            href={`/admin/case-studies/editor?id=${item.id}`}
+                            title="Edit"
+                            aria-label={`Edit ${item.title}`}
+                            className="p-2 text-gray-400 hover:text-[#4f8bff] inline-block"
+                          >
+                            <Edit3 className="w-4 h-4" />
+                          </Link>
+                          )}
+                          {canDelete && (
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(item)}
+                            disabled={deletingId === item.id}
+                            title="Delete"
+                            aria-label={`Delete ${item.title}`}
+                            className="p-2 text-gray-400 hover:text-red-400 inline-block disabled:opacity-50 cursor-pointer"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           ) : (
-            <div className="p-12 text-center text-sm text-gray-500">No case studies found.</div>
+            <div className="p-12 text-center space-y-3 font-intel">
+              <p className="text-gray-400 text-xs">No case studies found.</p>
+              {canCreate && (
+                <Link
+                  href="/admin/case-studies/editor"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-linear-to-r from-[#7c3aed] to-[#4f8bff] text-white text-xs font-bold"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Create First Case Study</span>
+                </Link>
+              )}
+            </div>
           )}
         </div>
-
-        {/* Create / Edit Modal */}
-        {isModalOpen && (
-          <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-[#0B0F17] border border-gray-800 rounded-2xl p-6 w-full max-w-2xl space-y-6 max-h-[90vh] overflow-y-auto">
-              <div className="flex items-center justify-between border-b border-gray-800 pb-4">
-                <h3 className="text-lg font-bold text-white">
-                  {editingItem ? "Edit Case Study" : "Add Case Study"}
-                </h3>
-                <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-white">
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-                {formError && (
-                  <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-medium flex items-center space-x-2">
-                    <X className="w-4 h-4 shrink-0" />
-                    <span>{formError}</span>
-                  </div>
-                )}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="font-semibold text-gray-300">Title</label>
-                    <input
-                      type="text"
-                      required
-                      value={title}
-                      onChange={(e) => handleTitleChange(e.target.value)}
-                      className="w-full p-2.5 bg-gray-900 border border-gray-800 rounded-xl text-white"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="font-semibold text-gray-300">URL Slug</label>
-                    <input
-                      type="text"
-                      required
-                      value={slug}
-                      onChange={(e) => setSlug(e.target.value)}
-                      className="w-full p-2.5 bg-gray-900 border border-gray-800 rounded-xl text-white"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="font-semibold text-gray-300">Client Name</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. ABC PVT LTD"
-                      value={clientName}
-                      onChange={(e) => setClientName(e.target.value)}
-                      className="w-full p-2.5 bg-gray-900 border border-gray-800 rounded-xl text-white"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="font-semibold text-gray-300">Industry</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. MANUFACTURING"
-                      value={industry}
-                      onChange={(e) => setIndustry(e.target.value)}
-                      className="w-full p-2.5 bg-gray-900 border border-gray-800 rounded-xl text-white"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-semibold text-gray-300">Summary</label>
-                  <textarea
-                    rows={2}
-                    value={summary}
-                    onChange={(e) => setSummary(e.target.value)}
-                    className="w-full p-2.5 bg-gray-900 border border-gray-800 rounded-xl text-white"
-                  ></textarea>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-semibold text-gray-300">Challenge</label>
-                  <textarea
-                    rows={2}
-                    value={challenge}
-                    onChange={(e) => setChallenge(e.target.value)}
-                    className="w-full p-2.5 bg-gray-900 border border-gray-800 rounded-xl text-white"
-                  ></textarea>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-semibold text-gray-300">Solution</label>
-                  <textarea
-                    rows={2}
-                    value={solution}
-                    onChange={(e) => setSolution(e.target.value)}
-                    className="w-full p-2.5 bg-gray-900 border border-gray-800 rounded-xl text-white"
-                  ></textarea>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-semibold text-gray-300">Results / Impact Summary</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. 64% DEFLECTION, SUB-MINUTE RESOLUTION"
-                    value={results}
-                    onChange={(e) => setResults(e.target.value)}
-                    className="w-full p-2.5 bg-gray-900 border border-gray-800 rounded-xl text-white"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="font-semibold text-gray-300">Featured Image URL</label>
-                    <input
-                      type="text"
-                      value={featuredImage}
-                      onChange={(e) => setFeaturedImage(e.target.value)}
-                      className="w-full p-2.5 bg-gray-900 border border-gray-800 rounded-xl text-white"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="font-semibold text-gray-300">Status</label>
-                    <select
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                      className="w-full p-2.5 bg-gray-900 border border-gray-800 rounded-xl text-white"
-                    >
-                      <option value="DRAFT">DRAFT</option>
-                      <option value="PUBLISHED">PUBLISHED</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-end space-x-3 pt-4 border-t border-gray-800">
-                  <button
-                    type="button"
-                    onClick={() => setIsModalOpen(false)}
-                    className="px-4 py-2 rounded-xl bg-gray-800 text-gray-300 hover:text-white"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold"
-                  >
-                    {submitting ? "Saving..." : "Save Case Study"}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
       </div>
     </AdminLayout>
   );

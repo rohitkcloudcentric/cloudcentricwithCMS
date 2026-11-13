@@ -1,36 +1,57 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { MoveRight } from "lucide-react";
+import CaseStudyImage from "./CaseStudyImage";
 
+export interface TitleDescItem {
+  title: string;
+  desc: string;
+}
+
+/** Case study as consumed by the public UI (built from the CMS in src/lib/case-study-data.ts). */
 export interface CaseStudyPost {
   id: string;
   title: string;
   slug: string;
   category: string;
+  /** Short description */
+  excerpt: string;
+  /** Short challenge text for the card */
   challenge: string;
+  /** Short solution text for the card */
   solution: string;
+  /** Impact pills */
   impacts: string[];
+  technologies: string[];
+  tags: string[];
+  /** Thumbnail for cards */
   image: string;
-  metaDescription?: string;
-  clientName?: string;
-  industry?: string;
-  technologies?: string[];
-  clientUrl?: string;
-  challengeSubtitle?: string;
-  challengeParagraph?: string;
-  challengeBullets?: string[];
-  approachSubtitle?: string;
-  approachIntro?: string;
-  approachSteps?: { number: string; title: string; desc: string }[];
-  solutionSubtitle?: string;
-  solutionIntro?: string;
-  solutionBullets?: { title: string; desc: string }[];
-  impactSubtitle?: string;
-  impactQuote?: string;
-  impactBullets?: { title: string; desc: string }[];
+  clientName: string;
+  industry: string;
+  metaDescription: string;
+  /** ISO date */
+  date: string;
+  // ── Detail-page fields ──
+  seoTitle?: string;
+  featuredImage?: string;
+  featuredImageAlt?: string;
+  overview?: string;
+  challengeTitle?: string;
+  /** Sanitized HTML */
+  challengeHtml?: string;
+  keyChallenges?: string[];
+  approachTitle?: string;
+  approachHtml?: string;
+  approachSteps?: TitleDescItem[];
+  solutionTitle?: string;
+  solutionHtml?: string;
+  solutionHighlights?: TitleDescItem[];
+  impactTitle?: string;
+  impactHtml?: string;
+  impactHighlights?: TitleDescItem[];
+  galleryImages?: string[];
 }
 
 interface CaseStudyCardProps {
@@ -98,7 +119,18 @@ export default function CaseStudyCard({ post, index }: CaseStudyCardProps) {
             {post.title}
           </h2>
 
+          {/* Short Description (optional) */}
+          {post.excerpt && (
+            <p
+              className="text-xs sm:text-[13px] text-white/60 leading-relaxed font-intel-one-mono max-w-xl -mt-2 mb-5"
+              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+            >
+              {post.excerpt}
+            </p>
+          )}
+
           {/* Challenge Section */}
+          {post.challenge && (
           <div className="flex flex-col mb-5">
             <span 
               className="text-sm sm:text-[15px] font-medium text-[#C2BDCF] font-intel-one-mono mb-1"
@@ -113,8 +145,10 @@ export default function CaseStudyCard({ post, index }: CaseStudyCardProps) {
               {post.challenge}
             </p>
           </div>
+          )}
 
           {/* Solution Section */}
+          {post.solution && (
           <div className="flex flex-col mb-6">
             <span 
               className="text-sm sm:text-[15px] font-medium text-[#C2BDCF] font-intel-one-mono mb-1"
@@ -129,8 +163,10 @@ export default function CaseStudyCard({ post, index }: CaseStudyCardProps) {
               {post.solution}
             </p>
           </div>
+          )}
 
           {/* Impact Section */}
+          {post.impacts.length > 0 && (
           <div className="flex flex-col mb-7">
             <span 
               className="text-sm sm:text-[15px] font-medium text-[#C2BDCF] font-intel-one-mono mb-2"
@@ -150,11 +186,13 @@ export default function CaseStudyCard({ post, index }: CaseStudyCardProps) {
               ))}
             </div>
           </div>
+          )}
 
           {/* Read Case Study Button */}
           <div>
             <Link
               href={`/case-studies/${post.slug}`}
+              aria-label={`Read case study: ${post.title}`}
               className="inline-flex items-center space-x-5 pl-6 pr-1.5 py-1.5 rounded-[14px] bg-white/[0.08] hover:bg-white/[0.14] border border-white/15 backdrop-blur-md transition-all font-intel-one-mono text-xs sm:text-[13px] tracking-[0.12em] uppercase text-white group/btn shadow-md"
               style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
             >
@@ -174,10 +212,9 @@ export default function CaseStudyCard({ post, index }: CaseStudyCardProps) {
               ? "opacity-0 -translate-x-12 sm:-translate-x-16" 
               : "opacity-0 translate-x-12 sm:translate-x-16"
         }`}>
-          <Image
+          <CaseStudyImage
             src={post.image}
             alt={post.title}
-            fill
             sizes="(max-width: 1024px) 100vw, 530px"
             className="object-cover object-center rounded-2xl group-hover:scale-[1.02] transition-transform duration-500"
           />

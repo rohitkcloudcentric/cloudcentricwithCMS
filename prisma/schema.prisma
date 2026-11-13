@@ -12,6 +12,10 @@ model User {
   id           String        @id @default(uuid())
   email        String        @unique
   name         String
+  /// Optional handle, stored lowercase
+  username     String?       @unique
+  /// Optional mobile number
+  phone        String?
   passwordHash String
   avatarUrl    String?
   isActive     Boolean       @default(true)
@@ -20,6 +24,9 @@ model User {
   sessions     Session[]
   auditLogs    AuditLog[]
   articles     BlogArticle[] @relation("AuthorArticles")
+  caseStudies  CaseStudy[]   @relation("CaseStudyCreator")
+  products     Product[]     @relation("ProductCreator")
+  clients      Client[]      @relation("ClientCreator")
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
@@ -28,6 +35,8 @@ model Role {
   id          String           @id @default(uuid())
   name        String           @unique // e.g. "Super Admin", "Editor", "Author", "Viewer"
   description String?
+  /// Full access to every module and record (bypasses the permission matrix)
+  fullAccess  Boolean          @default(false)
   users       User[]
   permissions RolePermission[]
   createdAt   DateTime         @default(now())
@@ -72,6 +81,7 @@ model BlogArticle {
   excerpt        String?
   contentHtml    String        @db.Text
   featuredImage  String?
+  thumbnailImage String?
   readTime       String?       @default("5 MIN READ")
   status         ContentStatus @default(DRAFT)
   authorId       String
@@ -87,34 +97,138 @@ model BlogArticle {
 }
 
 model CaseStudy {
-  id            String        @id @default(uuid())
-  title         String
-  slug          String        @unique
-  clientName    String
-  industry      String
-  summary       String        @db.Text
-  challenge     String        @db.Text
-  solution      String        @db.Text
-  results       String        @db.Text
-  featuredImage String?
-  status        ContentStatus @default(DRAFT)
-  publishedAt   DateTime?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id                 String             @id @default(uuid())
+  title              String
+  slug               String             @unique
+  clientName         String
+  industry           String
+  /// Overview paragraph shown in the detail hero
+  summary            String             @db.Text
+  /// Short challenge text shown on the listing card
+  challenge          String             @db.Text
+  /// Short solution text shown on the listing card
+  solution           String             @db.Text
+  /// Legacy free-text results (superseded by impactHtml / impactHighlights)
+  results            String             @db.Text
+  excerpt            String?            @db.Text
+  thumbnailImage     String?
+  featuredImage      String?
+  featuredImageAlt   String?
+  /// Extra images uploaded for use in the content (string[])
+  galleryImages      Json?
+  // ── Content sections (HTML is sanitized before rendering) ──
+  challengeTitle     String?
+  challengeHtml      String?            @db.Text
+  /// string[]
+  keyChallenges      Json?
+  approachTitle      String?
+  approachHtml       String?            @db.Text
+  /// { title: string; desc: string }[]
+  approachSteps      Json?
+  solutionTitle      String?
+  solutionHtml       String?            @db.Text
+  /// { title: string; desc: string }[]
+  solutionHighlights Json?
+  impactTitle        String?
+  impactHtml         String?            @db.Text
+  /// { title: string; desc: string }[]
+  impactHighlights   Json?
+  /// Short impact pills on the listing card (string[])
+  impacts            Json?
+  /// Technology pills (string[])
+  technologies       Json?
+  /// Hand-picked related case study IDs (string[])
+  relatedIds         Json?
+  seoTitle           String?
+  seoDescription     String?            @db.Text
+  displayOrder       Int                @default(0)
+  categoryId         String?
+  category           CaseStudyCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  tags               CaseStudyTagLink[]
+  /// Owner (used for record-level access when the role lacks "manage")
+  createdById        String?
+  createdBy          User?              @relation("CaseStudyCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  status             ContentStatus      @default(DRAFT)
+  publishedAt        DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  @@index([status, displayOrder])
+}
+
+model CaseStudyCategory {
+  id          String      @id @default(uuid())
+  name        String      @unique
+  slug        String      @unique
+  caseStudies CaseStudy[]
+}
+
+model CaseStudyTag {
+  id          String             @id @default(uuid())
+  name        String             @unique
+  slug        String             @unique
+  caseStudies CaseStudyTagLink[]
+}
+
+model CaseStudyTagLink {
+  caseStudyId String
+  tagId       String
+  caseStudy   CaseStudy    @relation(fields: [caseStudyId], references: [id], onDelete: Cascade)
+  tag         CaseStudyTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([caseStudyId, tagId])
 }
 
 model Product {
-  id          String   @id @default(uuid())
-  title       String
-  slug        String   @unique
-  description String   @db.Text
-  badge       String?
-  logoUrl     String?
-  features    Json?    // Array of string features
-  appExchange String?
-  websiteUrl  String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id               String         @id @default(uuid())
+  /// Product name
+  title            String
+  slug             String         @unique
+  /// Short description (listing cards)
+  description      String         @db.Text
+  /// Subtitle / tagline / category description
+  badge            String?
+  /// Logo / thumbnail
+  logoUrl          String?
+  /// Main banner / featured image
+  featuredImage    String?
+  featuredImageAlt String?
+  /// Detailed description (rich text HTML, sanitized before rendering)
+  contentHtml      String?        @db.Text
+  features         Json? // Array of string features
+  /// Technology tags (string[])
+  technologies     Json?
+  appExchange      String?
+  websiteUrl       String?
+  seoTitle         String?
+  seoDescription   String?        @db.Text
+  displayOrder     Int            @default(0)
+  /// Active / Inactive switch (inactive products never show on the website)
+  isActive         Boolean        @default(true)
+  /// Existing rows predate publishing, so they default to PUBLISHED
+  status           ContentStatus  @default(PUBLISHED)
+  publishedAt      DateTime?
+  images           ProductImage[]
+  /// Owner (used for record-level access when the role lacks "manage")
+  createdById      String?
+  createdBy        User?          @relation("ProductCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([status, isActive, displayOrder])
+}
+
+/// Gallery images of a product
+model ProductImage {
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([productId, sortOrder])
 }
 
 model Category {
@@ -154,4 +268,140 @@ enum ContentStatus {
   DRAFT
   PUBLISHED
   ARCHIVED
+}
+
+// ── Newsletter ──
+
+enum SubscriptionStatus {
+  ACTIVE
+  UNSUBSCRIBED
+}
+
+enum SubscriptionSource {
+  BLOG
+  CASE_STUDY
+  OTHER
+}
+
+model NewsletterSubscriber {
+  id               String             @id @default(uuid())
+  /// Stored lowercased + trimmed; one row per email
+  email            String             @unique
+  status           SubscriptionStatus @default(ACTIVE)
+  /// Section the user subscribed from ("Blog" / "Case Studies")
+  sourceType       SubscriptionSource @default(OTHER)
+  /// Title of the blog post / case study, resolved server-side from the slug
+  sourceTitle      String?
+  sourceSlug       String?
+  ipAddress        String?
+  userAgent        String?
+  /// Random token for the one-click unsubscribe link in emails
+  unsubscribeToken String             @unique
+  subscribedAt     DateTime           @default(now())
+  unsubscribedAt   DateTime?
+  /// Confirmation email delivery tracking
+  emailSentAt      DateTime?
+  emailError       String?            @db.Text
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  @@index([status])
+  @@index([sourceType, sourceSlug])
+  @@index([subscribedAt])
+}
+
+// ── Our Clients ──
+
+model ClientCategory {
+  id           String   @id @default(uuid())
+  name         String   @unique
+  slug         String   @unique
+  /// Order of the filter pills on the Our Clients page (lower first)
+  displayOrder Int      @default(0)
+  clients      Client[]
+}
+
+model Client {
+  id           String          @id @default(uuid())
+  name         String
+  logoUrl      String
+  logoAlt      String?
+  websiteUrl   String?
+  description  String?         @db.Text
+  categoryId   String?
+  category     ClientCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  /// Order of the logo in the grid (lower first)
+  displayOrder Int             @default(0)
+  isActive     Boolean         @default(true)
+  /// Featured clients are listed first under "All Clients"
+  isFeatured   Boolean         @default(false)
+  /// Owner (used for record-level access when the role lacks "manage")
+  createdById  String?
+  createdBy    User?           @relation("ClientCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@index([isActive, displayOrder])
+}
+
+// ── Contact Settings (footer, Contact Us page, contact widgets) ──
+
+model OfficeAddress {
+  id           String   @id @default(uuid())
+  /// Office location / country label, e.g. "India"
+  location     String
+  address      String   @db.Text
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([isActive, displayOrder])
+}
+
+model ContactPhone {
+  id           String   @id @default(uuid())
+  /// e.g. "+91"
+  countryCode  String
+  /// As displayed, e.g. "9971126721"
+  number       String
+  /// Digits of countryCode + number, used to prevent duplicates
+  digits       String   @unique
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([isActive, displayOrder])
+}
+
+model ContactEmail {
+  id           String   @id @default(uuid())
+  /// Stored lowercased
+  email        String   @unique
+  /// e.g. "Sales", "Support", "General Enquiry"
+  type         String
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([isActive, displayOrder])
+}
+
+model SocialLink {
+  id           String   @id @default(uuid())
+  /// Platform key, e.g. "facebook", "x" or a custom slug; selects the icon
+  platform     String   @unique
+  /// Display name, e.g. "Facebook"
+  name         String
+  url          String
+  /// Optional uploaded icon; when empty the built-in platform icon is used
+  iconUrl      String?
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([isActive, displayOrder])
 }

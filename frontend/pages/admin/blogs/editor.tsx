@@ -36,17 +36,31 @@ export default function BlogEditor() {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
     // Fetch categories
-    fetch("/api/v1/articles")
+    fetch("/api/v1/categories")
       .then((res) => res.json())
-      .then(() => {
-        // Fallback static category list if not populated
-        setCategories([
-          { id: "ai-automation", name: "AI & Automation" },
-          { id: "digital-transformation", name: "Digital Transformation" },
-          { id: "technology", name: "Technology" },
-          { id: "salesforce", name: "Salesforce" },
-        ]);
+      .then((data) => {
+        if (isMounted && data.success && Array.isArray(data.data) && data.data.length > 0) {
+          setCategories(data.data);
+        } else if (isMounted) {
+          setCategories([
+            { id: "ai-automation", name: "AI & Automation" },
+            { id: "digital-transformation", name: "Digital Transformation" },
+            { id: "technology", name: "Technology" },
+            { id: "salesforce", name: "Salesforce" },
+          ]);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setCategories([
+            { id: "ai-automation", name: "AI & Automation" },
+            { id: "digital-transformation", name: "Digital Transformation" },
+            { id: "technology", name: "Technology" },
+            { id: "salesforce", name: "Salesforce" },
+          ]);
+        }
       });
 
     if (id) {

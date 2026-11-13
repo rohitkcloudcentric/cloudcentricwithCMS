@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* CMS article templates: make Tailwind generate the classes used in blog content stored in the database */
+@source "../../content/blogs/**/*.{html,txt}";
 
 :root {
   --background: #050505;

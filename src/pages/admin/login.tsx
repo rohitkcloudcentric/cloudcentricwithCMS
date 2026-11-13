@@ -141,6 +141,7 @@ export default function AdminLogin() {
         </form>
 
         {/* Demo Credentials Box matching frontend aesthetic */}
+           {/*
         <div className="p-4 rounded-2xl bg-[#12121a] border border-white/5 text-[11px] text-[#a1a1aa] space-y-1.5 font-intel">
           <div className="flex items-center space-x-2 text-[#a855f7] font-bold">
             <ShieldCheck className="w-4 h-4" />
@@ -155,6 +156,7 @@ export default function AdminLogin() {
             <code className="text-white bg-white/5 px-2 py-0.5 rounded font-mono">Admin@1234</code>
           </div>
         </div>
+        */}
       </div>
     </div>
   );

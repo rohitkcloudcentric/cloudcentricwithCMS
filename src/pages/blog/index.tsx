@@ -1,3 +1,4 @@
-import BlogPage from "../blogs";
+import BlogPage, { getServerSideProps } from "../blogs";
 
+export { getServerSideProps };
 export default BlogPage;

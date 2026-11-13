@@ -16,6 +16,8 @@ export interface BlogPost {
   image: string;
   date?: string;
   author?: string;
+  /** Tag names assigned in the CMS */
+  tags?: string[];
 }
 
 interface BlogCardProps {

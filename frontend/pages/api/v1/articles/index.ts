@@ -110,6 +110,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(403).json({ success: false, error: "Forbidden: You do not have permission to publish" });
       }
 
+      let resolvedCategoryId: string | null = null;
+      if (categoryId && typeof categoryId === "string" && categoryId.trim() !== "" && categoryId !== "null" && categoryId !== "undefined") {
+        const cat = await prisma.category.findFirst({
+          where: {
+            OR: [
+              { id: categoryId },
+              { slug: categoryId },
+              { name: categoryId },
+            ],
+          },
+        });
+        if (cat) {
+          resolvedCategoryId = cat.id;
+        } else {
+          const catSlug = categoryId.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
+          if (catSlug) {
+            const newCat = await prisma.category.upsert({
+              where: { slug: catSlug },
+              update: {},
+              create: { name: categoryId, slug: catSlug },
+            });
+            resolvedCategoryId = newCat.id;
+          }
+        }
+      }
+
       const article = await prisma.blogArticle.create({
         data: {
           title,
@@ -121,7 +147,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           status,
           publishedAt: isPublishing ? new Date() : null,
           authorId: user.id,
-          categoryId: categoryId || null,
+          categoryId: resolvedCategoryId,
           seoTitle: seoTitle || title,
           seoDescription: seoDescription || excerpt,
         },

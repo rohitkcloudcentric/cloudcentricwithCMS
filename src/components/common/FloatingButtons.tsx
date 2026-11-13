@@ -5,10 +5,15 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { MessageSquare, ArrowUp } from "lucide-react";
 import AIChatBar from "./AIChatBar";
+import { useContactSettings } from "./useContactSettings";
+import { phoneDigits } from "@/lib/contact-settings";
 
 export default function FloatingButtons() {
   const router = useRouter();
   const [isChatOpen, setIsChatOpen] = useState(false);
+  // WhatsApp uses the first active contact number from Admin > Contact Settings
+  const contact = useContactSettings();
+  const whatsapp = contact?.phones[0] ? phoneDigits(contact.phones[0]) : "";
 
   useEffect(() => {
     const handleOpenChatEvent = () => {
@@ -50,8 +55,9 @@ export default function FloatingButtons() {
         >
           BOOK A CONSULTATION
         </Link>
+        {whatsapp && (
         <a
-          href="https://api.whatsapp.com/send/?phone=9971126721&type=phone_number&app_absent=0"
+          href={`https://api.whatsapp.com/send/?phone=${whatsapp}&type=phone_number&app_absent=0`}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Contact us on WhatsApp"
@@ -59,6 +65,7 @@ export default function FloatingButtons() {
         >
           WHATSAPP
         </a>
+        )}
       </div>
 
       {/* Bottom Floating Action Buttons */}

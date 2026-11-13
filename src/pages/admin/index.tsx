@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
+import { useAdminAuth } from "@/components/admin/AdminAuthContext";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import {
   FileText,
@@ -10,6 +12,7 @@ import {
   ArrowUpRight,
   Clock,
   Sparkles,
+  Building2,
 } from "lucide-react";
 
 interface AuditLogEntry {
@@ -23,64 +26,79 @@ interface AuditLogEntry {
 }
 
 export default function AdminDashboard() {
+  const router = useRouter();
+  const { user, can } = useAdminAuth();
   const [stats, setStats] = useState({
     articlesCount: 0,
     caseStudiesCount: 0,
     productsCount: 0,
+    clientsCount: 0,
     usersCount: 0,
   });
   const [recentLogs, setRecentLogs] = useState<AuditLogEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deniedNotice, setDeniedNotice] = useState(false);
 
+  // Redirected here from a page the role cannot open
   useEffect(() => {
+    if (!router.isReady || router.query.denied !== "1") return;
+    router.replace("/admin", undefined, { shallow: true });
+    const show = setTimeout(() => setDeniedNotice(true), 0);
+    const hide = setTimeout(() => setDeniedNotice(false), 6000);
+    return () => {
+      clearTimeout(show);
+      clearTimeout(hide);
+    };
+  }, [router]);
+
+  const canBlogs = can("blogs", "read");
+  const canCaseStudies = can("case_studies", "read");
+  const canProducts = can("products", "read");
+  const canClients = can("clients", "read");
+  const canUsers = can("users", "read");
+  const canLogs = can("audit_logs", "read");
+
+  // Counts come from the same scoped APIs as the module pages, so they match what the user can access
+  useEffect(() => {
+    if (!user) return;
     let isMounted = true;
-    async function loadDashboardData() {
-      try {
-        const [artRes, csRes, prodRes, userRes, logsRes] = await Promise.all([
-          fetch("/api/v1/articles"),
-          fetch("/api/v1/case-studies"),
-          fetch("/api/v1/products"),
-          fetch("/api/v1/users"),
-          fetch("/api/v1/audit-logs"),
-        ]);
+    const getJson = (url: string, allowed: boolean) =>
+      allowed ? fetch(url).then((r) => r.json()).catch(() => null) : Promise.resolve(null);
 
-        const articles = await artRes.json();
-        const caseStudies = await csRes.json();
-        const products = await prodRes.json();
-        const usersData = await userRes.json();
-        const logs = await logsRes.json();
+    Promise.all([
+      getJson("/api/v1/articles?limit=1", canBlogs),
+      getJson("/api/v1/case-studies", canCaseStudies),
+      getJson("/api/v1/products?page=1&pageSize=1", canProducts),
+      getJson("/api/v1/clients", canClients),
+      getJson("/api/v1/users", canUsers),
+      getJson("/api/v1/audit-logs", canLogs),
+    ])
+      .then(([articles, caseStudies, products, clients, usersData, logs]) => {
+        if (!isMounted) return;
+        setStats({
+          articlesCount: articles?.pagination?.total || 0,
+          caseStudiesCount: caseStudies?.data?.length || 0,
+          productsCount: products?.meta?.total || 0,
+          clientsCount: clients?.data?.length || 0,
+          usersCount: usersData?.data?.users?.length || 0,
+        });
+        setRecentLogs(logs?.success ? logs.data.slice(0, 6) : []);
+      })
+      .catch((error) => console.error("Dashboard fetch error:", error))
+      .finally(() => isMounted && setLoading(false));
 
-        if (isMounted) {
-          setStats({
-            articlesCount: articles?.pagination?.total || articles?.data?.length || 0,
-            caseStudiesCount: caseStudies?.data?.length || 0,
-            productsCount: products?.data?.length || 0,
-            usersCount: usersData?.data?.users?.length || 0,
-          });
-
-          if (logs?.success) {
-            setRecentLogs(logs.data.slice(0, 6));
-          }
-        }
-      } catch (error) {
-        console.error("Dashboard fetch error:", error);
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    }
-
-    loadDashboardData();
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [user, canBlogs, canCaseStudies, canProducts, canClients, canUsers, canLogs]);
 
-  const statCards = [
+  const allStatCards = [
     {
       title: "Blog Articles",
       count: stats.articlesCount,
       icon: FileText,
       href: "/admin/blogs",
+      visible: canBlogs,
       color: "from-[#7c3aed]/25 via-[#2563eb]/15 to-transparent",
       borderColor: "border-[#7c3aed]/30",
       iconColor: "text-[#a855f7]",
@@ -90,6 +108,7 @@ export default function AdminDashboard() {
       count: stats.caseStudiesCount,
       icon: Briefcase,
       href: "/admin/case-studies",
+      visible: canCaseStudies,
       color: "from-emerald-600/25 via-teal-600/15 to-transparent",
       borderColor: "border-emerald-500/30",
       iconColor: "text-emerald-400",
@@ -99,24 +118,48 @@ export default function AdminDashboard() {
       count: stats.productsCount,
       icon: Layers,
       href: "/admin/products",
+      visible: canProducts,
       color: "from-purple-600/25 via-pink-600/15 to-transparent",
       borderColor: "border-purple-500/30",
       iconColor: "text-purple-400",
+    },
+    {
+      title: "Our Clients",
+      count: stats.clientsCount,
+      icon: Building2,
+      href: "/admin/clients",
+      visible: canClients,
+      color: "from-amber-600/25 via-orange-600/15 to-transparent",
+      borderColor: "border-amber-500/30",
+      iconColor: "text-amber-400",
     },
     {
       title: "Admin Users & RBAC",
       count: stats.usersCount,
       icon: Users,
       href: "/admin/users",
+      visible: canUsers,
       color: "from-blue-600/25 via-cyan-600/15 to-transparent",
       borderColor: "border-blue-500/30",
       iconColor: "text-[#4f8bff]",
     },
   ];
+  const statCards = allStatCards.filter((c) => c.visible);
 
+  const quickActions = [
+    { label: "Create Blog Article", href: "/admin/blogs/editor", icon: FileText, iconClass: "text-[#a855f7]", hover: "hover:border-[#7c3aed]/50", plusHover: "group-hover:text-[#a855f7]", visible: can("blogs", "create") },
+    { label: "Add Case Study", href: "/admin/case-studies/editor", icon: Briefcase, iconClass: "text-emerald-400", hover: "hover:border-emerald-500/50", plusHover: "group-hover:text-emerald-400", visible: can("case_studies", "create") },
+    { label: "Add Product Portfolio", href: "/admin/products/editor", icon: Layers, iconClass: "text-purple-400", hover: "hover:border-purple-500/50", plusHover: "group-hover:text-purple-400", visible: can("products", "create") },
+    { label: "Add Client", href: "/admin/clients/editor", icon: Building2, iconClass: "text-amber-400", hover: "hover:border-amber-500/50", plusHover: "group-hover:text-amber-400", visible: can("clients", "create") },
+  ].filter((a) => a.visible);
   return (
     <AdminLayout title="System Overview">
-      <div className="space-y-8 max-w-7xl mx-auto">
+      <div className="space-y-8 w-full mx-auto">
+        {deniedNotice && (
+          <p role="alert" className="px-4 py-3 rounded-xl text-xs font-intel border bg-amber-500/10 border-amber-500/30 text-amber-300">
+            You don&apos;t have permission to open that page. Ask an administrator to update your role if you need access.
+          </p>
+        )}
         {/* Welcome Banner matching Frontend Hero Style */}
         <div className="relative overflow-hidden rounded-3xl bg-linear-to-r from-[#7c3aed]/20 via-[#2563eb]/15 to-[#0e0e12] border border-white/10 p-8 md:p-10 shadow-[0_0_50px_rgba(124,58,237,0.1)]">
           <div className="absolute right-0 top-0 w-96 h-96 bg-[#a855f7]/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -135,7 +178,10 @@ export default function AdminDashboard() {
         </div>
 
         {/* Stat Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {statCards.length === 0 && !loading && (
+          <p className="text-xs font-intel text-gray-500">Your role does not have access to any content modules yet.</p>
+        )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
           {statCards.map((card) => {
             const Icon = card.icon;
             return (
@@ -168,42 +214,30 @@ export default function AdminDashboard() {
               <span>Quick Actions</span>
             </h3>
             <div className="space-y-3 font-intel">
-              <Link
-                href="/admin/blogs/editor"
-                className="flex items-center justify-between p-4 rounded-2xl bg-[#14141a] border border-white/5 hover:border-[#7c3aed]/50 text-xs text-gray-200 hover:text-white transition-all group cursor-pointer"
-              >
-                <div className="flex items-center space-x-3">
-                  <FileText className="w-4 h-4 text-[#a855f7]" />
-                  <span>Create Blog Article</span>
-                </div>
-                <Plus className="w-4 h-4 text-gray-500 group-hover:text-[#a855f7]" />
-              </Link>
-
-              <Link
-                href="/admin/case-studies"
-                className="flex items-center justify-between p-4 rounded-2xl bg-[#14141a] border border-white/5 hover:border-emerald-500/50 text-xs text-gray-200 hover:text-white transition-all group cursor-pointer"
-              >
-                <div className="flex items-center space-x-3">
-                  <Briefcase className="w-4 h-4 text-emerald-400" />
-                  <span>Add Case Study</span>
-                </div>
-                <Plus className="w-4 h-4 text-gray-500 group-hover:text-emerald-400" />
-              </Link>
-
-              <Link
-                href="/admin/products"
-                className="flex items-center justify-between p-4 rounded-2xl bg-[#14141a] border border-white/5 hover:border-purple-500/50 text-xs text-gray-200 hover:text-white transition-all group cursor-pointer"
-              >
-                <div className="flex items-center space-x-3">
-                  <Layers className="w-4 h-4 text-purple-400" />
-                  <span>Add Product Portfolio</span>
-                </div>
-                <Plus className="w-4 h-4 text-gray-500 group-hover:text-purple-400" />
-              </Link>
+              {quickActions.length === 0 ? (
+                <p className="text-xs text-gray-500">Your role has no create permissions.</p>
+              ) : (
+                quickActions.map((a) => {
+                  const Icon = a.icon;
+                  return (
+                    <Link
+                      key={a.href}
+                      href={a.href}
+                      className={`flex items-center justify-between p-4 rounded-2xl bg-[#14141a] border border-white/5 ${a.hover} text-xs text-gray-200 hover:text-white transition-all group cursor-pointer`}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <Icon className={`w-4 h-4 ${a.iconClass}`} />
+                        <span>{a.label}</span>
+                      </div>
+                      <Plus className={`w-4 h-4 text-gray-500 ${a.plusHover}`} />
+                    </Link>
+                  );
+                })
+              )}
             </div>
           </div>
-
-          {/* Audit Trail Feed */}
+          {/* Audit Trail Feed (audit_logs:view; scoped to own actions without audit_logs:manage) */}
+          {canLogs && (
           <div className="lg:col-span-2 bg-[#0e0e12] border border-white/10 rounded-3xl p-6 md:p-8 space-y-5">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-white tracking-tight flex items-center space-x-2 font-manrope">
@@ -248,6 +282,7 @@ export default function AdminDashboard() {
               <p className="text-xs font-intel text-gray-500 py-8 text-center">No recent audit logs recorded.</p>
             )}
           </div>
+          )}
         </div>
       </div>
     </AdminLayout>

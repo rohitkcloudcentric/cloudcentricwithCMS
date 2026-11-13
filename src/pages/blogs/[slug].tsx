@@ -1,25 +1,53 @@
-"use client";
-
-import { useRouter } from "next/router";
+import type { GetServerSideProps } from "next";
+import { getBlogPostBySlug, getPublishedBlogPosts, getBlogCategories } from "@/lib/blog-data";
 import SEOHead from "@/components/seo/SEOHead";
 import { SITE_URL } from "@/config/seo.config";
 import { generateBreadcrumbSchema } from "@/lib/sitemap-helper";
 import AnnouncementBar from "@/components/common/AnnouncementBar";
 import Navbar from "@/components/common/Navbar";
 import BlogDetailsHero from "@/components/blogs/BlogDetailsHero";
-import BlogArticle from "@/components/blogs/BlogArticle";
+import BlogArticle, { type SidebarCategory } from "@/components/blogs/BlogArticle";
+import type { BlogPost } from "@/components/blogs/BlogCard";
 import YouMightLike from "@/components/blogs/YouMightLike";
-import { SAMPLE_BLOG_POSTS } from "@/components/blogs/BlogListing";
 import Footer from "@/components/common/Footer";
 import FloatingButtons from "@/components/common/FloatingButtons";
 
-export default function BlogDetailsPage() {
-  const router = useRouter();
-  const { slug } = router.query;
+interface BlogDetailsPageProps {
+  post: BlogPost;
+  /** Sanitized CMS article HTML. */
+  contentHtml: string;
+  /** All published posts (for sidebar widgets and "You Might Like"). */
+  allPosts: BlogPost[];
+  /** All CMS categories with published-post counts (sidebar). */
+  categories: SidebarCategory[];
+}
 
-  // Find post matching slug, fallback to first post
-  const post = SAMPLE_BLOG_POSTS.find((p) => p.slug === slug) || SAMPLE_BLOG_POSTS[0];
+export const getServerSideProps: GetServerSideProps<BlogDetailsPageProps> = async ({ params }) => {
+  const slug = typeof params?.slug === "string" ? params.slug : "";
+
+  const [detail, allPosts, categories] = await Promise.all([
+    getBlogPostBySlug(slug),
+    getPublishedBlogPosts(),
+    getBlogCategories(),
+  ]);
+
+  if (!detail) return { notFound: true };
+
+  return {
+    props: {
+      post: detail.post,
+      contentHtml: detail.contentHtml,
+      allPosts,
+      categories: categories.map((c) => ({ name: c.name, count: c.count })),
+    },
+  };
+};
+
+export default function BlogDetailsPage({ post, contentHtml, allPosts = [], categories = [] }: BlogDetailsPageProps) {
   const metaDescription = post.metaDescription || post.description;
+
+  // Recommendations exclude the current article (matched by slug)
+  const recommended = allPosts.filter((p) => p.slug !== post.slug);
 
   const jsonLd = [
     {
@@ -74,10 +102,13 @@ export default function BlogDetailsPage() {
           <BlogDetailsHero post={post} />
 
           {/* Main Article Content */}
-          <BlogArticle post={post} />
+          <BlogArticle post={post} contentHtml={contentHtml} allPosts={allPosts} categories={categories} />
 
           {/* You Might Like Recommended Articles Section */}
-          <YouMightLike currentPostId={post.id} />
+          <YouMightLike
+            currentPostId={post.id}
+            posts={recommended}
+          />
 
           <Footer />
           <FloatingButtons />

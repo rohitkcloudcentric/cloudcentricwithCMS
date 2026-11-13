@@ -575,7 +575,9 @@ export default function BlogArticle({ post }: BlogArticleProps) {
             </div>
 
             {/* Intro Content */}
-            <div className="space-y-5 text-xs sm:text-sm lg:text-base text-white/70 leading-relaxed font-light">
+
+            <div>
+                 <div className="space-y-5 text-xs sm:text-sm lg:text-base text-white/70 leading-relaxed font-light">
               <p>
                 Artificial intelligence is becoming an important part of how businesses improve operations, serve customers, automate workflows, and make better use of their data.
               </p>
@@ -1122,6 +1124,8 @@ export default function BlogArticle({ post }: BlogArticleProps) {
                 </button>
               </div>
             </div>
+            </div>
+           
 
             {/* Bottom Category Bar */}
             <div className="pt-6 flex items-center space-x-2 text-xs text-white/60">

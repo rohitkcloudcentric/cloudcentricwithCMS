@@ -3,17 +3,17 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import CaseStudyCard, { CaseStudyPost } from "./CaseStudyCard";
-import { SAMPLE_CASE_STUDIES } from "./CaseStudyListing";
 
 interface YouMightLikeCaseStudiesProps {
   currentPostId?: string;
+  /** Published case studies from the CMS */
+  posts: CaseStudyPost[];
 }
 
-export default function YouMightLikeCaseStudies({ currentPostId }: YouMightLikeCaseStudiesProps) {
+export default function YouMightLikeCaseStudies({ currentPostId, posts }: YouMightLikeCaseStudiesProps) {
   // Filter out current post and take top 2 recommended case studies
-  const recommendedPosts = SAMPLE_CASE_STUDIES.filter(
-    (post) => post.id !== currentPostId
-  ).slice(0, 2);
+  const recommendedPosts = posts.filter((post) => post.id !== currentPostId).slice(0, 2);
+  if (recommendedPosts.length === 0) return null;
 
   return (
     <section className="w-full bg-[#050505] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-12 z-10 relative border-t border-white/10">

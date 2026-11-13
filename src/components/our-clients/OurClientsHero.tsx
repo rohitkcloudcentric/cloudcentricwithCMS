@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
-import { X, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Search, ExternalLink } from "lucide-react";
+import type { PublicClient } from "@/lib/client-data";
 
 /* ─────────────────────────────────────────────
    Searchable Dropdown Component
@@ -124,59 +125,22 @@ function SearchableDropdown<T extends string | number>({
 }
 
 /* ─────────────────────────────────────────────
-   Category definitions
+   Data (loaded from the CMS; see src/lib/client-data.ts)
 ───────────────────────────────────────────── */
-const CATEGORIES = [
-  "All Clients",
-  "Real Estate",
-  "IT & Services",
-  "Agriculture",
-  "Healthcare",
-  "Financial Services",
-  "Manufacturing",
-  "Education",
-  "Travel & Hospitality",
-  "Utilities",
-  "Professional Services",
-  "Retail & Consumer Goods",
-  "Automotives",
-  "Media & Entertainments",
-  "High Tech",
-  "Food & Beverage",
-  "Non Profit",
-] as const;
+const ALL_CLIENTS = "All Clients";
 
-/* ─────────────────────────────────────────────
-   Client logo definitions
-───────────────────────────────────────────── */
-interface Client {
-  name: string;
-  src: string;
-  category: string;
+type Client = PublicClient;
+
+/** Local images go through next/image; external URLs use a plain <img> (no remote-domain config needed). */
+function LogoImage({ src, alt, sizes, priority }: { src: string; alt: string; sizes: string; priority?: boolean }) {
+  if (src.startsWith("/")) {
+    return <Image src={src} alt={alt} fill className="object-contain" sizes={sizes} priority={priority} />;
+  }
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={src} alt={alt} loading={priority ? "eager" : "lazy"} decoding="async" className="absolute inset-0 w-full h-full object-contain" />
+  );
 }
-
-const CLIENTS: Client[] = [
-  { name: "GTC Marketing", src: "/images/our-clients-1/gtcsvg.svg", category: "Professional Services" },
-  { name: "SparkTG", src: "/images/our-clients-1/sparktg.svg", category: "IT & Services" },
-  { name: "Fellowship Travel & Tours", src: "/images/our-clients-1/fellowship.svg", category: "Travel & Hospitality" },
-  { name: "Abhushan", src: "/images/our-clients-1/abhushan.svg", category: "Retail & Consumer Goods" },
-  { name: "Magic Billion", src: "/images/our-clients-1/magic-billion.svg", category: "Professional Services" },
-  { name: "Preferred Square", src: "/images/our-clients-1/prefrred.svg", category: "Real Estate" },
-  { name: "BIMTECH", src: "/images/our-clients-1/bimtech.svg", category: "Education" },
-  { name: "Intuit Lab", src: "/images/our-clients-1/intuit-lab.svg", category: "High Tech" },
-  { name: "CU Online", src: "/images/our-clients-1/cu-online.svg", category: "Education" },
-  { name: "ALLEN", src: "/images/our-clients-1/allen.svg", category: "Education" },
-  { name: "Footprints", src: "/images/our-clients-1/footprints.svg", category: "Education" },
-  { name: "Maplebear", src: "/images/our-clients-1/maplebear.svg", category: "Food & Beverage" },
-  { name: "Adventus.io", src: "/images/our-clients-1/adventus.svg", category: "IT & Services" },
-  { name: "New Light Institute", src: "/images/our-clients-1/new-light-institute.svg", category: "Education" },
-  { name: "Bhagwati", src: "/images/our-clients-1/bhagwati.svg", category: "Manufacturing" },
-  { name: "Adle Broswon Group", src: "/images/our-clients-1/adle-broswon.svg", category: "Professional Services" },
-  { name: "Asees", src: "/images/our-clients-1/asees.svg", category: "Non Profit" },
-  { name: "Genus", src: "/images/our-clients-1/genus.svg", category: "Utilities" },
-  { name: "ED Camp", src: "/images/our-clients-1/ed-camp.svg", category: "Education" },
-  { name: "TechnoStruct", src: "/images/our-clients-1/technostruct.svg", category: "IT & Services" },
-];
 
 /* ─────────────────────────────────────────────
    Lightbox Modal
@@ -221,6 +185,7 @@ function Lightbox({ clients, activeIndex, onClose, onNavigate }: LightboxProps) 
   }, [activeIndex]);
 
   const current = clients[activeIndex];
+  if (!current) return null;
 
   return (
     <div
@@ -259,18 +224,30 @@ function Lightbox({ clients, activeIndex, onClose, onNavigate }: LightboxProps) 
 
         {/* Main image card */}
         <div className="w-full bg-white rounded-2xl p-8 shadow-[0_30px_80px_rgba(0,0,0,0.7)] flex items-center justify-center min-h-[220px]">
-          <div className="relative w-full h-[180px]">
-            <Image
-              key={current.src}
-              src={current.src}
-              alt={current.name}
-              fill
-              className="object-contain"
-              sizes="(max-width: 768px) 90vw, 700px"
-              priority
-            />
+          <div className="relative w-full h-[180px]" key={current.id}>
+            <LogoImage src={current.src} alt={current.alt} sizes="(max-width: 768px) 90vw, 700px" priority />
           </div>
         </div>
+
+        {/* Optional description + website from the CMS */}
+        {(current.description || current.websiteUrl) && (
+          <div className="w-full max-w-xl text-center space-y-3 px-4">
+            {current.description && (
+              <p className="text-white/70 text-sm leading-relaxed font-intel">{current.description}</p>
+            )}
+            {current.websiteUrl && (
+              <a
+                href={current.websiteUrl}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                className="inline-flex items-center gap-1.5 text-sm text-[#A78BFA] hover:text-white underline underline-offset-4 font-intel"
+              >
+                Visit website <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
+            )}
+          </div>
+        )}
 
         {/* Client name (Desktop text / Mobile searchable dropdown filter with label) */}
         <div className="w-full flex justify-center px-4">
@@ -313,7 +290,7 @@ function Lightbox({ clients, activeIndex, onClose, onNavigate }: LightboxProps) 
           >
             {clients.map((c, i) => (
               <button
-                key={c.src}
+                key={c.id}
                 onClick={() => onNavigate(i)}
                 className={`shrink-0 w-16 h-12 rounded-lg bg-white p-1.5 transition-all duration-200
                   ${i === activeIndex
@@ -324,13 +301,7 @@ function Lightbox({ clients, activeIndex, onClose, onNavigate }: LightboxProps) 
                 aria-current={i === activeIndex ? "true" : undefined}
               >
                 <div className="relative w-full h-full">
-                  <Image
-                    src={c.src}
-                    alt={c.name}
-                    fill
-                    className="object-contain"
-                    sizes="64px"
-                  />
+                  <LogoImage src={c.src} alt="" sizes="64px" />
                 </div>
               </button>
             ))}
@@ -399,13 +370,7 @@ function LogoCard({ client, index, onClick }: LogoCardProps) {
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onClick(); }}
     >
       <div className="relative w-full h-[90px]">
-        <Image
-          src={client.src}
-          alt={client.name}
-          fill
-          className="object-contain"
-          sizes="(max-width: 640px) 45vw, (max-width: 1024px) 22vw, 16vw"
-        />
+        <LogoImage src={client.src} alt={client.alt} sizes="(max-width: 640px) 45vw, (max-width: 1024px) 22vw, 16vw" />
       </div>
     </div>
   );
@@ -414,15 +379,24 @@ function LogoCard({ client, index, onClick }: LogoCardProps) {
 /* ─────────────────────────────────────────────
    Main Hero Component
 ───────────────────────────────────────────── */
-export default function OurClientsHero() {
-  const [activeCategory, setActiveCategory] = useState<string>("All Clients");
+interface OurClientsHeroProps {
+  /** Active clients from the CMS (featured first, then display order) */
+  clients: Client[];
+  /** Client categories from the CMS, in display order */
+  categories: string[];
+}
+
+export default function OurClientsHero({ clients, categories }: OurClientsHeroProps) {
+  const [activeCategory, setActiveCategory] = useState<string>(ALL_CLIENTS);
   const [mobileVisibleCount, setMobileVisibleCount] = useState<number>(8);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
+  const CATEGORIES = [ALL_CLIENTS, ...categories];
+
   const filtered =
-    activeCategory === "All Clients"
-      ? CLIENTS
-      : CLIENTS.filter((c) => c.category === activeCategory);
+    activeCategory === ALL_CLIENTS
+      ? clients
+      : clients.filter((c) => c.category === activeCategory);
 
   const hasMoreMobile = mobileVisibleCount < filtered.length;
 
@@ -533,7 +507,7 @@ export default function OurClientsHero() {
               >
                 {filtered.map((client, i) => (
                   <div 
-                    key={client.src} 
+                    key={client.id} 
                     role="listitem"
                     className={i >= mobileVisibleCount ? "hidden sm:block" : "block"}
                   >

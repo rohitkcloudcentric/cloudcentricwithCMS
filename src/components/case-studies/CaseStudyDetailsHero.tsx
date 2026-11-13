@@ -1,32 +1,17 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { MoveRight } from "lucide-react";
 import { CaseStudyPost } from "./CaseStudyCard";
+import CaseStudyImage from "./CaseStudyImage";
 
 interface CaseStudyDetailsHeroProps {
   post: CaseStudyPost;
 }
 
-const getSubtags = (post: CaseStudyPost) => {
-  switch (post.id) {
-    case "cs-1":
-      return "AI & Automation  •  Business Transformation";
-    case "cs-2":
-      return "Salesforce  •  Customer Support";
-    case "cs-3":
-      return "Digital Transformation  •  Core Modernization";
-    case "cs-4":
-      return "Technology  •  Cloud Infrastructure";
-    case "cs-5":
-      return "Product  •  Intelligent Workflows";
-    case "cs-6":
-      return "AI & Automation  •  Real-Time Analytics";
-    default:
-      return `${post.category}  •  Business Transformation`;
-  }
-};
+/** Category • tags (from the CMS), e.g. "AI & Automation  •  Business Transformation" */
+const getSubtags = (post: CaseStudyPost) =>
+  [post.category, ...post.tags.slice(0, 2)].filter(Boolean).join("  •  ");
 
 export default function CaseStudyDetailsHero({ post }: CaseStudyDetailsHeroProps) {
   return (
@@ -52,18 +37,20 @@ export default function CaseStudyDetailsHero({ post }: CaseStudyDetailsHeroProps
               {post.title}
             </h1>
             
-            <div 
-              className="text-[11px] sm:text-xs tracking-[0.2em] font-extrabold uppercase text-[#C2BDCF] opacity-90 pt-1"
-              style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
-            >
-              {getSubtags(post)}
-            </div>
+            {getSubtags(post) && (
+              <div 
+                className="text-[11px] sm:text-xs tracking-[0.2em] font-extrabold uppercase text-[#C2BDCF] opacity-90 pt-1"
+                style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
+              >
+                {getSubtags(post)}
+              </div>
+            )}
 
             <p 
               className="text-xs sm:text-[13.5px] text-[#8E8A9F] leading-relaxed font-light max-w-xl pt-2"
               style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
             >
-              {post.challenge}
+              {post.overview || post.excerpt || post.challenge}
             </p>
           </div>
 
@@ -84,10 +71,9 @@ export default function CaseStudyDetailsHero({ post }: CaseStudyDetailsHeroProps
 
         {/* Right Column: Featured Diagram Box */}
         <div className="w-full lg:w-[540px] xl:w-[580px] h-[300px] sm:h-[380px] lg:h-[400px] rounded-[24px] overflow-hidden shrink-0 relative border border-white/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.65)]">
-          <Image
-            src={post.image}
-            alt={post.title}
-            fill
+          <CaseStudyImage
+            src={post.featuredImage || post.image}
+            alt={post.featuredImageAlt || post.title}
             priority
             sizes="(max-width: 1024px) 100vw, 580px"
             className="object-cover object-center"

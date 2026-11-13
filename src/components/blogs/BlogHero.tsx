@@ -3,25 +3,19 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-export const BLOG_CATEGORIES = [
-  "All",
-  "AI & Automation",
-  "Salesforce",
-  "Digital Transformation",
-  "Technology",
-  "Product",
-  "Insights",
-] as const;
-
-export type BlogCategory = (typeof BLOG_CATEGORIES)[number];
+/** "All" or the name of a CMS category */
+export type BlogCategory = string;
 
 interface BlogHeroProps {
   activeCategory: BlogCategory;
   onSelectCategory: (category: BlogCategory) => void;
+  /** Category names loaded from the CMS */
+  categories: string[];
 }
 
-export default function BlogHero({ activeCategory, onSelectCategory }: BlogHeroProps) {
+export default function BlogHero({ activeCategory, onSelectCategory, categories }: BlogHeroProps) {
   const [mounted, setMounted] = useState(false);
+  const tabs = ["All", ...categories];
 
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 50);
@@ -72,7 +66,7 @@ export default function BlogHero({ activeCategory, onSelectCategory }: BlogHeroP
         }`}
       >
         <div className="flex items-center space-x-6 sm:space-x-8 overflow-x-auto no-scrollbar pt-3 pb-2">
-          {BLOG_CATEGORIES.map((category) => {
+          {tabs.map((category) => {
             const isActive = activeCategory === category;
             return (
               <button

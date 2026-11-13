@@ -72,6 +72,7 @@ model BlogArticle {
   excerpt        String?
   contentHtml    String        @db.Text
   featuredImage  String?
+  thumbnailImage String?
   readTime       String?       @default("5 MIN READ")
   status         ContentStatus @default(DRAFT)
   authorId       String

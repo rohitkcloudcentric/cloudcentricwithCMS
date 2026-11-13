@@ -2,8 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useContactSettings } from "@/components/common/useContactSettings";
+import { FOOTER_ICON_IMAGES, PlatformIcon } from "@/components/common/SocialIcons";
+import { phoneHref, phoneLabel } from "@/lib/contact-settings";
 
 export default function Footer() {
+  // Addresses, numbers, emails and social links come from Admin > Contact Settings
+  const contact = useContactSettings();
   const companyLinks = [
     { name: "About Us", href: "/who-we-are" },
     { name: "Our Team", href: "/who-we-are" },
@@ -58,38 +63,36 @@ export default function Footer() {
               10+ Years of <br /> Innovation
             </div>
 
-            {/* Social Icons from public/social-media-icons */}
-            <div className="pt-2 flex flex-col space-y-3">
-              <span className="text-md font-semibold text-white/80">Follow Us</span>
-              <div className="flex items-center space-x-3">
-                {[
-                  { name: "Facebook", src: "/social-media-icons/facebook.svg", href: "https://www.facebook.com/cloudcentricinfotech/" },
-                  { name: "LinkedIn", src: "/social-media-icons/linkedin.svg", href: "https://www.linkedin.com/company/cccinfotech/" },
-                  { name: "Twitter", src: "/social-media-icons/twitter.svg", href: "https://x.com/CCCInfotech" },
-                  { name: "Instagram", src: "/social-media-icons/instagram.svg", href: "https://www.instagram.com/cccinfotech/" },
-                  { name: "YouTube", src: "/social-media-icons/youtube.svg", href: "https://www.youtube.com/channel/UC21Gs_6xh8PF1nc8-XIyHJg" },
-                ].map((social) => (
-                  <a
-                    key={social.name}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`CloudCentric on ${social.name}`}
-                    className="w-9 h-9 rounded-full bg-white text-black hover:bg-[#8B3DFF] hover:text-white flex items-center justify-center transition-all duration-200 shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:scale-110 cursor-pointer"
-                  >
-                    <Image
-                      src={social.src}
-                      alt={`${social.name} Icon`}
-                      width={30}
-                      height={30}
-                      className="w-[30px] h-auto object-contain"
-                    />
-                  </a>
-                ))}
+            {/* Social Icons (active links only; hidden when none) */}
+            {contact && contact.social.length > 0 && (
+              <div className="pt-2 flex flex-col space-y-3">
+                <span className="text-md font-semibold text-white/80">Follow Us</span>
+                <div className="flex flex-wrap items-center gap-3">
+                  {contact.social.map((social) => {
+                    const img = FOOTER_ICON_IMAGES[social.platform];
+                    return (
+                      <a
+                        key={social.id}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`CloudCentric on ${social.name} (opens in a new tab)`}
+                        className="w-9 h-9 rounded-full bg-white text-black hover:bg-[#8B3DFF] hover:text-white flex items-center justify-center transition-all duration-200 shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:scale-110 cursor-pointer"
+                      >
+                        {social.iconUrl ? (
+                          <PlatformIcon platform={social.platform} iconUrl={social.iconUrl} className="w-[22px] h-[22px] rounded-full" />
+                        ) : img ? (
+                          <Image src={img} alt="" width={30} height={30} className="w-[30px] h-auto object-contain" />
+                        ) : (
+                          <PlatformIcon platform={social.platform} className="w-4 h-4 text-[#7C3AED]" />
+                        )}
+                      </a>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
           </div>
-
           {/* Right Column: Company Description & 4 Columns */}
           <div className="lg:col-span-7 flex flex-col space-y-8">
             <p className="text-sm md:text-base text-[#BDBDC8] leading-relaxed font-intel">
@@ -163,6 +166,42 @@ export default function Footer() {
                 ))}
               </div>
             </div>
+
+            {/* Contact details (Admin > Contact Settings; empty groups are hidden) */}
+            {contact && (contact.phones.length > 0 || contact.emails.length > 0 || contact.offices.length > 0) && (
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs">
+                {contact.phones.length > 0 && (
+                  <div className="flex flex-col space-y-2.5">
+                    <h3 className="font-bold text-white text-sm tracking-wide font-duru">Call Us</h3>
+                    {contact.phones.map((p) => (
+                      <a key={p.id} href={phoneHref(p)} className="text-[#BDBDC8] hover:text-[#8B3DFF] transition-colors text-sm font-intel">
+                        {phoneLabel(p)}
+                      </a>
+                    ))}
+                  </div>
+                )}
+                {contact.emails.length > 0 && (
+                  <div className="flex flex-col space-y-2.5">
+                    <h3 className="font-bold text-white text-sm tracking-wide font-duru">Email</h3>
+                    {contact.emails.map((e) => (
+                      <a key={e.id} href={`mailto:${e.email}`} title={e.type} className="text-[#BDBDC8] hover:text-[#8B3DFF] transition-colors text-sm font-intel break-all">
+                        {e.email}
+                      </a>
+                    ))}
+                  </div>
+                )}
+                {contact.offices.length > 0 && (
+                  <div className="flex flex-col space-y-2.5">
+                    <h3 className="font-bold text-white text-sm tracking-wide font-duru">Offices</h3>
+                    {contact.offices.map((o) => (
+                      <p key={o.id} className="text-[#BDBDC8] text-sm font-intel leading-relaxed whitespace-pre-line">
+                        <span className="text-white font-medium">{o.location}</span> – {o.address}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 

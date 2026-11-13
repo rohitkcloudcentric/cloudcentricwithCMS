@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prisma";
 import { getAuthenticatedUser } from "@/lib/auth";
-import { checkPermission } from "@/lib/rbac";
+import { canAccessRecord, checkPermission, ownedRecordsFilter } from "@/lib/rbac";
+import { resolveTagIds } from "@/lib/article-tags";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
@@ -9,14 +10,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === "GET") {
     try {
-      // Find by ID or by Slug
+      const user = await getAuthenticatedUser(req);
+      const staff = Boolean(user) && checkPermission(user, "blogs", "read");
+      // Find by ID or by Slug; staff are limited to their scope, everyone else to published articles
       const article = await prisma.blogArticle.findFirst({
         where: {
           OR: [{ id: articleId }, { slug: articleId }],
+          ...(staff ? ownedRecordsFilter(user, "blogs", "authorId") : { status: "PUBLISHED" as const }),
         },
         include: {
           category: true,
           author: { select: { id: true, name: true, email: true, avatarUrl: true } },
+          tags: { include: { tag: true } },
         },
       });
 
@@ -41,9 +46,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(404).json({ success: false, error: "Article not found" });
       }
 
-      // Author can edit own draft, Editor/Super Admin can edit any
-      const isOwner = existing.authorId === user.id;
-      if (!isOwner && !checkPermission(user, "blogs", "update")) {
+      // Needs blogs:edit, and the article must be within the user's scope (own, or all with "manage")
+      if (!checkPermission(user, "blogs", "update") || !canAccessRecord(user, "blogs", existing.authorId)) {
         return res.status(403).json({ success: false, error: "Forbidden: Cannot edit this article" });
       }
 
@@ -53,6 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         excerpt,
         contentHtml,
         featuredImage,
+        thumbnailImage,
         readTime,
         status,
         categoryId,
@@ -68,8 +73,40 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (excerpt !== undefined) updateData.excerpt = excerpt;
       if (contentHtml !== undefined) updateData.contentHtml = contentHtml;
       if (featuredImage !== undefined) updateData.featuredImage = featuredImage;
-      if (readTime !== undefined) updateData.readTime = readTime;
-      if (categoryId !== undefined) updateData.categoryId = categoryId;
+      if (thumbnailImage !== undefined) updateData.thumbnailImage = thumbnailImage || null;
+      if (readTime !== undefined) {
+        updateData.readTime = typeof readTime === "string" && readTime.trim() ? readTime.trim() : "5 MIN READ";
+      }
+      if (categoryId !== undefined) {
+        if (!categoryId || categoryId === "" || categoryId === "null" || categoryId === "undefined" || categoryId === "none") {
+          updateData.categoryId = null;
+        } else {
+          const cat = await prisma.category.findFirst({
+            where: {
+              OR: [
+                { id: categoryId },
+                { slug: categoryId },
+                { name: categoryId },
+              ],
+            },
+          });
+          if (cat) {
+            updateData.categoryId = cat.id;
+          } else {
+            const catSlug = categoryId.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
+            if (catSlug) {
+              const newCat = await prisma.category.upsert({
+                where: { slug: catSlug },
+                update: {},
+                create: { name: categoryId, slug: catSlug },
+              });
+              updateData.categoryId = newCat.id;
+            } else {
+              updateData.categoryId = null;
+            }
+          }
+        }
+      }
       if (seoTitle !== undefined) updateData.seoTitle = seoTitle;
       if (seoDescription !== undefined) updateData.seoDescription = seoDescription;
 
@@ -83,10 +120,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
       }
 
+      // Replace the article's tags only when `tagIds` was sent
+      const tagIds = await resolveTagIds(req.body?.tagIds);
+      if (tagIds !== undefined) {
+        updateData.tags = {
+          deleteMany: {},
+          create: tagIds.map((tagId) => ({ tagId })),
+        };
+      }
+
       const updated = await prisma.blogArticle.update({
         where: { id: articleId },
         data: updateData,
-        include: { category: true, author: { select: { id: true, name: true } } },
+        include: {
+          category: true,
+          author: { select: { id: true, name: true } },
+          tags: { include: { tag: true } },
+        },
       });
 
       // Audit Log
@@ -120,6 +170,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const existing = await prisma.blogArticle.findUnique({ where: { id: articleId } });
       if (!existing) {
         return res.status(404).json({ success: false, error: "Article not found" });
+      }
+      if (!canAccessRecord(user, "blogs", existing.authorId)) {
+        return res.status(403).json({ success: false, error: "Forbidden: You can only delete your own articles" });
       }
 
       await prisma.blogArticle.delete({ where: { id: articleId } });

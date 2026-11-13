@@ -4,10 +4,14 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Phone, Mail } from "lucide-react";
 import ContactForm from "./ContactForm";
+import { useContactSettings } from "@/components/common/useContactSettings";
+import { phoneHref, phoneLabel } from "@/lib/contact-settings";
 
 export default function ContactUs() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  // Numbers and emails come from Admin > Contact Settings
+  const contact = useContactSettings();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -185,39 +189,40 @@ export default function ContactUs() {
 
         {/* Contact Information Strip - Matching exact reference image with clickable anchor tags */}
         <div className="w-full flex flex-col md:flex-row flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs font-normal px-2">
-          {/* Phone section — Comes from Left */}
-          <div className={`flex items-center gap-2 sm:gap-3 transition-all duration-800 ease-out transform ${
+          {/* Phone section — Comes from Left (hidden when there are no active numbers) */}
+          <div className={`${contact?.phones.length ? "flex" : "hidden"} items-center gap-2 sm:gap-3 transition-all duration-800 ease-out transform ${
             isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-16"
           }`} style={{ transitionDelay: "1000ms" }}>
             <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-black shadow-sm shrink-0">
               <Phone className="w-3.5 h-3.5 fill-black stroke-black" />
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              {["+91-7042912244", "+1-3024060272", "+44 7842243933"].map((phone) => (
+              {(contact?.phones ?? []).map((p) => (
                 <a
-                  key={phone}
-                  href={`tel:${phone.replace(/\s+/g, "")}`}
+                  key={p.id}
+                  href={phoneHref(p)}
                   className="bg-[#111116] text-xs sm:text-sm border border-white/[0.06] text-[#8535FA] px-2.5 sm:px-3 py-1.5 rounded-md hover:border-[#8B3DFF]/80 hover:text-purple-300 transition-colors whitespace-nowrap"
                   style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
                 >
-                  {phone}
+                  {phoneLabel(p)}
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Email section — Comes from Right */}
-          <div className={`flex items-center gap-2 sm:gap-3 transition-all duration-800 ease-out transform ${
+          {/* Email section — Comes from Right (hidden when there are no active emails) */}
+          <div className={`${contact?.emails.length ? "flex" : "hidden"} items-center gap-2 sm:gap-3 transition-all duration-800 ease-out transform ${
             isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-16"
           }`} style={{ transitionDelay: "1150ms" }}>
             <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-black shadow-sm shrink-0">
               <Mail className="w-3.5 h-3.5 stroke-black" />
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              {["sales@cccinfotech.com", "support@cccinfotech.com"].map((email) => (
+              {(contact?.emails ?? []).map(({ id, email, type }) => (
                 <a
-                  key={email}
+                  key={id}
                   href={`mailto:${email}`}
+                  title={type}
                   className="bg-[#111116] text-xs sm:text-sm border border-white/[0.06] text-[#8535FA] px-2.5 sm:px-3 py-1.5 rounded-md hover:border-[#8B3DFF]/80 hover:text-purple-300 transition-colors whitespace-nowrap"
                   style={{ fontFamily: "var(--font-intel-one-mono), monospace" }}
                 >

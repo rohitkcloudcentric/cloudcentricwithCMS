@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
+import BlogAdminTabs from "@/components/admin/BlogAdminTabs";
+import { useAdminAuth } from "@/components/admin/AdminAuthContext";
 import Link from "next/link";
 import {
   Plus,
@@ -30,6 +32,11 @@ export default function BlogAdminIndex() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  // Actions follow the role permissions (the API enforces the same rules)
+  const { can } = useAdminAuth();
+  const canCreate = can("blogs", "create");
+  const canEdit = can("blogs", "update");
+  const canDelete = can("blogs", "delete");
 
   useEffect(() => {
     let isMounted = true;
@@ -95,7 +102,9 @@ export default function BlogAdminIndex() {
 
   return (
     <AdminLayout title="Blog Article Manager">
-      <div className="space-y-6 max-w-7xl mx-auto">
+      <div className="space-y-6 w-full mx-auto">
+        <BlogAdminTabs />
+
         {/* Top Action Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-intel">
           <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md">
@@ -121,13 +130,15 @@ export default function BlogAdminIndex() {
               <option value="ARCHIVED">Archived</option>
             </select>
 
-            <Link
-              href="/admin/blogs/editor"
-              className="flex items-center space-x-2 px-5 py-2.5 rounded-2xl bg-linear-to-r from-[#7c3aed] to-[#4f8bff] hover:opacity-90 text-white text-xs font-bold shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-all cursor-pointer"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Create Article</span>
-            </Link>
+            {canCreate && (
+              <Link
+                href="/admin/blogs/editor"
+                className="flex items-center space-x-2 px-5 py-2.5 rounded-2xl bg-linear-to-r from-[#7c3aed] to-[#4f8bff] hover:opacity-90 text-white text-xs font-bold shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-all cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Create Article</span>
+              </Link>
+            )}
           </div>
         </div>
 
@@ -209,6 +220,7 @@ export default function BlogAdminIndex() {
                         >
                           <ExternalLink className="w-4 h-4 text-[#a855f7]" />
                         </Link>
+                        {canEdit && (
                         <Link
                           href={`/admin/blogs/editor?id=${article.id}`}
                           title="Edit Article"
@@ -216,6 +228,8 @@ export default function BlogAdminIndex() {
                         >
                           <Edit3 className="w-4 h-4" />
                         </Link>
+                        )}
+                        {canDelete && (
                         <button
                           onClick={() => handleDelete(article.id, article.title)}
                           disabled={deletingId === article.id}
@@ -224,6 +238,7 @@ export default function BlogAdminIndex() {
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -233,13 +248,15 @@ export default function BlogAdminIndex() {
           ) : (
             <div className="p-12 text-center space-y-3 font-intel">
               <p className="text-gray-400 text-xs">No articles found matching your criteria.</p>
-              <Link
-                href="/admin/blogs/editor"
-                className="inline-flex items-center space-x-2 px-4 py-2 rounded-2xl bg-linear-to-r from-[#7c3aed] to-[#4f8bff] text-white text-xs font-bold"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span>Create First Article</span>
-              </Link>
+              {canCreate && (
+                <Link
+                  href="/admin/blogs/editor"
+                  className="inline-flex items-center space-x-2 px-4 py-2 rounded-2xl bg-linear-to-r from-[#7c3aed] to-[#4f8bff] text-white text-xs font-bold"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Create First Article</span>
+                </Link>
+              )}
             </div>
           )}
         </div>

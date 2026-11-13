@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prisma";
 import { getAuthenticatedUser } from "@/lib/auth";
-import { checkPermission } from "@/lib/rbac";
+import { checkPermission, ownedRecordsFilter } from "@/lib/rbac";
+import { resolveTagIds } from "@/lib/article-tags";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -13,14 +14,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const where: any = {};
 
-      if (status) {
-        where.status = status;
+      const user = await getAuthenticatedUser(req);
+      const staff = Boolean(user) && checkPermission(user, "blogs", "read");
+      if (!staff) {
+        // Public callers (and users without blogs:view) only ever see published articles
+        where.status = "PUBLISHED";
       } else {
-        // Default for public calls if not authenticated: only PUBLISHED
-        const user = await getAuthenticatedUser(req);
-        if (!user) {
-          where.status = "PUBLISHED";
-        }
+        if (typeof status === "string" && ["DRAFT", "PUBLISHED", "ARCHIVED"].includes(status)) where.status = status;
+        // Without "manage" a user only sees the articles they wrote
+        Object.assign(where, ownedRecordsFilter(user, "blogs", "authorId"));
       }
 
       if (category && category !== "All") {
@@ -86,6 +88,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         excerpt,
         contentHtml,
         featuredImage,
+        thumbnailImage,
         readTime,
         status = "DRAFT",
         categoryId,
@@ -105,9 +108,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ success: false, error: "Article with this slug already exists" });
       }
 
+      const tagIds = await resolveTagIds(req.body?.tagIds);
+
       const isPublishing = status === "PUBLISHED";
       if (isPublishing && !checkPermission(user, "blogs", "publish")) {
         return res.status(403).json({ success: false, error: "Forbidden: You do not have permission to publish" });
+      }
+
+      let resolvedCategoryId: string | null = null;
+      if (categoryId && typeof categoryId === "string" && categoryId.trim() !== "" && categoryId !== "null" && categoryId !== "undefined") {
+        const cat = await prisma.category.findFirst({
+          where: {
+            OR: [
+              { id: categoryId },
+              { slug: categoryId },
+              { name: categoryId },
+            ],
+          },
+        });
+        if (cat) {
+          resolvedCategoryId = cat.id;
+        } else {
+          const catSlug = categoryId.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
+          if (catSlug) {
+            const newCat = await prisma.category.upsert({
+              where: { slug: catSlug },
+              update: {},
+              create: { name: categoryId, slug: catSlug },
+            });
+            resolvedCategoryId = newCat.id;
+          }
+        }
       }
 
       const article = await prisma.blogArticle.create({
@@ -117,17 +148,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           excerpt: excerpt || null,
           contentHtml: contentHtml || "",
           featuredImage: featuredImage || null,
+          thumbnailImage: thumbnailImage || null,
           readTime: readTime || "5 MIN READ",
           status,
           publishedAt: isPublishing ? new Date() : null,
           authorId: user.id,
-          categoryId: categoryId || null,
+          categoryId: resolvedCategoryId,
           seoTitle: seoTitle || title,
           seoDescription: seoDescription || excerpt,
+          ...(tagIds && tagIds.length > 0
+            ? { tags: { create: tagIds.map((tagId) => ({ tagId })) } }
+            : {}),
         },
         include: {
           category: true,
           author: { select: { id: true, name: true } },
+          tags: { include: { tag: true } },
         },
       });
 

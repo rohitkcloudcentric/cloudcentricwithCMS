@@ -1,3 +1,5 @@
+import type { GetServerSideProps } from "next";
+import { getOurClientsData, type OurClientsData } from "@/lib/client-data";
 import SEOHead from "@/components/seo/SEOHead";
 import { SITE_URL } from "@/config/seo.config";
 import { generateBreadcrumbSchema } from "@/lib/sitemap-helper";
@@ -11,7 +13,11 @@ import FAQSection from "@/components/home/FAQSection";
 import OurExcellence from "@/components/common/OurExcellence";
 import WhoWeAreCTA from "@/components/home/CTA";
 
-export default function OurClients() {
+export const getServerSideProps: GetServerSideProps<OurClientsData> = async () => {
+  return { props: await getOurClientsData() };
+};
+
+export default function OurClients({ clients = [], categories = [] }: OurClientsData) {
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -39,7 +45,7 @@ export default function OurClients() {
           <AnnouncementBar />
           <Navbar />
 
-          <OurClientsHero />
+          <OurClientsHero clients={clients} categories={categories} />
           <TrustedClients />
           <FAQSection />
           {/* <RankedSection /> */}

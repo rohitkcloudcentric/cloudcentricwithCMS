@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -8,22 +8,20 @@ import {
   Layers,
   Users,
   ShieldCheck,
+  Mail,
+  Building2,
   LogOut,
   RefreshCw,
   ExternalLink,
   Menu,
   X,
   CheckCircle2,
+  UserCircle,
+  Contact,
 } from "lucide-react";
 
-interface AdminUser {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  avatarUrl?: string | null;
-  permissions?: Array<{ module: string; action: string }>;
-}
+import { buildAdminAuth, setAdminUser, type AdminUser } from "@/components/admin/AdminAuthContext";
+import { moduleForPath, type ModuleName } from "@/lib/permission-catalog";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -59,6 +57,16 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
         router.push("/admin/login");
       });
   }, [router]);
+
+  // Profile page announces saved changes so the sidebar updates immediately
+  useEffect(() => {
+    const onProfileUpdated = (e: Event) => {
+      const detail = (e as CustomEvent<Partial<AdminUser>>).detail;
+      if (detail) setUser((u) => (u ? { ...u, ...detail } : u));
+    };
+    window.addEventListener("cc-profile-updated", onProfileUpdated);
+    return () => window.removeEventListener("cc-profile-updated", onProfileUpdated);
+  }, []);
 
   // Handle Login Success Toast banner
   useEffect(() => {
@@ -100,6 +108,7 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
   const confirmLogout = async () => {
     setShowLogoutModal(false);
     await fetch("/api/v1/auth/logout", { method: "POST" });
+    setAdminUser(null);
     router.push("/admin/login");
   };
 
@@ -129,16 +138,44 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
     }
   };
 
-  const navItems = [
-    { label: "Overview", icon: LayoutDashboard, href: "/admin" },
-    { label: "Blog Articles", icon: FileText, href: "/admin/blogs" },
-    { label: "Case Studies", icon: Briefcase, href: "/admin/case-studies" },
-    { label: "Products", icon: Layers, href: "/admin/products" },
-    { label: "User Roles & RBAC", icon: Users, href: "/admin/users" },
-    { label: "Audit Logs", icon: ShieldCheck, href: "/admin/audit-logs" },
-  ];
+  // Permissions come from the database via /auth/me; the API enforces the same rules
+  const auth = useMemo(() => buildAdminAuth(user), [user]);
+  // Share the signed-in user with the page (useAdminAuth)
+  useEffect(() => {
+    setAdminUser(user);
+  }, [user]);
 
-  if (loading) {
+  // Route guard: modules need "view"; editors need "add" (new) or "edit" (existing)
+  const guarded = moduleForPath(router.pathname);
+  const isEditor = router.pathname.endsWith("/editor");
+  const hasEditId = typeof router.query.id === "string" && router.query.id !== "";
+  const blockedForUser = Boolean(
+    user &&
+      guarded &&
+      (!auth.can(guarded.module, "read") ||
+        (isEditor && !auth.can(guarded.module, hasEditId ? "update" : "create")))
+  );
+
+  useEffect(() => {
+    if (!loading && router.isReady && blockedForUser) router.replace("/admin?denied=1");
+  }, [loading, blockedForUser, router]);
+
+  const allNavItems: { label: string; icon: typeof LayoutDashboard; href: string; module?: ModuleName }[] = [
+    { label: "Overview", icon: LayoutDashboard, href: "/admin" },
+    { label: "Blog Articles", icon: FileText, href: "/admin/blogs", module: "blogs" },
+    { label: "Case Studies", icon: Briefcase, href: "/admin/case-studies", module: "case_studies" },
+    { label: "Products", icon: Layers, href: "/admin/products", module: "products" },
+    { label: "User Roles & RBAC", icon: Users, href: "/admin/users", module: "users" },
+    { label: "Our Clients", icon: Building2, href: "/admin/clients", module: "clients" },
+    { label: "Newsletter", icon: Mail, href: "/admin/newsletter", module: "newsletter" },
+    { label: "Contact Settings", icon: Contact, href: "/admin/contact-settings", module: "contact_settings" },
+    { label: "Audit Logs", icon: ShieldCheck, href: "/admin/audit-logs", module: "audit_logs" },
+    { label: "My Profile", icon: UserCircle, href: "/admin/profile" },
+  ];
+  // Show only the modules the role can view
+  const navItems = allNavItems.filter((item) => !item.module || auth.can(item.module, "read"));
+
+  if (loading || blockedForUser) {
     return (
       <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center font-sans">
         <div className="flex flex-col items-center space-y-4">
@@ -194,13 +231,20 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
         <div className="p-4 border-t border-white/10 space-y-3">
           <div className="flex items-center justify-between p-3 rounded-2xl bg-[#121218] border border-white/5">
             <div className="flex items-center space-x-3 min-w-0">
-              <div className="w-8 h-8 rounded-full bg-linear-to-tr from-[#7c3aed] to-[#4f8bff] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-md">
-                {user?.name?.[0]?.toUpperCase() || "A"}
-              </div>
-              <div className="truncate">
-                <p className="text-xs font-semibold text-white truncate">{user?.name || "Admin"}</p>
-                <p className="text-[10px] text-[#a855f7] font-intel truncate">{user?.role || "Super Admin"}</p>
-              </div>
+              <Link href="/admin/profile" className="flex items-center space-x-3 min-w-0" title="My Profile">
+                {user?.avatarUrl ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={user.avatarUrl} alt="" className="w-8 h-8 rounded-full object-cover shrink-0 shadow-md" />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-linear-to-tr from-[#7c3aed] to-[#4f8bff] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-md">
+                    {user?.name?.[0]?.toUpperCase() || "A"}
+                  </div>
+                )}
+                <div className="truncate">
+                  <p className="text-xs font-semibold text-white truncate">{user?.name || "Admin"}</p>
+                  <p className="text-[10px] text-[#a855f7] font-intel truncate">{user?.role || ""}</p>
+                </div>
+              </Link>
             </div>
             <button
               onClick={() => setShowLogoutModal(true)}

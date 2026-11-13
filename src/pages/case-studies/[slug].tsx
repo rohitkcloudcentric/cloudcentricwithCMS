@@ -1,24 +1,34 @@
-"use client";
-
-import { useRouter } from "next/router";
+import type { GetServerSideProps } from "next";
+import { getCaseStudyBySlug, getCaseStudyCategories } from "@/lib/case-study-data";
 import SEOHead from "@/components/seo/SEOHead";
 import { SITE_URL } from "@/config/seo.config";
 import { generateBreadcrumbSchema } from "@/lib/sitemap-helper";
 import AnnouncementBar from "@/components/common/AnnouncementBar";
 import Navbar from "@/components/common/Navbar";
 import CaseStudyDetailsHero from "@/components/case-studies/CaseStudyDetailsHero";
-import CaseStudyArticle from "@/components/case-studies/CaseStudyArticle";
-import { SAMPLE_CASE_STUDIES } from "@/components/case-studies/CaseStudyListing";
+import CaseStudyArticle, { type CaseStudySidebarCategory } from "@/components/case-studies/CaseStudyArticle";
+import type { CaseStudyPost } from "@/components/case-studies/CaseStudyCard";
 import Footer from "@/components/common/Footer";
 import FloatingButtons from "@/components/common/FloatingButtons";
 
-export default function CaseStudyDetailsPage() {
-  const router = useRouter();
-  const { slug } = router.query;
+interface CaseStudyDetailsPageProps {
+  post: CaseStudyPost;
+  related: CaseStudyPost[];
+  categories: CaseStudySidebarCategory[];
+}
 
-  // Find post matching slug, fallback to first post
-  const post = SAMPLE_CASE_STUDIES.find((p) => p.slug === slug) || SAMPLE_CASE_STUDIES[0];
+export const getServerSideProps: GetServerSideProps<CaseStudyDetailsPageProps> = async ({ params }) => {
+  const slug = typeof params?.slug === "string" ? params.slug : "";
+
+  const [detail, categories] = await Promise.all([getCaseStudyBySlug(slug), getCaseStudyCategories()]);
+  if (!detail) return { notFound: true };
+
+  return { props: { post: detail.post, related: detail.related, categories } };
+};
+
+export default function CaseStudyDetailsPage({ post, related = [], categories = [] }: CaseStudyDetailsPageProps) {
   const metaDescription = post.metaDescription || post.challenge;
+  const ogImage = post.featuredImage || post.image;
 
   const jsonLd = [
     {
@@ -26,7 +36,8 @@ export default function CaseStudyDetailsPage() {
       "@type": "Article",
       "headline": post.title,
       "description": metaDescription,
-      "image": post.image?.startsWith("http") ? post.image : `${SITE_URL}${post.image}`,
+      "image": ogImage?.startsWith("http") ? ogImage : `${SITE_URL}${ogImage}`,
+      "datePublished": post.date,
       "author": {
         "@type": "Organization",
         "name": "CloudCentric Infotech"
@@ -55,11 +66,11 @@ export default function CaseStudyDetailsPage() {
   return (
     <>
       <SEOHead
-        title={`${post.title} - Case Study | CloudCentric`}
+        title={post.seoTitle || `${post.title} - Case Study | CloudCentric`}
         description={metaDescription}
         canonical={`${SITE_URL}/case-studies/${post.slug}`}
         ogType="article"
-        ogImage={post.image}
+        ogImage={ogImage}
         jsonLd={jsonLd}
       />
 
@@ -72,9 +83,7 @@ export default function CaseStudyDetailsPage() {
           <CaseStudyDetailsHero post={post} />
 
           {/* Main Case Study Article Content */}
-          <CaseStudyArticle post={post} />
-
-
+          <CaseStudyArticle post={post} related={related} categories={categories} />
 
           <Footer />
           <FloatingButtons />

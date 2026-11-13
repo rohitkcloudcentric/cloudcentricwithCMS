@@ -1,7 +1,5 @@
 import { SITE_URL, SITE_NAME } from "@/config/seo.config";
-import { SAMPLE_BLOG_POSTS } from "@/components/blogs/BlogListing";
-import { SAMPLE_CASE_STUDIES } from "@/components/case-studies/CaseStudyListing";
-import { PRODUCTS } from "@/components/products/ProductCard";
+import type { ProductPost } from "@/components/products/product-types";
 
 export interface SitemapLocation {
   url: string;
@@ -33,37 +31,36 @@ export function getStaticRoutes(): SitemapLocation[] {
 }
 
 
-export function getBlogSitemapRoutes(): SitemapLocation[] {
+/**
+ * Blog sitemap entries built from published CMS articles.
+ * `posts` comes from getPublishedBlogSlugs() (src/lib/blog-data.ts), loaded server-side by the caller,
+ * so this file stays free of database imports (it is also used by client pages for schema helpers).
+ */
+export function getBlogSitemapRoutes(posts: { slug: string; updatedAt: Date }[]): SitemapLocation[] {
   const now = new Date().toISOString();
-  
+
   // Base parent pages
   const baseRoutes: SitemapLocation[] = [
     { url: `${SITE_URL}/blogs`, lastmod: now, changefreq: "daily", priority: 0.8 },
     { url: `${SITE_URL}/blog`, lastmod: now, changefreq: "daily", priority: 0.8 },
   ];
 
-  // Dynamic posts (ignore noindex or draft posts if those properties exist in future extensions)
-  const dynamicRoutes: SitemapLocation[] = SAMPLE_BLOG_POSTS
-    .filter((post: any) => !post.draft && !post.noindex)
-    .flatMap((post) => [
-      {
-        url: `${SITE_URL}/blogs/${post.slug}`,
-        lastmod: post.date ? new Date(post.date).toISOString() : now,
-        changefreq: "weekly" as const,
-        priority: 0.7,
-      },
-      {
-        url: `${SITE_URL}/blog/${post.slug}`,
-        lastmod: post.date ? new Date(post.date).toISOString() : now,
-        changefreq: "weekly" as const,
-        priority: 0.7,
-      }
-    ]);
+  const dynamicRoutes: SitemapLocation[] = posts.flatMap((post) => {
+    const lastmod = post.updatedAt.toISOString();
+    return [
+      { url: `${SITE_URL}/blogs/${post.slug}`, lastmod, changefreq: "weekly" as const, priority: 0.7 },
+      { url: `${SITE_URL}/blog/${post.slug}`, lastmod, changefreq: "weekly" as const, priority: 0.7 },
+    ];
+  });
 
   return [...baseRoutes, ...dynamicRoutes];
 }
 
-export function getCaseStudySitemapRoutes(): SitemapLocation[] {
+/**
+ * Case study sitemap entries. `posts` comes from getPublishedCaseStudySlugs()
+ * (src/lib/case-study-data.ts), loaded server-side by the caller.
+ */
+export function getCaseStudySitemapRoutes(posts: { slug: string; updatedAt: Date }[]): SitemapLocation[] {
   const now = new Date().toISOString();
 
   // Base parent page
@@ -71,20 +68,21 @@ export function getCaseStudySitemapRoutes(): SitemapLocation[] {
     { url: `${SITE_URL}/case-studies`, lastmod: now, changefreq: "weekly", priority: 0.8 },
   ];
 
-  // Dynamic items
-  const dynamicRoutes: SitemapLocation[] = SAMPLE_CASE_STUDIES
-    .filter((post: any) => !post.draft && !post.noindex)
-    .map((post) => ({
-      url: `${SITE_URL}/case-studies/${post.slug}`,
-      lastmod: now, // Case studies use the current compile/server timestamp
-      changefreq: "weekly" as const,
-      priority: 0.7,
-    }));
+  const dynamicRoutes: SitemapLocation[] = posts.map((post) => ({
+    url: `${SITE_URL}/case-studies/${post.slug}`,
+    lastmod: post.updatedAt.toISOString(),
+    changefreq: "weekly" as const,
+    priority: 0.7,
+  }));
 
   return [...baseRoutes, ...dynamicRoutes];
 }
 
-export function getProductSitemapRoutes(): SitemapLocation[] {
+/**
+ * Product sitemap entries. `products` comes from getPublishedProductSlugs()
+ * (src/lib/product-data.ts), loaded server-side by the caller.
+ */
+export function getProductSitemapRoutes(products: { slug: string; updatedAt: Date }[] = []): SitemapLocation[] {
   const now = new Date().toISOString();
 
   // Base parent page
@@ -92,27 +90,27 @@ export function getProductSitemapRoutes(): SitemapLocation[] {
     { url: `${SITE_URL}/products`, lastmod: now, changefreq: "monthly", priority: 0.9 },
   ];
 
-  // Dynamic products using product slugs
-  const dynamicRoutes: SitemapLocation[] = PRODUCTS
-    .filter((product: any) => !product.draft && !product.noindex)
-    .map((product) => ({
-      url: `${SITE_URL}/products/${product.id}`,
-      lastmod: now,
-      changefreq: "monthly" as const,
-      priority: 0.7,
-    }));
+  const dynamicRoutes: SitemapLocation[] = products.map((product) => ({
+    url: `${SITE_URL}/products/${product.slug}`,
+    lastmod: product.updatedAt.toISOString(),
+    changefreq: "monthly" as const,
+    priority: 0.7,
+  }));
 
   return [...baseRoutes, ...dynamicRoutes];
 }
-
-export function getChildSitemaps(): string[] {
+export function getChildSitemaps(
+  blogPosts: { slug: string; updatedAt: Date }[],
+  caseStudies: { slug: string; updatedAt: Date }[],
+  products: { slug: string; updatedAt: Date }[] = []
+): string[] {
   const sitemaps: string[] = [];
 
   // Page sitemap
   sitemaps.push(`${SITE_URL}/page-sitemap.xml`);
 
   // Blog sitemap pagination check
-  const blogRoutes = getBlogSitemapRoutes();
+  const blogRoutes = getBlogSitemapRoutes(blogPosts);
   if (blogRoutes.length > SITEMAP_LIMIT) {
     const pages = Math.ceil(blogRoutes.length / SITEMAP_LIMIT);
     for (let i = 1; i <= pages; i++) {
@@ -123,7 +121,7 @@ export function getChildSitemaps(): string[] {
   }
 
   // Case Study sitemap pagination check
-  const caseStudyRoutes = getCaseStudySitemapRoutes();
+  const caseStudyRoutes = getCaseStudySitemapRoutes(caseStudies);
   if (caseStudyRoutes.length > SITEMAP_LIMIT) {
     const pages = Math.ceil(caseStudyRoutes.length / SITEMAP_LIMIT);
     for (let i = 1; i <= pages; i++) {
@@ -134,7 +132,7 @@ export function getChildSitemaps(): string[] {
   }
 
   // Product sitemap pagination check
-  const productRoutes = getProductSitemapRoutes();
+  const productRoutes = getProductSitemapRoutes(products);
   if (productRoutes.length > SITEMAP_LIMIT) {
     const pages = Math.ceil(productRoutes.length / SITEMAP_LIMIT);
     for (let i = 1; i <= pages; i++) {
@@ -240,54 +238,22 @@ export const LOCAL_BUSINESS_SCHEMA = {
   }
 };
 
-// Products Schema
-export const PRODUCT_SCHEMAS = [
-  {
+// Products Schema (built from CMS products)
+export function generateProductSchemas(products: ProductPost[]) {
+  const abs = (u: string) => (u.startsWith("http") ? u : `${SITE_URL}${u}`);
+  return products.map((p) => ({
     "@context": "https://schema.org/",
     "@type": "Product",
-    "name": "FlyBlaze",
-    "image": "https://flyblaze.com/wp-content/uploads/2025/04/FlyBlaze-Logo.svg",
-    "description": "FlyBlaze is a travel technology / SaaS platform that helps travel businesses launch and operate their own branded online booking platforms.",
-    "brand": {
-      "@type": "Brand",
-      "name": "Cloudcentric Infotech"
-    }
-  },
-  {
-    "@context": "https://schema.org/",
-    "@type": "Product",
-    "name": "FieldBlaze",
-    "image": "https://fieldblaze.com/wp-content/uploads/2024/01/fieldblaze-header-logo.png.webp",
-    "description": "FieldBlaze helps businesses track, manage, and coordinate their field sales teams from one platform.",
+    "name": p.name,
+    ...(p.image || p.logo ? { "image": abs(p.image || p.logo) } : {}),
+    "description": p.shortDescription || p.subtitle,
+    "url": `${SITE_URL}/products/${p.slug}`,
     "brand": {
       "@type": "Brand",
       "name": "CloudCentric Infotech"
     }
-  },
-  {
-    "@context": "https://schema.org/",
-    "@type": "Product",
-    "name": "HoopMein",
-    "image": "https://hoopmein.com/assets/images/uploads/2024/02/3169599.png",
-    "description": "HoopMein is a mobile app focused on location-based field activity and Salesforce-connected CRM operations. It appears to be particularly useful for field sales/service teams that need to manage customer interactions while working outside the office.",
-    "brand": {
-      "@type": "Brand",
-      "name": "CloudCentric Infotech"
-    }
-  },
-  {
-    "@context": "https://schema.org/",
-    "@type": "Product",
-    "name": "Messagify",
-    "image": "https://www.messagify.net/img/messagify-logo.svg",
-    "description": "Messagify is a business messaging and communication platform that helps companies send bulk and transactional messages through channels such as WhatsApp and SMS, with APIs and integrations for CRM/helpdesk platforms.",
-    "brand": {
-      "@type": "Brand",
-      "name": "CloudCentric Infotech"
-    }
-  }
-];
-
+  }));
+}
 // FAQ Schema
 export const FAQ_SCHEMA = {
   "@context": "https://schema.org",

@@ -5,20 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { MoveRight } from "lucide-react";
 
-export const CASE_STUDY_CATEGORIES = [
-  "All",
-  "AI & Automation",
-  "Salesforce",
-  "Digital Transformation",
-  "Technology",
-  "Product",
-] as const;
-
-export type CaseStudyCategory = (typeof CASE_STUDY_CATEGORIES)[number];
+/** "All" or the name of a CMS case study category */
+export type CaseStudyCategory = string;
 
 interface CaseStudyHeroProps {
   activeCategory: CaseStudyCategory;
   onSelectCategory: (category: CaseStudyCategory) => void;
+  /** Category names (with ≥1 published case study) loaded from the CMS */
+  categories: string[];
 }
 
 interface CountUpProps {
@@ -82,7 +76,8 @@ function CountUp({ end, duration = 1800, suffix = "", decimals = 0 }: CountUpPro
   );
 }
 
-export default function CaseStudyHero({ activeCategory, onSelectCategory }: CaseStudyHeroProps) {
+export default function CaseStudyHero({ activeCategory, onSelectCategory, categories }: CaseStudyHeroProps) {
+  const tabs = ["All", ...categories];
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -211,7 +206,7 @@ export default function CaseStudyHero({ activeCategory, onSelectCategory }: Case
         }`}
       >
         <div className="flex items-center justify-center space-x-8 sm:space-x-12 overflow-x-auto no-scrollbar py-3 border-t border-white/5">
-          {CASE_STUDY_CATEGORIES.map((category) => {
+          {tabs.map((category) => {
             const isActive = activeCategory === category;
             return (
               <button

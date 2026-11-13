@@ -1,5 +1,6 @@
 import { PrismaClient, ContentStatus } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { PERMISSION_CATALOG, ACTION_LABELS } from "../src/lib/permission-catalog";
 
 const prisma = new PrismaClient();
 
@@ -9,9 +10,10 @@ async function main() {
   // 1. Create Roles
   const superAdminRole = await prisma.role.upsert({
     where: { name: "Super Admin" },
-    update: {},
+    update: { fullAccess: true },
     create: {
       name: "Super Admin",
+      fullAccess: true,
       description: "Full unrestricted access to system configurations, user management, audit logs, and all content modules.",
     },
   });
@@ -45,48 +47,27 @@ async function main() {
 
   console.log("✅ Roles created");
 
-  // 2. Create Permissions
-  const modules = ["blogs", "case_studies", "products", "users", "settings", "audit_logs"];
-  const actions = ["create", "read", "update", "delete", "publish"];
+  // 2. Create Permissions (from the shared catalog)
+  await prisma.permission.createMany({
+    data: PERMISSION_CATALOG.flatMap((m) =>
+      m.actions.map((a) => ({ module: m.module, action: a, description: `${ACTION_LABELS[a]} ${m.label}` }))
+    ),
+    skipDuplicates: true,
+  });
 
-  for (const moduleName of modules) {
-    for (const actionName of actions) {
-      if (moduleName === "audit_logs" && actionName !== "read") continue;
-      await prisma.permission.upsert({
-        where: {
-          module_action: {
-            module: moduleName,
-            action: actionName,
-          },
-        },
-        update: {},
-        create: {
-          module: moduleName,
-          action: actionName,
-          description: `Permission to ${actionName} ${moduleName}`,
-        },
-      });
-    }
-  }
-
-  // Assign permissions to Super Admin
-  const allPermissions = await prisma.permission.findMany();
-  for (const perm of allPermissions) {
-    await prisma.rolePermission.upsert({
-      where: {
-        roleId_permissionId: {
-          roleId: superAdminRole.id,
-          permissionId: perm.id,
-        },
-      },
-      update: {},
-      create: {
-        roleId: superAdminRole.id,
-        permissionId: perm.id,
-      },
-    });
-  }
-
+  // Super Admin is fullAccess (no rows needed). Default grants for the other roles are
+  // applied only while a role has no permissions, so edits made in the admin are kept.
+  const grant = async (roleId: string, keys: string[]) => {
+    if ((await prisma.rolePermission.count({ where: { roleId } })) > 0) return;
+    const perms = await prisma.permission.findMany();
+    const ids = perms.filter((p) => keys.includes(`${p.module}:${p.action}`)).map((p) => p.id);
+    await prisma.rolePermission.createMany({ data: ids.map((permissionId) => ({ roleId, permissionId })), skipDuplicates: true });
+  };
+  const contentModules = ["blogs", "case_studies", "products", "clients"];
+  const all = (mods: string[], actions: string[]) => mods.flatMap((m) => actions.map((a) => `${m}:${a}`));
+  await grant(editorRole.id, all(contentModules, ["read", "create", "update", "delete", "publish", "manage"]));
+  await grant(authorRole.id, all(["blogs"], ["read", "create", "update"]));
+  await grant(viewerRole.id, all(contentModules, ["read", "manage"]));
   console.log("✅ Permissions matrix configured");
 
   // 3. Create Default Super Admin User

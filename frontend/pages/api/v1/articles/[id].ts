@@ -68,9 +68,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (excerpt !== undefined) updateData.excerpt = excerpt;
       if (contentHtml !== undefined) updateData.contentHtml = contentHtml;
       if (featuredImage !== undefined) updateData.featuredImage = featuredImage;
-      if (readTime !== undefined) updateData.readTime = readTime;
-      if (categoryId !== undefined) updateData.categoryId = categoryId;
-      if (seoTitle !== undefined) updateData.seoTitle = seoTitle;
+      if (categoryId !== undefined) {
+        if (!categoryId || categoryId === "" || categoryId === "null" || categoryId === "undefined" || categoryId === "none") {
+          updateData.categoryId = null;
+        } else {
+          const cat = await prisma.category.findFirst({
+            where: {
+              OR: [
+                { id: categoryId },
+                { slug: categoryId },
+                { name: categoryId },
+              ],
+            },
+          });
+          if (cat) {
+            updateData.categoryId = cat.id;
+          } else {
+            const catSlug = categoryId.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
+            if (catSlug) {
+              const newCat = await prisma.category.upsert({
+                where: { slug: catSlug },
+                update: {},
+                create: { name: categoryId, slug: catSlug },
+              });
+              updateData.categoryId = newCat.id;
+            } else {
+              updateData.categoryId = null;
+            }
+          }
+        }
+      }
       if (seoDescription !== undefined) updateData.seoDescription = seoDescription;
 
       if (status !== undefined && status !== existing.status) {
