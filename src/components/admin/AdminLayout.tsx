@@ -19,6 +19,7 @@ import {
   UserCircle,
   Contact,
   Inbox,
+  Server,
 } from "lucide-react";
 
 import { buildAdminAuth, setAdminUser, type AdminUser } from "@/components/admin/AdminAuthContext";
@@ -29,7 +30,7 @@ interface AdminLayoutProps {
   title?: string;
 }
 
-const ADMIN_ONLY_PATHS = ["/admin/contact-submissions"];
+const ADMIN_ONLY_PATHS = ["/admin/contact-submissions", "/admin/smtp-settings"];
 
 export default function AdminLayout({ children, title = "Dashboard" }: AdminLayoutProps) {
   const router = useRouter();
@@ -176,6 +177,7 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
     { label: "Newsletter", icon: Mail, href: "/admin/newsletter", module: "newsletter" },
     { label: "Contact Settings", icon: Contact, href: "/admin/contact-settings", module: "contact_settings" },
     { label: "Contact Form Submissions", icon: Inbox, href: "/admin/contact-submissions", adminOnly: true },
+    { label: "SMTP Settings", icon: Server, href: "/admin/smtp-settings", adminOnly: true },
     { label: "Audit Logs", icon: ShieldCheck, href: "/admin/audit-logs", module: "audit_logs" },
     { label: "My Profile", icon: UserCircle, href: "/admin/profile" },
   ];

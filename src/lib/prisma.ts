@@ -2,36 +2,67 @@ import { Prisma, PrismaClient } from "@prisma/client";
 
 const globalForPrisma = global as unknown as { prisma?: PrismaClient };
 
-const createClient = () =>
-  new PrismaClient({
+const createClient = (): PrismaClient => {
+  try {
+    const prismaClientPath = require.resolve("@prisma/client");
+    delete require.cache[prismaClientPath];
+    const dotPrismaPath = require.resolve(".prisma/client");
+    delete require.cache[dotPrismaPath];
+  } catch {}
+
+  const { PrismaClient: FreshClient } = require("@prisma/client");
+  return new FreshClient({
     log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
   });
+};
 
 /**
  * In development the client is cached on `global` so hot reloads don't open new connections.
  * After a schema change (`prisma generate`), that cached instance predates the new models
- * (e.g. `prisma.caseStudyCategory` is undefined) and every query on them fails with a 500.
+ * (e.g. `prisma.smtpSetting` is undefined) and every query on them fails with a 500.
  * Detect that and replace the stale instance.
  */
 function isStale(client: PrismaClient): boolean {
+  if (!client) return true;
   return Object.values(Prisma.ModelName).some((model) => {
     const delegate = model.charAt(0).toLowerCase() + model.slice(1);
-    return !(delegate in client);
+    return !(delegate in client) || (client as any)[delegate] === undefined;
   });
 }
 
-function getClient(): PrismaClient {
-  const cached = globalForPrisma.prisma;
-  if (cached && !isStale(cached)) return cached;
-  if (cached) {
-    console.warn("[prisma] Cached client is out of date with the schema; creating a new one.");
-    cached.$disconnect().catch(() => {});
+function getClient(requiredProp?: string | symbol): PrismaClient {
+  let cached = globalForPrisma.prisma;
+  const isMissingProp =
+    typeof requiredProp === "string" &&
+    !requiredProp.startsWith("$") &&
+    !requiredProp.startsWith("_") &&
+    (!cached || (cached as any)[requiredProp] === undefined);
+
+  if (!cached || isStale(cached) || isMissingProp) {
+    if (cached) {
+      console.warn("[prisma] Cached client is out of date with the schema; refreshing PrismaClient instance.");
+      cached.$disconnect().catch(() => {});
+    }
+    cached = createClient();
+    globalForPrisma.prisma = cached;
   }
-  return createClient();
+  return cached;
 }
 
-export const prisma = getClient();
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+/**
+ * Dynamic Proxy export: ensures that all property accesses (e.g. prisma.smtpSetting, prisma.user)
+ * resolve through getClient(), dynamically detecting and regenerating any stale client instances
+ * during development hot reloads.
+ */
+export const prisma: PrismaClient = new Proxy({} as PrismaClient, {
+  get(_target, prop) {
+    const client = getClient(prop);
+    const value = (client as any)[prop];
+    if (typeof value === "function") {
+      return value.bind(client);
+    }
+    return value;
+  },
+});
 
 export default prisma;

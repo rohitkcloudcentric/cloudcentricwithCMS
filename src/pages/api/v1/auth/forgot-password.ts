@@ -53,8 +53,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Configuration problem (same for every email, so it reveals nothing about accounts)
-    if (!isMailConfigured()) {
-      console.error("[password-reset] SMTP is not configured (MAIL_HOST / MAIL_USERNAME / MAIL_PASSWORD / MAIL_FROM_ADDRESS); cannot send reset emails");
+    if (!(await isMailConfigured())) {
+      console.error("[password-reset] SMTP is not configured (active DB setting or MAIL_* env vars required); cannot send reset emails");
       return res.status(503).json({
         success: false,
         error: "Password reset emails are temporarily unavailable. Please contact your administrator.",
@@ -105,6 +105,7 @@ async function deliver(user: { id: string; name: string; email: string }, resetU
     html,
     text,
     headers: { "X-Auto-Response-Suppress": "All", "Auto-Submitted": "auto-generated" },
+    source: "forgot-password",
   }).catch((e): MailResult => ({ ok: false, error: String(e) }));
 
   if (result.ok) console.info("[password-reset] Reset email accepted by SMTP for user", user.id, result.messageId);

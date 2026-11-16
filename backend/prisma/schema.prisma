@@ -156,3 +156,40 @@ enum ContentStatus {
   PUBLISHED
   ARCHIVED
 }
+
+// -- SMTP Configuration (Admin only, encrypted credentials) --
+model SmtpSetting {
+  id          String   @id @default(uuid())
+  host        String
+  port        Int      @default(587)
+  username    String
+  /// Stored encrypted with AES-256-GCM
+  passwordEnc String   @db.Text
+  /// Encryption mode: "TLS" (STARTTLS) | "SSL" (Implicit TLS) | "NONE"
+  encryption  String   @default("TLS")
+  fromEmail   String
+  fromName    String
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive])
+}
+
+// -- SMTP Delivery Failure Logs (Admin only) --
+model SmtpFailureLog {
+  id        String   @id @default(uuid())
+  recipient String
+  subject   String
+  error     String   @db.Text
+  host      String?
+  port      Int?
+  fromEmail String?
+  source    String?  @default("application")
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([recipient])
+}
+
+
