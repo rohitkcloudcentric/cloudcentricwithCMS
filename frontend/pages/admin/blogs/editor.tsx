@@ -167,7 +167,7 @@ export default function BlogEditor() {
         fetch("/api/v1/revalidate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ secret: "cloudcentric_revalidate_secret_key", path: `/blogs/${slug}` }),
+          body: JSON.stringify({ path: `/blogs/${slug}` }),
         });
 
         if (!id && data.data?.id) {

@@ -89,21 +89,30 @@ async function main() {
 
   console.log("✅ Permissions matrix configured");
 
-  // 3. Create Default Super Admin User
-  const passwordHash = await bcrypt.hash("Admin@1234", 10);
-  const superAdminUser = await prisma.user.upsert({
-    where: { email: "admin@cloudcentric.in" },
-    update: {},
-    create: {
-      email: "admin@cloudcentric.in",
-      name: "CloudCentric Admin",
-      passwordHash: passwordHash,
-      roleId: superAdminRole.id,
-      isActive: true,
-    },
-  });
-
-  console.log("✅ Default Super Admin User verified (admin@cloudcentric.in / Admin@1234)");
+  // 3. First Super Admin: credentials come from the environment, never from source code.
+  //    Set SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD (and optionally SEED_ADMIN_NAME) before seeding.
+  //    An existing account is never modified (its password stays whatever the owner set).
+  const seedEmail = (process.env.SEED_ADMIN_EMAIL || "").trim().toLowerCase();
+  const seedPassword = process.env.SEED_ADMIN_PASSWORD || "";
+  let superAdminUser = seedEmail ? await prisma.user.findUnique({ where: { email: seedEmail } }) : null;
+  if (!superAdminUser && seedEmail) {
+    if (seedPassword.length < 12) throw new Error("SEED_ADMIN_PASSWORD must be at least 12 characters.");
+    superAdminUser = await prisma.user.create({
+      data: {
+        email: seedEmail,
+        name: process.env.SEED_ADMIN_NAME || "Administrator",
+        passwordHash: await bcrypt.hash(seedPassword, 12),
+        roleId: superAdminRole.id,
+        isActive: true,
+      },
+    });
+    console.log(`✅ Super Admin user created (${seedEmail})`);
+  }
+  // Sample content needs an author: fall back to any existing full-access user
+  superAdminUser ??= await prisma.user.findFirst({ where: { role: { fullAccess: true } }, orderBy: { createdAt: "asc" } });
+  if (!superAdminUser) {
+    throw new Error("No admin user exists. Set SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD, then run the seed again.");
+  }
 
   // 4. Seed Categories
   const categoriesData = [

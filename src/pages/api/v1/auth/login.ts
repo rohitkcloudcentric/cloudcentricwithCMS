@@ -1,6 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prisma";
-import { verifyPassword, signToken, setTokenCookie } from "@/lib/auth";
+import { randomBytes } from "crypto";
+import { hashPassword, verifyPassword, signToken, setTokenCookie } from "@/lib/auth";
+import { getClientIp, isRateLimited } from "@/lib/newsletter";
+
+export const config = { api: { bodyParser: { sizeLimit: "4kb" } } };
+
+/** Same message for unknown email, wrong password and disabled account (no account enumeration). */
+const INVALID = "Invalid email or password, or the account is disabled.";
+
+/** Compared against when the email doesn't exist, so response time doesn't reveal valid emails. */
+let dummyHash: Promise<string> | null = null;
+const getDummyHash = () => (dummyHash ??= hashPassword(randomBytes(24).toString("hex")));
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -9,26 +20,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { email, password } = req.body || {};
+    const body = (req.body && typeof req.body === "object" ? req.body : {}) as Record<string, unknown>;
+    const email = typeof body.email === "string" ? body.email.toLowerCase().trim() : "";
+    const password = typeof body.password === "string" ? body.password : "";
 
     if (!email || !password) {
       return res.status(400).json({ success: false, error: "Email and password are required" });
     }
-
-    const user = await prisma.user.findUnique({
-      where: { email: email.toLowerCase().trim() },
-      include: {
-        role: true,
-      },
-    });
-
-    if (!user || !user.isActive) {
-      return res.status(401).json({ success: false, error: "Invalid credentials or account disabled" });
+    if (email.length > 254 || password.length > 200) {
+      return res.status(400).json({ success: false, error: INVALID });
     }
 
-    const isMatch = await verifyPassword(password, user.passwordHash);
-    if (!isMatch) {
-      return res.status(401).json({ success: false, error: "Invalid credentials" });
+    // Brute-force protection: per IP and per account
+    const ip = getClientIp(req);
+    if (isRateLimited(`login-ip:${ip}`, 20, 15 * 60 * 1000) || isRateLimited(`login-email:${email}`, 10, 15 * 60 * 1000)) {
+      return res.status(429).json({ success: false, error: "Too many login attempts. Please try again in 15 minutes." });
+    }
+
+    // Credentials are validated only against the database (bcrypt hash in User.passwordHash)
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: { role: true },
+    });
+
+    const isMatch = await verifyPassword(password, user?.passwordHash || (await getDummyHash()));
+    if (!user || !user.isActive || !isMatch) {
+      return res.status(401).json({ success: false, error: INVALID });
     }
 
     const token = signToken({
@@ -41,14 +58,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     setTokenCookie(res, token);
 
     // Record audit log
-    const clientIp = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "127.0.0.1";
     await prisma.auditLog.create({
       data: {
         userId: user.id,
         action: "login",
         module: "auth",
         details: { email: user.email, role: user.role.name },
-        ipAddress: clientIp,
+        ipAddress: ip,
       },
     });
 
@@ -62,8 +78,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         avatarUrl: user.avatarUrl,
       },
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Login API Error:", error);
-    return res.status(500).json({ success: false, error: error.message || "Internal server error" });
+    return res.status(500).json({ success: false, error: "Internal server error" });
   }
 }

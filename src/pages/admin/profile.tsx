@@ -166,7 +166,7 @@ export default function ProfilePage() {
 
   return (
     <AdminLayout title="My Profile">
-      <div className="max-w-4xl mx-auto space-y-6 font-intel">
+      <div className="w-full mx-auto space-y-6 font-intel">
         {loadError && (
           <p role="alert" className="px-4 py-3 rounded-xl text-xs border bg-red-500/10 border-red-500/30 text-red-300">{loadError}</p>
         )}

@@ -18,6 +18,7 @@ import {
   CheckCircle2,
   UserCircle,
   Contact,
+  Inbox,
 } from "lucide-react";
 
 import { buildAdminAuth, setAdminUser, type AdminUser } from "@/components/admin/AdminAuthContext";
@@ -27,6 +28,8 @@ interface AdminLayoutProps {
   children: React.ReactNode;
   title?: string;
 }
+
+const ADMIN_ONLY_PATHS = ["/admin/contact-submissions"];
 
 export default function AdminLayout({ children, title = "Dashboard" }: AdminLayoutProps) {
   const router = useRouter();
@@ -120,7 +123,6 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          secret: "cloudcentric_revalidate_secret_key",
           path: "/blogs",
         }),
       });
@@ -149,18 +151,22 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
   const guarded = moduleForPath(router.pathname);
   const isEditor = router.pathname.endsWith("/editor");
   const hasEditId = typeof router.query.id === "string" && router.query.id !== "";
-  const blockedForUser = Boolean(
-    user &&
-      guarded &&
-      (!auth.can(guarded.module, "read") ||
-        (isEditor && !auth.can(guarded.module, hasEditId ? "update" : "create")))
-  );
+  // Contact Form Submissions is Admin (full access) only; it is not a grantable permission
+  const adminOnlyBlocked = Boolean(user && !user.fullAccess && ADMIN_ONLY_PATHS.some((p) => router.pathname === p || router.pathname.startsWith(`${p}/`)));
+  const blockedForUser =
+    adminOnlyBlocked ||
+    Boolean(
+      user &&
+        guarded &&
+        (!auth.can(guarded.module, "read") ||
+          (isEditor && !auth.can(guarded.module, hasEditId ? "update" : "create")))
+    );
 
   useEffect(() => {
     if (!loading && router.isReady && blockedForUser) router.replace("/admin?denied=1");
   }, [loading, blockedForUser, router]);
 
-  const allNavItems: { label: string; icon: typeof LayoutDashboard; href: string; module?: ModuleName }[] = [
+  const allNavItems: { label: string; icon: typeof LayoutDashboard; href: string; module?: ModuleName; adminOnly?: boolean }[] = [
     { label: "Overview", icon: LayoutDashboard, href: "/admin" },
     { label: "Blog Articles", icon: FileText, href: "/admin/blogs", module: "blogs" },
     { label: "Case Studies", icon: Briefcase, href: "/admin/case-studies", module: "case_studies" },
@@ -169,11 +175,14 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
     { label: "Our Clients", icon: Building2, href: "/admin/clients", module: "clients" },
     { label: "Newsletter", icon: Mail, href: "/admin/newsletter", module: "newsletter" },
     { label: "Contact Settings", icon: Contact, href: "/admin/contact-settings", module: "contact_settings" },
+    { label: "Contact Form Submissions", icon: Inbox, href: "/admin/contact-submissions", adminOnly: true },
     { label: "Audit Logs", icon: ShieldCheck, href: "/admin/audit-logs", module: "audit_logs" },
     { label: "My Profile", icon: UserCircle, href: "/admin/profile" },
   ];
   // Show only the modules the role can view
-  const navItems = allNavItems.filter((item) => !item.module || auth.can(item.module, "read"));
+  const navItems = allNavItems.filter((item) =>
+    item.adminOnly ? Boolean(user?.fullAccess) : !item.module || auth.can(item.module, "read")
+  );
 
   if (loading || blockedForUser) {
     return (
@@ -189,7 +198,7 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
   return (
     <div className="min-h-screen bg-[#050505] text-gray-100 flex font-sans selection:bg-[#7c3aed] selection:text-white">
       {/* Desktop Sidebar */}
-      <aside className="w-64 bg-[#0b0b10] border-r border-white/10 hidden md:flex flex-col justify-between shrink-0 z-30">
+      <aside className="w-64 bg-[#0b0b10] border-r border-white/10 hidden md:flex flex-col justify-between shrink-0 z-30 sticky top-0 h-screen overflow-y-auto">
         <div>
           {/* Logo Header */}
           <div className="p-6 border-b border-white/10 flex flex-col space-y-2">

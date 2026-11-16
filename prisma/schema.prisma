@@ -405,3 +405,25 @@ model SocialLink {
 
   @@index([isActive, displayOrder])
 }
+
+// -- Contact Us form submissions (written by the public form, read by Admin only) --
+model ContactSubmission {
+  id             String   @id @default(uuid())
+  name           String
+  email          String
+  /// Includes the country code, e.g. "919971126721"
+  phone          String
+  location       String?
+  /// "Describe your idea"
+  message        String   @db.Text
+  /// "How did you hear about us?"
+  referralSource String?
+  /// Page the form was submitted from, e.g. "Home Page" or "/contact-us"
+  pageName       String
+  ipAddress      String?
+  userAgent      String?
+  submittedAt    DateTime @default(now())
+
+  @@index([submittedAt])
+  @@index([pageName])
+}

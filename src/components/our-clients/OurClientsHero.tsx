@@ -358,7 +358,7 @@ function LogoCard({ client, index, onClick }: LogoCardProps) {
     <div
       ref={cardRef}
       onClick={onClick}
-      className="group bg-white rounded-[4px] p-4 cursor-pointer hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(0,0,0,0.3)] hover:ring-2 hover:ring-[#7C3AED]/40 transition-all duration-200"
+      className="group flex items-center justify-center bg-[#181621] border border-[#7C3AED]/40 rounded-[10px] p-2 sm:p-2.5 cursor-pointer hover:bg-[#7C3AED]/10 hover:border-[#A855F7] hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(124,58,237,0.35)] focus-visible:outline-none focus-visible:border-[#A855F7] transition-all duration-200"
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(12px)",
@@ -369,8 +369,11 @@ function LogoCard({ client, index, onClick }: LogoCardProps) {
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onClick(); }}
     >
-      <div className="relative w-full h-[90px]">
-        <LogoImage src={client.src} alt={client.alt} sizes="(max-width: 640px) 45vw, (max-width: 1024px) 22vw, 16vw" />
+      {/* Light logo panel: keeps dark/transparent logos and white-background logos equally readable */}
+      <div className="w-full h-[64px] sm:h-[84px] bg-white rounded-[6px] px-3 py-2 sm:px-4 sm:py-2.5">
+        <div className="relative w-full h-full">
+          <LogoImage src={client.src} alt={client.alt} sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 240px" />
+        </div>
       </div>
     </div>
   );
@@ -386,9 +389,12 @@ interface OurClientsHeroProps {
   categories: string[];
 }
 
+/** Rows of logos shown before the first Load More click */
+const INITIAL_ROWS = 4;
+
 export default function OurClientsHero({ clients, categories }: OurClientsHeroProps) {
   const [activeCategory, setActiveCategory] = useState<string>(ALL_CLIENTS);
-  const [mobileVisibleCount, setMobileVisibleCount] = useState<number>(8);
+  const [visibleRows, setVisibleRows] = useState<number>(INITIAL_ROWS);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const CATEGORIES = [ALL_CLIENTS, ...categories];
@@ -398,15 +404,12 @@ export default function OurClientsHero({ clients, categories }: OurClientsHeroPr
       ? clients
       : clients.filter((c) => c.category === activeCategory);
 
-  const hasMoreMobile = mobileVisibleCount < filtered.length;
+  // Columns per breakpoint match the grid: 2 (mobile), 3 (sm), 4 (lg)
+  const shownMobile = visibleRows * 2;
+  const shownTablet = visibleRows * 3;
+  const shownDesktop = visibleRows * 4;
 
-  const handleMobileLoadToggle = () => {
-    if (hasMoreMobile) {
-      setMobileVisibleCount((prev) => Math.min(prev + 4, filtered.length));
-    } else {
-      setMobileVisibleCount(8);
-    }
-  };
+  const handleLoadMore = () => setVisibleRows((rows) => rows + 1);
 
   const handleCardClick = useCallback((index: number) => {
     setLightboxIndex(index);
@@ -454,7 +457,7 @@ export default function OurClientsHero({ clients, categories }: OurClientsHeroPr
               options={CATEGORIES.map((cat) => ({ label: cat, value: cat }))}
               onChange={(cat) => {
                 setActiveCategory(cat);
-                setMobileVisibleCount(8);
+                setVisibleRows(INITIAL_ROWS);
               }}
             />
           </div>
@@ -474,7 +477,7 @@ export default function OurClientsHero({ clients, categories }: OurClientsHeroPr
                   aria-selected={isActive}
                   onClick={() => {
                     setActiveCategory(cat);
-                    setMobileVisibleCount(8);
+                    setVisibleRows(INITIAL_ROWS);
                   }}
                   className={`
                     px-3.5 py-1.5 rounded-[5px] text-sm font-medium tracking-wide transition-all duration-200 font-manrope
@@ -501,7 +504,7 @@ export default function OurClientsHero({ clients, categories }: OurClientsHeroPr
           {filtered.length > 0 ? (
             <div className="w-full flex flex-col items-center gap-6">
               <div
-                className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-1.5 gap-y-1 sm:gap-x-3 sm:gap-y-3"
+                className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 lg:gap-6"
                 role="list"
                 aria-label="Client logos"
               >
@@ -509,22 +512,25 @@ export default function OurClientsHero({ clients, categories }: OurClientsHeroPr
                   <div 
                     key={client.id} 
                     role="listitem"
-                    className={i >= mobileVisibleCount ? "hidden sm:block" : "block"}
+                    className={`${i < shownMobile ? "block" : "hidden"} ${i < shownTablet ? "sm:block" : "sm:hidden"} ${i < shownDesktop ? "lg:block" : "lg:hidden"}`}
                   >
                     <LogoCard
                       client={client}
-                      index={i}
+                      index={i < INITIAL_ROWS * 4 ? i : i % 4}
                       onClick={() => handleCardClick(i)}
                     />
                   </div>
                 ))}
               </div>
 
-              {/* Mobile Load More (+4 images) / Load Less Button with Linear Gradient Text */}
-              {filtered.length > 8 && (
-                <div className="sm:hidden pt-2 flex justify-center w-full">
+              {/* Load More: reveals one more row per click; hidden once every row is shown */}
+              {filtered.length > shownMobile && (
+                <div
+                  className={`pt-2 justify-center w-full ${filtered.length > shownMobile ? "flex" : "hidden"} ${filtered.length > shownTablet ? "sm:flex" : "sm:hidden"} ${filtered.length > shownDesktop ? "lg:flex" : "lg:hidden"}`}
+                >
                   <button
-                    onClick={handleMobileLoadToggle}
+                    type="button"
+                    onClick={handleLoadMore}
                     className="px-6 py-2.5 rounded-full border border-white/20 bg-[#181621] hover:border-white/40 transition-all font-manrope font-semibold text-sm shadow-lg active:scale-95 cursor-pointer"
                   >
                     <span
@@ -534,7 +540,7 @@ export default function OurClientsHero({ clients, categories }: OurClientsHeroPr
                         WebkitTextFillColor: "transparent",
                       }}
                     >
-                      {hasMoreMobile ? "Load More" : "Load Less"}
+                      Load More
                     </span>
                   </button>
                 </div>

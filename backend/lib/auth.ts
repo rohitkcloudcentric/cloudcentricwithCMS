@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "./prisma";
 
-const JWT_SECRET = process.env.JWT_SECRET || "cloudcentric_secret_jwt_key_2026_super_secure_99";
+const JWT_SECRET = process.env.JWT_SECRET || ""; // required; no built-in fallback (see src/lib/auth.ts)
 export const TOKEN_NAME = "cc_cms_token";
 
 export interface TokenPayload {

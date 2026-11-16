@@ -3,6 +3,7 @@ import { randomBytes } from "crypto";
 import prisma from "@/lib/prisma";
 import { getClientIp, isRateLimited, resolveSource, validateEmail } from "@/lib/newsletter";
 import { sendWelcomeEmail } from "@/lib/newsletter-email";
+import { resolveVisitorIp } from "@/lib/client-ip";
 
 export const config = { api: { bodyParser: { sizeLimit: "4kb" } } };
 
@@ -31,6 +32,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!email) return res.status(400).json({ success: false, error });
 
     const source = await resolveSource(body.sourceType, body.sourceSlug);
+    // Stored IP: public network address, or the browser-reported public IP when the server only sees a local one
+    const visitorIp = resolveVisitorIp(req, body.clientIp);
     const userAgent = (req.headers["user-agent"] || "").toString().slice(0, 500) || null;
 
     const existing = await prisma.newsletterSubscriber.findUnique({ where: { email } });
@@ -48,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             data: {
               status: "ACTIVE",
               ...source,
-              ipAddress: ip,
+              ipAddress: visitorIp,
               userAgent,
               subscribedAt: new Date(),
               unsubscribedAt: null,
@@ -58,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             },
           })
         : await prisma.newsletterSubscriber.create({
-            data: { email, ...source, ipAddress: ip, userAgent, unsubscribeToken: newToken() },
+            data: { email, ...source, ipAddress: visitorIp, userAgent, unsubscribeToken: newToken() },
           });
     } catch (e) {
       // Unique constraint race (two submits at once)

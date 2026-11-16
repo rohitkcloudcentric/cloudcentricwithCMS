@@ -2,6 +2,7 @@
 
 import React, { useId, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { getPublicIp } from "@/lib/public-ip-client";
 
 interface NewsletterSignupProps {
   /** Page the user is subscribing from; the server resolves the real title from the slug */
@@ -42,10 +43,11 @@ export default function NewsletterSignup({ sourceType, sourceSlug, mono = false 
     setState("loading");
     setMessage("");
     try {
+      const clientIp = await getPublicIp();
       const res = await fetch("/api/v1/newsletter/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: value, sourceType, sourceSlug, website }),
+        body: JSON.stringify({ email: value, sourceType, sourceSlug, website, clientIp }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.success) {

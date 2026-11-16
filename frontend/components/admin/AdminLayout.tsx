@@ -111,7 +111,6 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          secret: "cloudcentric_revalidate_secret_key",
           path: "/blogs",
         }),
       });

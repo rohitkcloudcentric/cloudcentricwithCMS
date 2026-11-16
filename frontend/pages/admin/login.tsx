@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { Lock, Mail, AlertCircle, ArrowRight, ShieldCheck } from "lucide-react";
+import { Lock, Mail, AlertCircle, ArrowRight } from "lucide-react";
 
 export default function AdminLogin() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@cloudcentric.in");
-  const [password, setPassword] = useState("Admin@1234");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -20,7 +20,7 @@ export default function AdminLogin() {
       return;
     }
     if (!emailRegex.test(trimmedEmail)) {
-      setError("Please enter a valid email address (e.g. admin@cloudcentric.in).");
+      setError("Please enter a valid email address.");
       return;
     }
     if (!password) {
@@ -107,7 +107,7 @@ export default function AdminLogin() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@cloudcentric.in"
+                placeholder="you@company.com"
                 className="w-full pl-11 pr-4 py-3 bg-[#14141a] border border-white/10 rounded-2xl text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#a855f7] focus:ring-1 focus:ring-[#a855f7] transition-all font-sans"
               />
             </div>
@@ -140,21 +140,6 @@ export default function AdminLogin() {
           </button>
         </form>
 
-        {/* Demo Credentials Box matching frontend aesthetic */}
-        <div className="p-4 rounded-2xl bg-[#12121a] border border-white/5 text-[11px] text-[#a1a1aa] space-y-1.5 font-intel">
-          <div className="flex items-center space-x-2 text-[#a855f7] font-bold">
-            <ShieldCheck className="w-4 h-4" />
-            <span>Super Admin Credentials</span>
-          </div>
-          <div className="flex justify-between pt-0.5 text-[#b6b6c2]">
-            <span>Email:</span>
-            <code className="text-white bg-white/5 px-2 py-0.5 rounded font-mono">admin@cloudcentric.in</code>
-          </div>
-          <div className="flex justify-between text-[#b6b6c2]">
-            <span>Password:</span>
-            <code className="text-white bg-white/5 px-2 py-0.5 rounded font-mono">Admin@1234</code>
-          </div>
-        </div>
       </div>
     </div>
   );

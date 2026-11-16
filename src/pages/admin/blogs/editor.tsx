@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { useAdminAuth } from "@/components/admin/AdminAuthContext";
 import { useRouter } from "next/router";
+import { GalleryField, RichTextField } from "@/components/admin/EditorFields";
 import {
   Save,
   ArrowLeft,
   CheckCircle2,
   AlertCircle,
-  Eye,
-  Code,
   Sparkles,
   Upload,
 } from "lucide-react";
@@ -34,6 +33,7 @@ export default function BlogEditor() {
   const [slug, setSlug] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [contentHtml, setContentHtml] = useState("");
+  const [contentImages, setContentImages] = useState<string[]>([]);
   const [featuredImage, setFeaturedImage] = useState("");
   const [thumbnailImage, setThumbnailImage] = useState("");
   const [readTime, setReadTime] = useState("5 MIN READ");
@@ -200,7 +200,6 @@ export default function BlogEditor() {
 
   const [loading, setLoading] = useState(Boolean(id));
   const [saving, setSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState<"write" | "preview">("write");
   const [uploadingImage, setUploadingImage] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
@@ -236,6 +235,11 @@ export default function BlogEditor() {
             setSlug(art.slug || "");
             setExcerpt(art.excerpt || "");
             setContentHtml(art.contentHtml || "");
+          setContentImages(
+            Array.from(
+              new Set(Array.from((art.contentHtml || "").matchAll(/<img[^>]+src=["']([^"']+)["']/gi), (m) => (m as RegExpMatchArray)[1]))
+            )
+          );
             setFeaturedImage(art.featuredImage || "");
             setThumbnailImage(art.thumbnailImage || "");
             setReadTime(art.readTime || "5 MIN READ");
@@ -373,7 +377,7 @@ export default function BlogEditor() {
         fetch("/api/v1/revalidate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ secret: "cloudcentric_revalidate_secret_key", path: `/blogs/${slug}` }),
+          body: JSON.stringify({ path: `/blogs/${slug}` }),
         });
 
         if (!id && data.data?.id) {
@@ -490,48 +494,16 @@ export default function BlogEditor() {
               ></textarea>
             </div>
 
-            {/* Rich HTML Content Editor */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between font-intel">
-                <label className="text-xs font-semibold text-gray-300">Article Content (HTML/Markdown)</label>
-                <div className="flex bg-gray-900 p-1 rounded-lg border border-gray-800 space-x-1">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("write")}
-                    className={`px-3 py-1 text-xs rounded-md font-medium transition-all cursor-pointer ${
-                      activeTab === "write" ? "bg-[#7c3aed] text-white" : "text-gray-400 hover:text-white"
-                    }`}
-                  >
-                    <Code className="w-3.5 h-3.5 inline mr-1" />
-                    Write HTML
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab("preview")}
-                    className={`px-3 py-1 text-xs rounded-md font-medium transition-all cursor-pointer ${
-                      activeTab === "preview" ? "bg-[#7c3aed] text-white" : "text-gray-400 hover:text-white"
-                    }`}
-                  >
-                    <Eye className="w-3.5 h-3.5 inline mr-1" />
-                    Preview Render
-                  </button>
-                </div>
-              </div>
-
-              {activeTab === "write" ? (
-                <textarea
-                  rows={14}
-                  required
-                  placeholder="<p>Write article body HTML here...</p><h2>Subheading</h2><p>Detail paragraph...</p>"
-                  value={contentHtml}
-                  onChange={(e) => setContentHtml(e.target.value)}
-                  className="w-full p-4 bg-[#0B0F17] border border-gray-800 rounded-xl font-mono text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#a855f7] transition-all leading-relaxed"
-                ></textarea>
-              ) : (
-                <div className="w-full min-h-80 p-6 bg-[#050505] border border-gray-800 rounded-xl text-gray-200 prose prose-invert max-w-none">
-                  <div dangerouslySetInnerHTML={{ __html: contentHtml || "<p className='text-gray-500 italic'>Nothing to preview yet.</p>" }} />
-                </div>
-              )}
+            {/* Rich HTML Content Editor (same component as the case study content editors) */}
+            <div className="font-intel">
+              <RichTextField
+                label="Article Content"
+                value={contentHtml}
+                onChange={setContentHtml}
+                galleryImages={contentImages}
+                minRows={14}
+                placeholder="<p>Write the article body here...</p>"
+              />
             </div>
           </div>
 
@@ -831,6 +803,15 @@ export default function BlogEditor() {
               </div>
             </div>
 
+            {/* Content Images: uploads insertable into Article Content via the image button */}
+            <div className="bg-[#0B0F17] border border-gray-800/80 rounded-2xl p-5 space-y-4 font-intel">
+              <GalleryField
+                label="Content Images"
+                images={contentImages}
+                onChange={setContentImages}
+                hint="Insert into Article Content with the image button"
+              />
+            </div>
             {/* Cover Image Upload */}
             <div className="bg-[#0B0F17] border border-gray-800/80 rounded-2xl p-5 space-y-4 font-intel">
               <h3 className="text-sm font-bold text-white font-manrope">Featured Cover Image</h3>

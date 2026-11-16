@@ -5,6 +5,7 @@ import { Upload } from "lucide-react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { isSpamSubmission } from "@/lib/spam-detector";
+import { currentPageName, hasClientIp, saveContactSubmission } from "@/lib/contact-submission-client";
 import { useContactSettings } from "@/components/common/useContactSettings";
 import { PlatformIcon } from "@/components/common/SocialIcons";
 import { phoneHref, phoneLabel } from "@/lib/contact-settings";
@@ -229,6 +230,7 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
   const [selectedFile] = useState<File | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const fallbackTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleIframeLoad = () => {
@@ -320,13 +322,10 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Restrict submission until IP address is successfully captured
-    if (!formData.ipAddress || formData.ipAddress === "Blocked or Unavailable" || formData.ipAddress.trim() === "") {
-      return;
-    }
+    if (submitting || submitted) return;
+    setSubmitError("");
 
     const newErrors: Record<string, string | undefined> = {
       name: validateField("name", formData.name),
@@ -404,6 +403,16 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
 
     setSubmitting(true);
 
+    // Save the enquiry in our database first; the Pardot hand-off below is unchanged.
+    const pageName = formData.pageName || currentPageName(router?.pathname);
+    const saved = await saveContactSubmission({ ...formData, pageName });
+    if (!saved.ok) {
+      if (saved.fieldErrors) setErrors((prev) => ({ ...prev, ...saved.fieldErrors }));
+      setSubmitError(saved.error);
+      setSubmitting(false);
+      return;
+    }
+
     try {
       localStorage.setItem(
         "cc_last_submission",
@@ -411,14 +420,27 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
       );
     } catch {}
 
+    // Pardot requires the visitor IP; if the lookup was blocked, the enquiry is still saved in our database
+    if (!hasClientIp(formData.ipAddress)) {
+      setSubmitting(false);
+      setSubmitted(true);
+      setTimeout(() => {
+        router.push("/thank-you");
+      }, 1500);
+      return;
+    }
     if (hiddenFormRef.current) {
       hiddenFormRef.current.submit();
     }
 
-    // Set fallback timeout (5 seconds) to re-enable button if iframe fails to load
+    // The enquiry is already saved, so treat a slow Pardot response as success instead of re-enabling the button.
     fallbackTimerRef.current = setTimeout(() => {
       setSubmitting(false);
+      setSubmitted(true);
       fallbackTimerRef.current = null;
+      setTimeout(() => {
+        router.push("/thank-you");
+      }, 1500);
     }, 5000);
   };
 
@@ -670,6 +692,16 @@ export const ContactFormCard: React.FC<{ isContactUsPage?: boolean }> = ({ isCon
           />
         </p>
 
+        {submitError && (
+          <p role="alert" className="text-red-400 text-xs font-medium font-intel">
+            {submitError}
+          </p>
+        )}
+        {submitted && (
+          <p role="status" className="text-emerald-400 text-xs font-medium font-intel">
+            Thank you! Your request has been received. We will get back to you shortly.
+          </p>
+        )}
         {/* CTA Button */}
         <button
           type="submit"

@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const { secret, path } = req.body || req.query;
 
-    if (secret !== (process.env.REVALIDATION_SECRET || "cloudcentric_revalidate_secret_key")) {
+    if (!secret || secret !== (process.env.REVALIDATION_SECRET || "")) {
       return res.status(401).json({ success: false, error: "Invalid revalidation secret" });
     }
 

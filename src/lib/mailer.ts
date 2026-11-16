@@ -41,7 +41,8 @@ function getConfig() {
   const port = Number(process.env.MAIL_PORT || 587);
   const encryption = (process.env.MAIL_ENCRYPTION || "tls").toLowerCase();
   const fromAddress = process.env.MAIL_FROM_ADDRESS || user;
-  const fromName = process.env.MAIL_FROM_NAME || process.env.APP_NAME || "CloudCentric";
+  const expand = (v: string) => v.replace(/\$\{(\w+)\}/g, (_m, name: string) => process.env[name] || "");
+  const fromName = expand(process.env.MAIL_FROM_NAME || "").trim() || process.env.APP_NAME || "CloudCentric";
 
   const missing = [
     !host && "MAIL_HOST",
@@ -51,6 +52,11 @@ function getConfig() {
   ].filter(Boolean) as string[];
 
   return { host, user, pass, port, encryption, fromAddress, fromName, missing };
+}
+
+/** True when every required SMTP setting is present (does not contact the server). */
+export function isMailConfigured(): boolean {
+  return getConfig().missing.length === 0;
 }
 
 /** Last address that worked; tried first next time. */
@@ -81,8 +87,10 @@ async function resolveAddresses(host: string): Promise<string[]> {
 
 /** Errors where trying another server address may help (vs. auth or message rejections). */
 function isConnectionError(err: unknown): boolean {
-  const code = (err as { code?: string } | null)?.code;
-  return code === "ETIMEDOUT" || code === "ECONNRESET" || code === "ECONNREFUSED" || code === "ESOCKET" || code === "ENETUNREACH" || code === "EHOSTUNREACH";
+  const e = err as { code?: string; message?: string } | null;
+  const code = e?.code;
+  if (code && ["ETIMEDOUT", "ECONNRESET", "ECONNREFUSED", "ECONNECTION", "ESOCKET", "ENETUNREACH", "EHOSTUNREACH", "EAI_AGAIN", "ECONNABORTED", "EPIPE"].includes(code)) return true;
+  return /timeout|timed out|socket hang up/i.test(e?.message || "");
 }
 
 function createTransport(address: string): Transporter {

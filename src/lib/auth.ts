@@ -3,8 +3,22 @@ import bcrypt from "bcryptjs";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "./prisma";
 
-const JWT_SECRET = process.env.JWT_SECRET || "cloudcentric_secret_jwt_key_2026_super_secure_99";
 export const TOKEN_NAME = "cc_cms_token";
+
+/**
+ * Session signing key. Must come from the environment (JWT_SECRET); there is deliberately no
+ * built-in fallback, because a key that ships in the source code lets anyone forge admin sessions.
+ */
+export function jwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || secret.length < 32) {
+    throw new Error("JWT_SECRET is missing or too short (min 32 characters). Set it in .env.");
+  }
+  return secret;
+}
+
+/** bcrypt work factor for new hashes (existing hashes with a lower factor still verify). */
+const BCRYPT_ROUNDS = 12;
 
 export interface TokenPayload {
   userId: string;
@@ -14,7 +28,7 @@ export interface TokenPayload {
 }
 
 export async function hashPassword(password: string): Promise<string> {
-  return await bcrypt.hash(password, 10);
+  return await bcrypt.hash(password, BCRYPT_ROUNDS);
 }
 
 export async function verifyPassword(password: string, hash: string): Promise<boolean> {
@@ -22,13 +36,14 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
 }
 
 export function signToken(payload: TokenPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: "7d" });
+  return jwt.sign(payload, jwtSecret(), { expiresIn: "7d", algorithm: "HS256" });
 }
 
 export function verifyToken(token: string): TokenPayload | null {
+  const secret = jwtSecret();
   try {
-    return jwt.verify(token, JWT_SECRET) as TokenPayload;
-  } catch (error) {
+    return jwt.verify(token, secret, { algorithms: ["HS256"] }) as TokenPayload;
+  } catch {
     return null;
   }
 }
