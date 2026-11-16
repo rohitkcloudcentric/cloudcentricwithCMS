@@ -154,7 +154,7 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
       <aside className="w-64 bg-[#0b0b10] border-r border-white/10 hidden md:flex flex-col justify-between shrink-0 z-30">
         <div>
           {/* Logo Header */}
-          <div className="p-6 border-b border-white/10 flex flex-col space-y-2">
+          <div className="p-6 border-b border-white/10">
             <Link href="/" target="_blank" className="block cursor-pointer">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -163,7 +163,6 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
                 className="h-9 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(124,58,237,0.3)]"
               />
             </Link>
-            <p className="text-[10px] text-[#a855f7] font-intel font-semibold tracking-wider uppercase">Headless CMS Engine</p>
           </div>
 
           {/* Navigation Links */}
@@ -228,17 +227,14 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
           <div className="w-72 bg-[#0b0b10] border-r border-white/10 flex flex-col justify-between h-full p-6">
             <div>
               <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
-                <div className="flex flex-col space-y-1">
-                  <Link href="/" target="_blank" className="block cursor-pointer">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/logo.svg"
-                      alt="CloudCentric Logo"
-                      className="h-8 w-auto object-contain"
-                    />
-                  </Link>
-                  <p className="text-[9px] text-[#a855f7] font-intel uppercase tracking-wider">Headless CMS Engine</p>
-                </div>
+                <Link href="/" target="_blank" className="block cursor-pointer">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/logo.svg"
+                    alt="CloudCentric Logo"
+                    className="h-8 w-auto object-contain"
+                  />
+                </Link>
                 <button onClick={() => setMobileMenuOpen(false)} className="text-gray-400 hover:text-white p-1">
                   <X className="w-5 h-5" />
                 </button>

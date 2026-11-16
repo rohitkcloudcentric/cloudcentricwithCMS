@@ -32,6 +32,64 @@ interface AdminLayoutProps {
 
 const ADMIN_ONLY_PATHS = ["/admin/contact-submissions", "/admin/smtp-settings"];
 
+interface NavItem {
+  label: string;
+  icon: typeof LayoutDashboard;
+  href: string;
+  module?: ModuleName;
+  adminOnly?: boolean;
+}
+
+interface NavGroup {
+  title: string;
+  items: NavItem[];
+}
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    title: "Dashboard",
+    items: [
+      { label: "Overview", icon: LayoutDashboard, href: "/admin" },
+    ],
+  },
+  {
+    title: "Content Management",
+    items: [
+      { label: "Blog Articles", icon: FileText, href: "/admin/blogs", module: "blogs" },
+      { label: "Case Studies", icon: Briefcase, href: "/admin/case-studies", module: "case_studies" },
+      { label: "Products", icon: Layers, href: "/admin/products", module: "products" },
+    ],
+  },
+  {
+    title: "User Management",
+    items: [
+      { label: "User Roles & RBAC", icon: Users, href: "/admin/users", module: "users" },
+    ],
+  },
+  {
+    title: "Business & Communication",
+    items: [
+      { label: "Our Clients", icon: Building2, href: "/admin/clients", module: "clients" },
+      { label: "Newsletter", icon: Mail, href: "/admin/newsletter", module: "newsletter" },
+      { label: "Contact Settings", icon: Contact, href: "/admin/contact-settings", module: "contact_settings" },
+      { label: "Contact Form Submissions", icon: Inbox, href: "/admin/contact-submissions", adminOnly: true },
+    ],
+  },
+  {
+    title: "System Settings",
+    items: [
+      { label: "SMTP Settings", icon: Server, href: "/admin/smtp-settings", adminOnly: true },
+      { label: "Audit Logs", icon: ShieldCheck, href: "/admin/audit-logs", module: "audit_logs" },
+    ],
+  },
+  {
+    title: "Account",
+    items: [
+      { label: "My Profile", icon: UserCircle, href: "/admin/profile" },
+    ],
+  },
+];
+
 export default function AdminLayout({ children, title = "Dashboard" }: AdminLayoutProps) {
   const router = useRouter();
   const [user, setUser] = useState<AdminUser | null>(null);
@@ -167,24 +225,15 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
     if (!loading && router.isReady && blockedForUser) router.replace("/admin?denied=1");
   }, [loading, blockedForUser, router]);
 
-  const allNavItems: { label: string; icon: typeof LayoutDashboard; href: string; module?: ModuleName; adminOnly?: boolean }[] = [
-    { label: "Overview", icon: LayoutDashboard, href: "/admin" },
-    { label: "Blog Articles", icon: FileText, href: "/admin/blogs", module: "blogs" },
-    { label: "Case Studies", icon: Briefcase, href: "/admin/case-studies", module: "case_studies" },
-    { label: "Products", icon: Layers, href: "/admin/products", module: "products" },
-    { label: "User Roles & RBAC", icon: Users, href: "/admin/users", module: "users" },
-    { label: "Our Clients", icon: Building2, href: "/admin/clients", module: "clients" },
-    { label: "Newsletter", icon: Mail, href: "/admin/newsletter", module: "newsletter" },
-    { label: "Contact Settings", icon: Contact, href: "/admin/contact-settings", module: "contact_settings" },
-    { label: "Contact Form Submissions", icon: Inbox, href: "/admin/contact-submissions", adminOnly: true },
-    { label: "SMTP Settings", icon: Server, href: "/admin/smtp-settings", adminOnly: true },
-    { label: "Audit Logs", icon: ShieldCheck, href: "/admin/audit-logs", module: "audit_logs" },
-    { label: "My Profile", icon: UserCircle, href: "/admin/profile" },
-  ];
-  // Show only the modules the role can view
-  const navItems = allNavItems.filter((item) =>
-    item.adminOnly ? Boolean(user?.fullAccess) : !item.module || auth.can(item.module, "read")
-  );
+  // Show only the modules and groups the role can view
+  const visibleGroups = useMemo(() => {
+    return NAV_GROUPS.map((group) => ({
+      ...group,
+      items: group.items.filter((item) =>
+        item.adminOnly ? Boolean(user?.fullAccess) : !item.module || auth.can(item.module, "read")
+      ),
+    })).filter((group) => group.items.length > 0);
+  }, [user, auth]);
 
   if (loading || blockedForUser) {
     return (
@@ -200,47 +249,59 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
   return (
     <div className="min-h-screen bg-[#050505] text-gray-100 flex font-sans selection:bg-[#7c3aed] selection:text-white">
       {/* Desktop Sidebar */}
-      <aside className="w-64 bg-[#0b0b10] border-r border-white/10 hidden md:flex flex-col justify-between shrink-0 z-30 sticky top-0 h-screen overflow-y-auto">
-        <div>
-          {/* Logo Header */}
-          <div className="p-6 border-b border-white/10 flex flex-col space-y-2">
-            <Link href="/" target="_blank" className="block cursor-pointer">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/logo.svg"
-                alt="CloudCentric Logo"
-                className="h-9 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(124,58,237,0.3)]"
-              />
-            </Link>
-            <p className="text-[10px] text-[#a855f7] font-intel font-semibold tracking-wider uppercase">Headless CMS Engine</p>
-          </div>
-
-          {/* Navigation Links */}
-          <nav className="p-4 space-y-2">
-            {navItems.map((item) => {
-              const isActive = router.pathname === item.href || (item.href !== "/admin" && router.pathname.startsWith(item.href));
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex items-center space-x-3.5 px-4 py-3 rounded-2xl text-xs font-intel font-semibold transition-all duration-200 cursor-pointer ${
-                    isActive
-                      ? "bg-linear-to-r from-[#7c3aed]/20 to-[#4f8bff]/10 text-white border border-[#a855f7]/40 shadow-[0_0_20px_rgba(124,58,237,0.15)]"
-                      : "text-[#a1a1aa] hover:text-white hover:bg-white/5"
-                  }`}
-                >
-                  <Icon className={`w-4 h-4 ${isActive ? "text-[#a855f7]" : "text-gray-400"}`} />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
+      <aside className="w-72 bg-[#0b0b10] border-r border-white/10 hidden md:flex flex-col justify-between shrink-0 z-30 sticky top-0 h-screen select-none">
+        {/* Logo Header */}
+        <div className="p-5 border-b border-white/10 shrink-0">
+          <Link href="/" target="_blank" className="block cursor-pointer">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo.svg"
+              alt="CloudCentric Logo"
+              className="h-9 w-auto object-contain filter drop-shadow-[0_0_15px_rgba(124,58,237,0.3)]"
+            />
+          </Link>
         </div>
 
+        {/* Grouped Navigation Links */}
+        <nav className="flex-1 overflow-y-auto px-3.5 py-4 space-y-4">
+          {visibleGroups.map((group) => (
+            <div key={group.title} className="space-y-1">
+              <div className="px-3 pb-1 text-[10px] font-intel font-bold uppercase tracking-wider text-gray-500">
+                {group.title}
+              </div>
+              <div className="space-y-1">
+                {group.items.map((item) => {
+                  const isActive =
+                    router.pathname === item.href ||
+                    (item.href !== "/admin" && router.pathname.startsWith(item.href));
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`group flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-intel font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                        isActive
+                          ? "bg-linear-to-r from-[#7c3aed]/20 to-[#4f8bff]/10 text-white border border-[#a855f7]/40 shadow-[0_0_20px_rgba(124,58,237,0.15)]"
+                          : "text-[#a1a1aa] hover:text-white hover:bg-white/5 border border-transparent"
+                      }`}
+                    >
+                      <Icon
+                        className={`w-4 h-4 shrink-0 transition-colors ${
+                          isActive ? "text-[#a855f7]" : "text-gray-400 group-hover:text-gray-200"
+                        }`}
+                      />
+                      <span className="truncate">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </nav>
+
         {/* User Info & Footer */}
-        <div className="p-4 border-t border-white/10 space-y-3">
-          <div className="flex items-center justify-between p-3 rounded-2xl bg-[#121218] border border-white/5">
+        <div className="p-3.5 border-t border-white/10 space-y-2.5 shrink-0 bg-[#0b0b10]">
+          <div className="flex items-center justify-between p-2.5 rounded-xl bg-[#121218] border border-white/5">
             <div className="flex items-center space-x-3 min-w-0">
               <Link href="/admin/profile" className="flex items-center space-x-3 min-w-0" title="My Profile">
                 {user?.avatarUrl ? (
@@ -260,7 +321,7 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
             <button
               onClick={() => setShowLogoutModal(true)}
               title="Logout"
-              className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors cursor-pointer"
+              className="p-1.5 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer shrink-0 ml-1"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -270,9 +331,14 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between text-xs text-[#a1a1aa] hover:text-white px-2 py-1.5 transition-colors font-intel"
+            className="flex items-center justify-between text-xs text-[#a1a1aa] hover:text-white px-2.5 py-1.5 transition-colors font-intel rounded-lg hover:bg-white/5"
           >
-            <span>Live Website</span>
+            <div className="flex items-center space-x-2.5">
+              <div className="w-5 h-5 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-[10px] font-bold text-white shrink-0">
+                N
+              </div>
+              <span>Website</span>
+            </div>
             <ExternalLink className="w-3.5 h-3.5 text-[#a855f7]" />
           </a>
         </div>
@@ -281,58 +347,110 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
       {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm md:hidden flex">
-          <div className="w-72 bg-[#0b0b10] border-r border-white/10 flex flex-col justify-between h-full p-6">
-            <div>
-              <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
-                <div className="flex flex-col space-y-1">
-                  <Link href="/" target="_blank" className="block cursor-pointer">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/logo.svg"
-                      alt="CloudCentric Logo"
-                      className="h-8 w-auto object-contain"
-                    />
-                  </Link>
-                  <p className="text-[9px] text-[#a855f7] font-intel uppercase tracking-wider">Headless CMS Engine</p>
-                </div>
-                <button onClick={() => setMobileMenuOpen(false)} className="text-gray-400 hover:text-white p-1">
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              <nav className="space-y-1">
-                {navItems.map((item) => {
-                  const isActive = router.pathname === item.href || (item.href !== "/admin" && router.pathname.startsWith(item.href));
-                  const Icon = item.icon;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-intel font-semibold ${
-                        isActive
-                          ? "bg-linear-to-r from-[#7c3aed]/20 to-[#4f8bff]/10 text-white border border-[#a855f7]/40"
-                          : "text-[#a1a1aa] hover:text-white"
-                      }`}
-                    >
-                      <Icon className={`w-4 h-4 ${isActive ? "text-[#a855f7]" : "text-gray-400"}`} />
-                      <span>{item.label}</span>
-                    </Link>
-                  );
-                })}
-              </nav>
+          <div className="w-72 bg-[#0b0b10] border-r border-white/10 flex flex-col justify-between h-full">
+            {/* Mobile Header */}
+            <div className="p-4 border-b border-white/10 flex items-center justify-between shrink-0">
+              <Link href="/" target="_blank" className="block cursor-pointer">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/logo.svg"
+                  alt="CloudCentric Logo"
+                  className="h-7 w-auto object-contain"
+                />
+              </Link>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-white/5 cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
-            <div className="pt-4 border-t border-white/10 space-y-3">
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setShowLogoutModal(true);
-                }}
-                className="w-full flex items-center justify-center space-x-2 py-2.5 rounded-xl bg-red-500/10 text-red-400 text-xs font-semibold cursor-pointer"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>Sign Out</span>
-              </button>
+            {/* Mobile Navigation Links */}
+            <nav className="flex-1 overflow-y-auto px-3.5 py-4 space-y-4">
+              {visibleGroups.map((group) => (
+                <div key={group.title} className="space-y-1">
+                  <div className="px-3 pb-1 text-[10px] font-intel font-bold uppercase tracking-wider text-gray-500">
+                    {group.title}
+                  </div>
+                  <div className="space-y-1">
+                    {group.items.map((item) => {
+                      const isActive =
+                        router.pathname === item.href ||
+                        (item.href !== "/admin" && router.pathname.startsWith(item.href));
+                      const Icon = item.icon;
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className={`flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-intel font-semibold whitespace-nowrap transition-colors ${
+                            isActive
+                              ? "bg-linear-to-r from-[#7c3aed]/20 to-[#4f8bff]/10 text-white border border-[#a855f7]/40"
+                              : "text-[#a1a1aa] hover:text-white hover:bg-white/5 border border-transparent"
+                          }`}
+                        >
+                          <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#a855f7]" : "text-gray-400"}`} />
+                          <span className="truncate">{item.label}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </nav>
+
+            {/* Mobile Footer */}
+            <div className="p-3.5 border-t border-white/10 space-y-2.5 shrink-0 bg-[#0b0b10]">
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-[#121218] border border-white/5">
+                <Link
+                  href="/admin/profile"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center space-x-3 min-w-0 flex-1"
+                  title="My Profile"
+                >
+                  {user?.avatarUrl ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={user.avatarUrl} alt="" className="w-8 h-8 rounded-full object-cover shrink-0 shadow-md" />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-linear-to-tr from-[#7c3aed] to-[#4f8bff] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-md">
+                      {user?.name?.[0]?.toUpperCase() || "A"}
+                    </div>
+                  )}
+                  <div className="truncate">
+                    <p className="text-xs font-semibold text-white truncate">{user?.name || "Admin"}</p>
+                    <p className="text-[10px] text-[#a855f7] font-intel truncate">{user?.role || ""}</p>
+                  </div>
+                </Link>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <a
+                  href="/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-between text-xs text-[#a1a1aa] hover:text-white px-2.5 py-2 transition-colors font-intel rounded-lg hover:bg-white/5 border border-white/5"
+                >
+                  <div className="flex items-center space-x-2">
+                    <div className="w-5 h-5 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-[10px] font-bold text-white shrink-0">
+                      N
+                    </div>
+                    <span>Website</span>
+                  </div>
+                  <ExternalLink className="w-3.5 h-3.5 text-[#a855f7]" />
+                </a>
+
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setShowLogoutModal(true);
+                  }}
+                  className="flex items-center justify-center px-3 py-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 text-xs font-semibold cursor-pointer border border-red-500/20"
+                  title="Sign Out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
           <div className="flex-1" onClick={() => setMobileMenuOpen(false)}></div>
