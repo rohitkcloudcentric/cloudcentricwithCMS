@@ -20,6 +20,7 @@ import {
   Contact,
   Inbox,
   Server,
+  Globe,
 } from "lucide-react";
 
 import { buildAdminAuth, setAdminUser, type AdminUser } from "@/components/admin/AdminAuthContext";
@@ -30,7 +31,7 @@ interface AdminLayoutProps {
   title?: string;
 }
 
-const ADMIN_ONLY_PATHS = ["/admin/contact-submissions", "/admin/smtp-settings"];
+const ADMIN_ONLY_PATHS = ["/admin/contact-submissions", "/admin/smtp-settings", "/admin/ip-management"];
 
 interface NavItem {
   label: string;
@@ -78,6 +79,7 @@ const NAV_GROUPS: NavGroup[] = [
   {
     title: "System Settings",
     items: [
+      { label: "IP Address Management", icon: Globe, href: "/admin/ip-management", adminOnly: true },
       { label: "SMTP Settings", icon: Server, href: "/admin/smtp-settings", adminOnly: true },
       { label: "Audit Logs", icon: ShieldCheck, href: "/admin/audit-logs", module: "audit_logs" },
     ],
@@ -99,10 +101,19 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showLoginToast, setShowLoginToast] = useState(false);
+  const [ipDenied, setIpDenied] = useState<{ clientIp: string; reason?: string } | null>(null);
 
   useEffect(() => {
     fetch("/api/v1/auth/me")
-      .then((res) => {
+      .then(async (res) => {
+        if (res.status === 403) {
+          const data = await res.json().catch(() => ({}));
+          if (data.error && data.error.includes("Access Denied")) {
+            setIpDenied({ clientIp: data.clientIp || "Unknown", reason: data.reason });
+            setLoading(false);
+            return null;
+          }
+        }
         if (!res.ok) {
           router.push("/admin/login");
           return null;
@@ -234,6 +245,48 @@ export default function AdminLayout({ children, title = "Dashboard" }: AdminLayo
       ),
     })).filter((group) => group.items.length > 0);
   }, [user, auth]);
+
+  if (ipDenied) {
+    return (
+      <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center p-4 font-sans">
+        <div className="w-full max-w-lg bg-[#0e0e12]/95 border border-red-500/30 rounded-3xl p-8 md:p-10 shadow-[0_0_60px_rgba(239,68,68,0.15)] text-center space-y-6">
+          <div className="w-16 h-16 mx-auto rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-500">
+            <Globe className="w-9 h-9" />
+          </div>
+          <div className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-red-500/15 border border-red-500/30 text-red-400">
+            403 Forbidden
+          </div>
+          <div className="space-y-2">
+            <h1 className="text-xl md:text-2xl font-bold text-white font-manrope">
+              Access Denied: Your IP address is not authorized to access the Admin Panel.
+            </h1>
+            <p className="text-xs md:text-sm text-[#a1a1aa] font-intel">
+              This administrative console is restricted to authorized IP addresses only.
+            </p>
+          </div>
+          <div className="bg-[#14141a] border border-white/10 rounded-2xl p-4 text-left space-y-2 text-xs">
+            <div className="flex justify-between items-center">
+              <span className="text-[#71717a]">Detected Client IP:</span>
+              <span className="font-mono text-white font-semibold">{ipDenied.clientIp}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-[#71717a]">Access Status:</span>
+              <span className="text-red-400 font-semibold">Unauthorized / Blocked</span>
+            </div>
+            {ipDenied.reason && (
+              <div className="flex justify-between items-center">
+                <span className="text-[#71717a]">Details:</span>
+                <span className="text-red-300 text-[11px] font-mono">{ipDenied.reason}</span>
+              </div>
+            )}
+          </div>
+          <p className="text-[11px] text-[#71717a] font-intel leading-relaxed">
+            Please contact your Super Administrator to authorize your IP address.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (loading || blockedForUser) {
     return (

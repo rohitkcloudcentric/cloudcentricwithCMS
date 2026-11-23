@@ -4,6 +4,7 @@ import { hashPassword } from "@/lib/auth";
 import { getClientIp, isRateLimited } from "@/lib/newsletter";
 import { passwordProblem } from "@/lib/password-policy";
 import { inspectResetToken, tokenMatchesPassword } from "@/lib/password-reset";
+import { verifyAdminApiIpAccess } from "@/lib/admin-ip-guard";
 
 export const config = { api: { bodyParser: { sizeLimit: "8kb" } } };
 
@@ -40,6 +41,9 @@ async function checkLink(token: unknown): Promise<LinkCheck> {
  * The token is only ever sent in the body, never in a URL, so it doesn't end up in logs.
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const ipAllowed = await verifyAdminApiIpAccess(req, res);
+  if (!ipAllowed) return;
+
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
     return res.status(405).json({ success: false, error: `Method ${req.method} Not Allowed` });

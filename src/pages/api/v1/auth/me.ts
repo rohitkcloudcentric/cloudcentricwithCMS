@@ -1,9 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getAuthenticatedUser } from "@/lib/auth";
 import { hasFullAccess, permissionKeys } from "@/lib/rbac";
+import { verifyAdminApiIpAccess } from "@/lib/admin-ip-guard";
 
 /** The signed-in user with their role and effective permissions (loaded fresh from the DB). */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const ipAllowed = await verifyAdminApiIpAccess(req, res);
+  if (!ipAllowed) return;
+
   if (req.method !== "GET") {
     res.setHeader("Allow", ["GET"]);
     return res.status(405).json({ success: false, error: `Method ${req.method} Not Allowed` });

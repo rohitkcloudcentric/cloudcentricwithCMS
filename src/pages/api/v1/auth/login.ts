@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { randomBytes } from "crypto";
 import { hashPassword, verifyPassword, signToken, setTokenCookie } from "@/lib/auth";
 import { getClientIp, isRateLimited } from "@/lib/newsletter";
+import { verifyAdminApiIpAccess } from "@/lib/admin-ip-guard";
 
 export const config = { api: { bodyParser: { sizeLimit: "4kb" } } };
 
@@ -14,6 +15,10 @@ let dummyHash: Promise<string> | null = null;
 const getDummyHash = () => (dummyHash ??= hashPassword(randomBytes(24).toString("hex")));
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Enforce IP Access Control before processing any login request
+  const ipAllowed = await verifyAdminApiIpAccess(req, res);
+  if (!ipAllowed) return;
+
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
     return res.status(405).json({ success: false, error: `Method ${req.method} Not Allowed` });

@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getAuthenticatedUser } from "./auth";
 import prisma from "./prisma";
+import { verifyAdminApiIpAccess } from "./admin-ip-guard";
 import {
   PERMISSION_CATALOG,
   ACTION_LABELS,
@@ -87,6 +88,10 @@ export function withAuth(
 ) {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     try {
+      // 1. Mandatory Admin IP access validation
+      const ipAllowed = await verifyAdminApiIpAccess(req, res);
+      if (!ipAllowed) return;
+
       const user = await getAuthenticatedUser(req);
       if (!user) {
         return res.status(401).json({ success: false, error: "Unauthorized access" });

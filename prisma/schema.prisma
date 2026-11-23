@@ -27,6 +27,7 @@ model User {
   caseStudies  CaseStudy[]   @relation("CaseStudyCreator")
   products     Product[]     @relation("ProductCreator")
   clients      Client[]      @relation("ClientCreator")
+  adminIpAddresses AdminIpAddress[] @relation("IpCreatedBy")
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
@@ -462,4 +463,21 @@ model SmtpFailureLog {
   @@index([createdAt])
   @@index([recipient])
 }
+
+// ── Admin IP Whitelisting & Blacklisting ──
+model AdminIpAddress {
+  id          String   @id @default(uuid())
+  ipAddress   String   @unique @map("ip_address")
+  status      String   @default("allowed") // "allowed" | "blocked"
+  description String?  @db.Text
+  createdById String?  @map("created_by")
+  createdBy   User?    @relation("IpCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([ipAddress])
+  @@map("admin_ip_addresses")
+}
+
 

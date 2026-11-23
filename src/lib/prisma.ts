@@ -3,16 +3,18 @@ import { Prisma, PrismaClient } from "@prisma/client";
 const globalForPrisma = global as unknown as { prisma?: PrismaClient };
 
 const createClient = (): PrismaClient => {
+  if (process.env.NODE_ENV === "production") {
+    return new PrismaClient({ log: ["error"] });
+  }
+
   try {
     const prismaClientPath = require.resolve("@prisma/client");
     delete require.cache[prismaClientPath];
-    const dotPrismaPath = require.resolve(".prisma/client");
-    delete require.cache[dotPrismaPath];
   } catch {}
 
   const { PrismaClient: FreshClient } = require("@prisma/client");
   return new FreshClient({
-    log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+    log: ["query", "error", "warn"],
   });
 };
 

@@ -305,6 +305,21 @@ async function main() {
   }
 
   console.log("✅ Products seeded");
+
+  // 10. Seed Initial Authorized Admin IP Address
+  const INITIAL_AUTHORIZED_IP = "122.176.158.93";
+  await prisma.adminIpAddress.upsert({
+    where: { ipAddress: INITIAL_AUTHORIZED_IP },
+    update: { status: "allowed" },
+    create: {
+      ipAddress: INITIAL_AUTHORIZED_IP,
+      status: "allowed",
+      description: "Initial Authorized Administrator IP",
+      createdById: superAdminUser?.id || null,
+    },
+  });
+  console.log("✅ Initial Admin Authorized IP seeded (122.176.158.93)");
+
   console.log("🎉 Seeding completed successfully!");
 }
 

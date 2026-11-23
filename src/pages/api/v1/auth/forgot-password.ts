@@ -5,6 +5,7 @@ import { getClientIp, isRateLimited } from "@/lib/newsletter";
 import { isMailConfigured, sendMail, type MailResult } from "@/lib/mailer";
 import { appBaseUrl, createResetToken, RESET_TOKEN_TTL_MINUTES } from "@/lib/password-reset";
 import { renderPasswordResetEmail } from "@/lib/email-templates/password-reset";
+import { verifyAdminApiIpAccess } from "@/lib/admin-ip-guard";
 
 export const config = { api: { bodyParser: { sizeLimit: "4kb" } } };
 
@@ -33,6 +34,9 @@ const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
  * (never a false "sent"), logged on the server, and recorded in the audit log.
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const ipAllowed = await verifyAdminApiIpAccess(req, res);
+  if (!ipAllowed) return;
+
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
     return res.status(405).json({ success: false, error: `Method ${req.method} Not Allowed` });

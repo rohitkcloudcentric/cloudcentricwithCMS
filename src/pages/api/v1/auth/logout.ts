@@ -1,8 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { removeTokenCookie, getAuthenticatedUser } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { verifyAdminApiIpAccess } from "@/lib/admin-ip-guard";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const ipAllowed = await verifyAdminApiIpAccess(req, res);
+  if (!ipAllowed) return;
+
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
     return res.status(405).json({ success: false, error: `Method ${req.method} Not Allowed` });
