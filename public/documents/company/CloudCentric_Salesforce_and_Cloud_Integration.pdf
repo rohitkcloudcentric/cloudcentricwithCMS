@@ -1,0 +1,87 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 1525 >>
+stream
+BT
+/F1 14 Tf
+50 740 Td
+(CloudCentric Salesforce & Cloud Integration Services) Tj
+/F1 10 Tf
+0 -25 Td
+/F1 12 Tf
+(1. Salesforce Cloud Practice) Tj
+/F1 10 Tf
+0 -16 Td
+(CloudCentric is a certified Salesforce Crest partner with deep expertise) Tj
+0 -13 Td
+(across Sales Cloud, Service Cloud, Marketing Cloud, Experience Cloud, and) Tj
+0 -13 Td
+(Salesforce Data Cloud.) Tj
+0 -16 Td
+(We specialize in Agentforce implementations, enabling autonomous service) Tj
+0 -13 Td
+(agents inside Salesforce that resolve customer cases, update records, and) Tj
+0 -13 Td
+(generate personalized communications.) Tj
+0 -16 Td
+0 -8 Td
+/F1 12 Tf
+(2. Enterprise Integration & MuleSoft) Tj
+/F1 10 Tf
+0 -16 Td
+(Our certified architects design API-led connectivity using MuleSoft, AWS) Tj
+0 -13 Td
+(EventBridge, and Kafka to synchronize Salesforce with SAP, Oracle,) Tj
+0 -13 Td
+(NetSuite, and proprietary legacy databases in real time.) Tj
+0 -16 Td
+(We eliminate operational silos and guarantee high-throughput, transactional) Tj
+0 -13 Td
+(data consistency.) Tj
+0 -16 Td
+0 -8 Td
+/F1 12 Tf
+(3. Service Level Agreements \(SLAs\) & Support) Tj
+/F1 10 Tf
+0 -16 Td
+(Priority 1 \(Critical Outage\): 15-minute response time with continuous 24/7) Tj
+0 -13 Td
+(engineering triage.) Tj
+0 -16 Td
+(Priority 2 \(High Impact\): 1-hour response time.) Tj
+0 -16 Td
+(Priority 3 \(General Inquiries & Routine Enhancements\): 4-hour response) Tj
+0 -13 Td
+(time.) Tj
+0 -16 Td
+(Dedicated technical account manager assigned to every enterprise client.) Tj
+0 -16 Td
+0 -8 Td
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001817 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1887
+%%EOF

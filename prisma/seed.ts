@@ -320,6 +320,15 @@ async function main() {
   });
   console.log("✅ Initial Admin Authorized IP seeded (122.176.158.93)");
 
+  // 10. Seed Company Knowledge Base Documents for AI Chatbot
+  try {
+    const { seedCompanyKnowledgeBase } = await import("../src/lib/chatbot/knowledge-seed");
+    await seedCompanyKnowledgeBase();
+    console.log("✅ Company Knowledge Base PDFs & Chunks seeded");
+  } catch (err) {
+    console.warn("⚠️ Warning: Knowledge base auto-seeding deferred:", err);
+  }
+
   console.log("🎉 Seeding completed successfully!");
 }
 

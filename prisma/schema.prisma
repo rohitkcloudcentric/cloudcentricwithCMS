@@ -480,4 +480,95 @@ model AdminIpAddress {
   @@map("admin_ip_addresses")
 }
 
+// ── AI Chatbot & Live Agent Customer Data ──
+model ChatCustomer {
+  id             String        @id @default(uuid())
+  fullName       String        @map("full_name")
+  email          String
+  contactNumber  String        @map("contact_number")
+  purpose        String        @db.Text
+  companyName    String?       @map("company_name")
+  additionalInfo String?       @map("additional_info") @db.Text
+  ipAddress      String?       @map("ip_address")
+  userAgent      String?       @map("user_agent")
+  sessions       ChatSession[]
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  @@index([email])
+  @@index([createdAt])
+  @@map("chat_customers")
+}
+
+// ── Chatbot Sessions (AI vs Live Agent) ──
+model ChatSession {
+  id             String        @id @default(uuid())
+  customerId     String        @map("customer_id")
+  customer       ChatCustomer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  mode           String        @default("ai") // "ai" | "live_agent"
+  status         String        @default("active") // "active" | "transferred" | "closed"
+  agentName      String?       @map("agent_name")
+  initialMessage String?       @map("initial_message") @db.Text
+  messages       ChatMessage[]
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  @@index([customerId])
+  @@index([mode])
+  @@index([status])
+  @@index([createdAt])
+  @@map("chat_sessions")
+}
+
+// ── Chatbot & Live Agent Conversation Messages ──
+model ChatMessage {
+  id          String      @id @default(uuid())
+  sessionId   String      @map("session_id")
+  session     ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sender      String      // "user" | "bot" | "agent" | "system"
+  text        String      @db.Text
+  sources     Json?       // Citations: [{ documentTitle, snippet, pageNumber }]
+  isLiveAgent Boolean     @default(false) @map("is_live_agent")
+  createdAt   DateTime    @default(now()) @map("created_at")
+
+  @@index([sessionId])
+  @@index([createdAt])
+  @@index([isLiveAgent])
+  @@map("chat_messages")
+}
+
+// ── Chat Knowledge Base PDF Documents ──
+model ChatKnowledgeDoc {
+  id            String          @id @default(uuid())
+  title         String
+  fileName      String          @map("file_name")
+  fileUrl       String          @map("file_url")
+  fileSize      Int             @map("file_size")
+  pageCount     Int             @default(1) @map("page_count")
+  extractedText String          @map("extracted_text") @db.Text
+  isActive      Boolean         @default(true) @map("is_active")
+  chunks        ChatDocChunk[]
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+
+  @@index([isActive])
+  @@index([createdAt])
+  @@map("chat_knowledge_docs")
+}
+
+// ── RAG Chunks for Document Retrieval ──
+model ChatDocChunk {
+  id         String           @id @default(uuid())
+  documentId String           @map("document_id")
+  document   ChatKnowledgeDoc @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  chunkIndex Int              @map("chunk_index")
+  content    String           @db.Text
+  metadata   Json?            // e.g. { pageNumber: 1, sectionTitle: "..." }
+  createdAt  DateTime         @default(now()) @map("created_at")
+
+  @@index([documentId])
+  @@index([chunkIndex])
+  @@map("chat_doc_chunks")
+}
+
 

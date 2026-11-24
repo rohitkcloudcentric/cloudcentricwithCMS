@@ -1,0 +1,104 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 2075 >>
+stream
+BT
+/F1 14 Tf
+50 740 Td
+(CloudCentric AI Solutions & Autonomous Agents Guide) Tj
+/F1 10 Tf
+0 -25 Td
+/F1 12 Tf
+(1. Custom Autonomous AI Agents) Tj
+/F1 10 Tf
+0 -16 Td
+(CloudCentric deploys custom autonomous AI agents that operate 24/7 without) Tj
+0 -13 Td
+(human fatigue. Unlike static chatbots, our agents evaluate user intent,) Tj
+0 -13 Td
+(interact with corporate databases, verify business rules, and execute) Tj
+0 -13 Td
+(actions across third-party tools.) Tj
+0 -16 Td
+(Key applications include customer service tier-1 and tier-2 resolution,) Tj
+0 -13 Td
+(financial reconciliation, supplier communication, claims processing, and) Tj
+0 -13 Td
+(employee onboarding.) Tj
+0 -16 Td
+0 -8 Td
+/F1 12 Tf
+(2. Enterprise Retrieval-Augmented Generation \(RAG\)) Tj
+/F1 10 Tf
+0 -16 Td
+(We build enterprise RAG pipelines that ground Large Language Models in your) Tj
+0 -13 Td
+(company documentation, manuals, knowledge bases, and live databases.) Tj
+0 -16 Td
+(Our architecture incorporates hybrid semantic search, BM25 keyword) Tj
+0 -13 Td
+(matching, reranking, and dynamic prompt synthesis to ensure 100% factual) Tj
+0 -13 Td
+(fidelity with zero hallucination.) Tj
+0 -16 Td
+0 -8 Td
+/F1 12 Tf
+(3. AI Implementation Timeline & Methodology) Tj
+/F1 10 Tf
+0 -16 Td
+(Phase 1 \(Weeks 1-2\): Use-Case Discovery & Security Architecture Alignment.) Tj
+0 -16 Td
+(Phase 2 \(Weeks 3-4\): Interactive Proof-of-Concept \(POC\) built in a secure) Tj
+0 -13 Td
+(sandbox.) Tj
+0 -16 Td
+(Phase 3 \(Weeks 5-8\): System integration with Salesforce, ERP, and internal) Tj
+0 -13 Td
+(databases.) Tj
+0 -16 Td
+(Phase 4 \(Weeks 9-12\): Production deployment, real-time telemetry, and) Tj
+0 -13 Td
+(managed 24/7 maintenance.) Tj
+0 -16 Td
+0 -8 Td
+/F1 12 Tf
+(4. Security, Privacy & Compliance) Tj
+/F1 10 Tf
+0 -16 Td
+(All AI models can be deployed within your private VPC or dedicated) Tj
+0 -13 Td
+(on-premises infrastructure.) Tj
+0 -16 Td
+(We enforce automated PII redaction, prompt injection defense, and strict) Tj
+0 -13 Td
+(zero-data-retention agreements with AI foundation model providers.) Tj
+0 -16 Td
+0 -8 Td
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000002367 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2437
+%%EOF

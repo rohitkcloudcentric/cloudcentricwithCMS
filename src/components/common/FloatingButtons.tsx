@@ -5,39 +5,42 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { MessageSquare, ArrowUp } from "lucide-react";
 import AIChatBar from "./AIChatBar";
+import ChatbotPanel from "@/components/chatbot/ChatbotPanel";
 import { useContactSettings } from "./useContactSettings";
 import { phoneDigits } from "@/lib/contact-settings";
 
 export default function FloatingButtons() {
   const router = useRouter();
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isChatBarOpen, setIsChatBarOpen] = useState(true);
+  const [isChatPanelOpen, setIsChatPanelOpen] = useState(false);
+  const [chatInitialMessage, setChatInitialMessage] = useState("");
+
   // WhatsApp uses the first active contact number from Admin > Contact Settings
   const contact = useContactSettings();
   const whatsapp = contact?.phones[0] ? phoneDigits(contact.phones[0]) : "";
 
   useEffect(() => {
-    const handleOpenChatEvent = () => {
-      setIsChatOpen(true);
+    // Listen for custom trigger from AIChatBar or other components
+    const handleOpenChatPanel = (e: Event) => {
+      const customEvent = e as CustomEvent<{ message?: string }>;
+      const msg = customEvent.detail?.message || "";
+      setChatInitialMessage(msg);
+      setIsChatPanelOpen(true);
     };
 
-    window.addEventListener("open-ai-chat", handleOpenChatEvent);
+    // Generic open chat trigger
+    const handleOpenAiChat = () => {
+      setIsChatPanelOpen(true);
+    };
+
+    window.addEventListener("open-ai-chat-panel", handleOpenChatPanel);
+    window.addEventListener("open-ai-chat", handleOpenAiChat);
+
     return () => {
-      window.removeEventListener("open-ai-chat", handleOpenChatEvent);
+      window.removeEventListener("open-ai-chat-panel", handleOpenChatPanel);
+      window.removeEventListener("open-ai-chat", handleOpenAiChat);
     };
   }, []);
-
-  useEffect(() => {
-    if (!isChatOpen) return;
-
-    const handleScroll = () => {
-      setIsChatOpen(false);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [isChatOpen]);
 
   // Hide all floating buttons on admin dashboard pages
   if (router.pathname && router.pathname.startsWith("/admin")) {
@@ -56,24 +59,31 @@ export default function FloatingButtons() {
           BOOK A CONSULTATION
         </Link>
         {whatsapp && (
-        <a
-          href={`https://api.whatsapp.com/send/?phone=${whatsapp}&type=phone_number&app_absent=0`}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Contact us on WhatsApp"
-          className="bg-[#22C55E] text-white text-[11px] font-intel font-extrabold tracking-[0.15em] w-9.5 py-1 px-3 rounded-lg shadow-[0_4px_20px_rgba(34,197,94,0.3)] hover:shadow-[0_4px_25px_rgba(34,197,94,0.5)] hover:-translate-x-1 hover:scale-105 transition-all duration-300 uppercase [writing-mode:vertical-rl] flex items-center justify-center h-auto text-center cursor-pointer"
-        >
-          WHATSAPP
-        </a>
+          <a
+            href={`https://api.whatsapp.com/send/?phone=${whatsapp}&type=phone_number&app_absent=0`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Contact us on WhatsApp"
+            className="bg-[#22C55E] text-white text-[11px] font-intel font-extrabold tracking-[0.15em] w-9.5 py-1 px-3 rounded-lg shadow-[0_4px_20px_rgba(34,197,94,0.3)] hover:shadow-[0_4px_25px_rgba(34,197,94,0.5)] hover:-translate-x-1 hover:scale-105 transition-all duration-300 uppercase [writing-mode:vertical-rl] flex items-center justify-center h-auto text-center cursor-pointer"
+          >
+            WHATSAPP
+          </a>
         )}
       </div>
 
       {/* Bottom Floating Action Buttons */}
       <div className="fixed bottom-6 left-6 z-50">
         <button
-          onClick={() => setIsChatOpen((prev) => !prev)}
+          onClick={() => {
+            if (!isChatPanelOpen) {
+              setIsChatPanelOpen(true);
+            } else {
+              setIsChatPanelOpen(false);
+            }
+          }}
           className="w-12 h-12 rounded-full bg-[#7C3AED] text-white flex items-center justify-center shadow-[0_0_25px_rgba(124,58,237,0.7)] hover:scale-110 active:scale-95 transition-transform cursor-pointer"
-          aria-label="Open AI Assistant"
+          aria-label="Open AI Assistant Panel"
+          title="Open AI Assistant & Live Chat"
         >
           <MessageSquare className="w-5 h-5" />
         </button>
@@ -89,8 +99,15 @@ export default function FloatingButtons() {
         </button>
       </div>
 
-      {/* Conditionally rendered AI Chat Bar */}
-      {isChatOpen && <AIChatBar />}
+      {/* Bottom Fixed AI Chat Prompt Input Bar (Shown in Hero reference image) */}
+      {isChatBarOpen && !isChatPanelOpen && <AIChatBar />}
+
+      {/* Right Side Responsive AI Chatbot & Live Agent Panel */}
+      <ChatbotPanel
+        isOpen={isChatPanelOpen}
+        onClose={() => setIsChatPanelOpen(false)}
+        initialMessage={chatInitialMessage}
+      />
     </>
   );
 }

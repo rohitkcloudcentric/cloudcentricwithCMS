@@ -239,7 +239,7 @@ export default function AdminLogin({ accessDenied, clientIp, reason }: AdminLogi
         </div>
 
         {/* Detected Client IP Security Badge */}
-        {/* <div className="flex items-center justify-between px-3.5 py-2.5 rounded-2xl bg-[#14141a] border border-emerald-500/20 text-xs">
+        <div className="flex items-center justify-between px-3.5 py-2.5 rounded-2xl bg-[#14141a] border border-emerald-500/20 text-xs">
           <span className="text-[#a1a1aa] flex items-center gap-1.5 font-intel">
             <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
             Detected Client IP:
@@ -250,7 +250,7 @@ export default function AdminLogin({ accessDenied, clientIp, reason }: AdminLogi
               Authorized
             </span>
           </div>
-        </div> */}
+        </div>
 
         {/* Password reset confirmation */}
         {resetDone && !error && (

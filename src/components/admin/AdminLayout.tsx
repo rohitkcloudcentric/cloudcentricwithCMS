@@ -21,6 +21,7 @@ import {
   Inbox,
   Server,
   Globe,
+  Bot,
 } from "lucide-react";
 
 import { buildAdminAuth, setAdminUser, type AdminUser } from "@/components/admin/AdminAuthContext";
@@ -74,6 +75,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: "Newsletter", icon: Mail, href: "/admin/newsletter", module: "newsletter" },
       { label: "Contact Settings", icon: Contact, href: "/admin/contact-settings", module: "contact_settings" },
       { label: "Contact Form Submissions", icon: Inbox, href: "/admin/contact-submissions", adminOnly: true },
+      { label: "Chat Inquiries & Live Agent", icon: Bot, href: "/admin/chat-inquiries" },
     ],
   },
   {
